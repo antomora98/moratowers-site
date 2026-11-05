@@ -341,7 +341,7 @@ html[data-splash] .hero .name {
   font-display: block;
 }
 html[data-splash] .hero {
-  height: clamp(170px, 26vw, 380px);
+  height: clamp(170px, 26vw, max(380px, 21vw));
   padding: 0;
   container-type: inline-size;
   display: flex;
@@ -459,11 +459,11 @@ html[data-splash] .hero .lede .enter {
   font-display: swap;
 }
 html[data-splash] .hero .lede {
-  top: calc(50% + 6.5cqw);
+  top: calc(50% + 8.979cqw + 14px);
 }
 @media (max-width: 639px) {
   html[data-splash] .hero .lede {
-    top: calc(50% + 9.2cqw);
+    top: calc(50% + 16.907cqw + 14px);
   }
 }
 html[data-splash] .hero.lined .lede {
@@ -596,4 +596,53 @@ html[data-splash] .hero .enter a {
   .enter .caret {
     background: CanvasText !important;
   }
+}
+
+/* The poster frame (2026-11-05): a still of the glass word and line at their resting pose, captured from this page's
+   own scene, shown from the first paint in the canvas's exact place and look (same ground, same mask); the live glass
+   fades in over it after its first frame, and the poster then hides. The lines sit where the glass puts them. */
+html:not(.js) .hero .poster {
+  display: none;
+}
+html[data-splash] .hero .poster {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 50% 58% at 50% 50%, #000 66%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 58% at 50% 50%, #000 66%, transparent 100%);
+}
+html[data-splash] .hero .poster img {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 5.573cqw);
+  width: 72.083cqw;
+  height: auto;
+  transform: translateX(-50%);
+}
+@media (max-width: 640px) {
+  html[data-splash] .hero .poster {
+    -webkit-mask-image: radial-gradient(ellipse 66% 60% at 50% 50%, #000 74%, transparent 100%);
+    mask-image: radial-gradient(ellipse 66% 60% at 50% 50%, #000 74%, transparent 100%);
+  }
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .poster img {
+    top: calc(50% - 7.209cqw);
+    width: 97.829cqw;
+  }
+}
+html[data-splash] .hero:has(.poster) .lede .lq {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+html[data-splash] .hero.glassed .poster {
+  visibility: hidden;
+}
+html[data-motion=on][data-splash] .hero.glassed .poster {
+  transition: visibility 0s linear 0.6s;
 }

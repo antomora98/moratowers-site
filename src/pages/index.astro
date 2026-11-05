@@ -20,8 +20,8 @@ const l = pages.landing;
     { href: '/vendor/three-0.170.0/examples/jsm/loaders/GLTFLoader.js', as: 'module' },
     { href: '/vendor/three-0.170.0/examples/jsm/utils/BufferGeometryUtils.js', as: 'module' },
     { href: '/vendor/three-0.170.0/examples/jsm/environments/RoomEnvironment.js', as: 'module' },
-    { href: '/models/mark.glb', as: 'fetch' },
-    { href: '/models/line1.glb', as: 'fetch' },
+    { href: '/img/poster-desktop.webp', as: 'image', media: '(min-width: 640px)' },
+    { href: '/img/poster-phone.webp', as: 'image', media: '(max-width: 639px)' },
   ]}>
 <canvas class="rain" aria-hidden="true"></canvas>
 <TopNav here="landing" />
@@ -29,6 +29,7 @@ const l = pages.landing;
 <header class="hero" id="hero" data-mark-src="/models/mark.glb" data-line-src="/models/line1.glb">
 <h1 class="name">{landing.domain}</h1>
 <p class="flat" aria-hidden="true">{landing.name}</p>
+<div class="poster" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="/img/poster-phone.webp" width="1262" height="330" /><img src="/img/poster-desktop.webp" width="2768" height="594" alt="" fetchpriority="high" decoding="async" /></picture></div>
 <div class="lede">
 <p class="lq"><span class="metal">{l.lede}</span></p>
 <p class="lr"><span class="metal">{l.now}</span></p>
