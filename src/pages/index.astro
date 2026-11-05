@@ -13,7 +13,16 @@ const l = pages.landing;
 ---
 <Base title={m.title} description={m.description} path="/" bodyClass="land" motion="landing"
   htmlAttrs={{ 'data-look': 'geistall', 'data-mark': 'glass', 'data-small': 'sans', 'data-glass': 'warm', 'data-splash': '' }}
-  fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'landing', 'landing-page']}>
+  fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'landing', 'landing-page']}
+  importmap={IMPORTMAP} preloads={[
+    { href: '/js/glass-mark.js', as: 'module' },
+    { href: '/vendor/three-0.170.0/build/three.module.js', as: 'module' },
+    { href: '/vendor/three-0.170.0/examples/jsm/loaders/GLTFLoader.js', as: 'module' },
+    { href: '/vendor/three-0.170.0/examples/jsm/utils/BufferGeometryUtils.js', as: 'module' },
+    { href: '/vendor/three-0.170.0/examples/jsm/environments/RoomEnvironment.js', as: 'module' },
+    { href: '/models/mark.glb', as: 'fetch' },
+    { href: '/models/line1.glb', as: 'fetch' },
+  ]}>
 <canvas class="rain" aria-hidden="true"></canvas>
 <TopNav here="landing" />
 <main id="main">
@@ -27,7 +36,6 @@ const l = pages.landing;
 </div>
 </header>
 </main>
-<script is:inline type="importmap" set:html={IMPORTMAP}></script>
 <script is:inline type="module" src="/js/landing.js"></script>
 <script is:inline type="module" src="/js/glass-mark.js"></script>
 <script is:inline type="module" src="/js/glass-flight.js"></script>

@@ -80,6 +80,8 @@ Promise.allSettled([loader.loadAsync(hero.dataset.markSrc), loader.loadAsync(her
     hero.classList.add("lined");
   }
   fit();
+  // Prepare the glass's shaders before the first frame, so the swap from the flat word does not stall.
+  (renderer.compileAsync ? renderer.compileAsync(scene, camera) : Promise.resolve()).catch(() => {}).then(() => {
   const t0 = performance.now();
   renderer.setAnimationLoop((t) => {
     if (!moving()) {
@@ -92,6 +94,7 @@ Promise.allSettled([loader.loadAsync(hero.dataset.markSrc), loader.loadAsync(her
     renderer.render(scene, camera);
   });
   hero.classList.add("glassed");
+  });
 });
 addEventListener("pointermove", (e) => {
   px = e.clientX / innerWidth - 0.5;

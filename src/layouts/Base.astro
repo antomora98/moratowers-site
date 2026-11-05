@@ -20,8 +20,11 @@ interface Props {
   fonts?: string[];
   styles: string[];
   rain?: boolean;
+  // The landing's import map and early downloads, in the head so the 3D engine and models load with the page.
+  importmap?: string;
+  preloads?: { href: string; as: 'module' | 'fetch' }[];
 }
-const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bodyClass, motion = 'plain', fonts = [], styles, rain = false } = Astro.props;
+const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bodyClass, motion = 'plain', fonts = [], styles, rain = false, importmap, preloads = [] } = Astro.props;
 const shareTitle = ogTitle ?? title;
 const url = new URL(path, Astro.site).href;
 const MOTION = { plain: MOTION_PLAIN, landing: MOTION_LANDING, rules: MOTION_RULES };
@@ -46,6 +49,8 @@ const card = {
     <link rel="alternate" type="application/rss+xml" title="moratowers" href="/rss.xml" />
     {fonts.map((f) => <link rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossorigin />)}
     {styles.map((s) => <link rel="stylesheet" href={`/css/${s}.css`} />)}
+    {importmap && <script is:inline type="importmap" set:html={importmap} />}
+    {preloads.map((p) => p.as === 'module' ? <link rel="modulepreload" href={p.href} /> : <link rel="preload" href={p.href} as="fetch" crossorigin />)}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={landing.name} />
     <meta property="og:title" content={shareTitle} />
