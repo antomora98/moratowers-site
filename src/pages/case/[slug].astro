@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import { getCases, gateWord, causeLabel, nwWords, nwDates } from '../../lib/site';
+import { parseSections } from '../../lib/sections';
+import { landing } from '../../lib/landing';
+import { pages, caseExtras } from '../../lib/pages';
+
+// One page per case (the design's case/<slug>.html): the card stack, the case's words from its file, the record, the
+// number, the figure. Nothing appears on scroll; case.js moves the stack and the bar.
+export async function getStaticPaths() {
+  const cases = await getCases();
+  return cases.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, i, all: cases } }));
+}
+const { entry, i, all } = Astro.props;
+const d = entry.data;
+const x = caseExtras[entry.id];
+if (!x) throw new Error(`${entry.id}: no entry in cases.json`);
+// The figure as the design draws it (the plot, then the screen-reader table), copied from the approved design.
+const figs = import.meta.glob('../../data/figures/*.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const fig = figs[`../../data/figures/${entry.id}.html`];
+if (!fig) throw new Error(`${entry.id}: no figure`);
+const [plot, table] = fig.trim().split('\n');
+const gate = gateWord(d.gate);
+// The case's sections: Hypothesis, Test, Cause of death as steps; Lesson goes into the record; an empty one is skipped.
+const sections = parseSections(entry.body ?? '').filter((s) => s.paras.length);
+const lesson = sections.find((s) => s.h === 'Lesson');
+const steps = sections.filter((s) => s !== lesson);
+if (!lesson || steps.length !== 3) throw new Error(`${entry.id}: expected three steps and a lesson`);
+const last = steps.length + 1;
+const MARKS: Record<string, string> = {
+  priced_right: '<path shape-rendering="crispEdges" d="M3.5 6.5h9M3.5 10.5h9"/>',
+  blocked: '<path shape-rendering="crispEdges" d="M3.5 3.5h9v9h-9z"/><path d="M3.5 3.5l9 9"/>',
+  capacity: '<path shape-rendering="crispEdges" d="M3.5 4v8.5h9V4M5.5 7.5h5"/>',
+};
+for (const c of all) if (!MARKS[c.data.cause]) throw new Error(`${c.id}: no mark for cause ${c.data.cause}`);
+const sprite = Object.entries(MARKS).map(([k, v]) => `<symbol id="m-${k}" viewBox="0 0 16 16">${v}</symbol>`).join('');
+const prev = all[i - 1], next = all[i + 1];
+const N = all.length;
+const sep = ' · ';
+const cap = '  ' + x.caption;
+// The audit line's first item opens this idea's row in the ledger; the rest still lead to About.
+const row = landing.ledger.find((r) => r.slug === entry.id);
+if (!row) throw new Error(`${entry.id}: not in the ledger`);
+---
+<Base title={`${d.title} | moratowers`} description={x.description} path={`/case/${entry.id}/`} bodyClass="flow-case"
+  fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'case', 'brand']} rain>
+<a class="skip" href="#case">skip to the case</a>
+<TopNav here="cases" />
+<svg class="sprite" width="0" height="0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" set:html={sprite}></svg>
+<main class="fc" id="main" data-n={d.n} data-last={last} data-gate={gate}>
+<nav class="stack" id="cases" aria-label={`Case files, ${d.n} of ${N}`}><div class="track">{all.map((c) => (
+  <a class={c.id === entry.id ? 'card is-on' : 'card'} href={`/case/${c.id}/`} draggable="false" data-slug={c.id} data-n={c.data.n} data-gate={gateWord(c.data.gate)} aria-current={c.id === entry.id ? 'page' : undefined}><span class="g">{gateWord(c.data.gate)}</span><span class="s">{c.data.title}</span><span class="c"><svg class="mark" aria-hidden="true"><use href={`#m-${c.data.cause}`}/></svg>{causeLabel(c.data.cause)}</span></a>
+))}</div></nav>
+<article class="case buffer" id="case" tabindex="-1" aria-labelledby="case-h">
+<header class="intro"><p class="ln">&gt; cat {entry.id}.md</p>
+<h1 id="case-h" set:html={nwWords(d.title)}></h1></header>
+<div class="scrolly">
+<div class="steps">
+{steps.map((s, k) => <section class="st" data-s={k + 1}><h2>{s.h}</h2><p class="ln">{s.paras.join(' ')}</p></section>)}
+<section class="st verdict" data-s={last}><div class="head file-head"><p class="ln"><span class="k">gate</span><span class="stamp">{gate}</span></p><p class="ln"><span class="k">cause</span><svg class="mark" aria-hidden="true"><use href={`#m-${d.cause}`}/></svg>{causeLabel(d.cause)}</p><p class="ln"><span class="k">evidence</span>{d.evidence}</p><p class="ln audit"><span class="k">{pages.case.audit_label}</span><a href={`/ledger/#n${row.n}`}><span class="nw">{pages.case.audit[0]}</span></a>{sep}<a href="/about/">{pages.case.audit.slice(1).map((a, k) => <>{k > 0 && sep}<span class="nw">{a}</span></>)}</a></p></div><p class={x.number.match ? 'number checked' : 'number'} id="num"><span class="k">the number</span><span class="cells" aria-hidden="true">{[...x.number.cells].map((ch) => <span class="cell">{ch}</span>)}</span><span class="rest" aria-hidden="true">{x.number.rest}</span><span class="sr-only">{x.number.sr}</span>{x.number.match && <span class="match"><b>+</b> {x.number.match}</span>}</p><p class="ln note" set:html={nwDates(x.number.note)}></p><h2>{lesson.h}</h2><p class="ln lesson">{lesson.paras.join(' ')}</p></section>
+<div class="cap-narrow" aria-hidden="true"><p class="figcap"><span class="chrome">fig. 1</span>{cap}</p>{x.attribution && <p class="figcap">{x.attribution}</p>}</div>
+<p class="ln endprompt">{next ? <a href={`/case/${next.id}/`}>&gt; cat {next.id}.md</a> : <a href="/rules/">&gt; cat rules</a>}</p>
+<p class="notadvice">{pages.about.not_advice}</p>
+</div>
+<figure class="unfold" id="stage" aria-label="Figure 1">
+<Fragment set:html={plot} />
+<figcaption class="cap-wide"><p class="figcap"><span class="chrome">fig. 1</span>{cap}</p>{x.attribution && <p class="figcap">{x.attribution}</p>}</figcaption>
+<Fragment set:html={table} />
+</figure>
+</div>
+</article>
+</main>
+<footer class="bar" aria-label="case navigation"><b class="mode">CLOSED</b><span class="path">{`${landing.home}/src/content/cases/${entry.id}.md`}</span>{prev ? <a class="step" href={`/case/${prev.id}/`} aria-label="previous case">&larr;</a> : <span class="step" aria-disabled="true">&larr;</span>}<span class="pos"><span class="pl">{`case ${d.n} of ${N}`}</span><span class="ps">{`${d.n} of ${N}`}</span></span>{next ? <a class="step" href={`/case/${next.id}/`} aria-label="next case">&rarr;</a> : <span class="step" aria-disabled="true">&rarr;</span>}<span class="hint dim">j k case</span><button type="button" class="motion" aria-pressed="true">motion: on</button></footer>
+<script is:inline type="module" src="/js/case.js"></script>
+</Base>

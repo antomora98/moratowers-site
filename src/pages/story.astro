@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { landing, timeline } from '../lib/landing';
+import { pages } from '../lib/pages';
+// Story: the approved story (landing.json about.story, after the who line that opens About),
+// the timeline (timeline.json) with its month index and two ledgers of record rows, then where to read next.
+const m = pages.meta.story;
+const s = pages.story;
+---
+<Base title={m.title} description={m.description} path="/story/" fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']}
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain>
+<a class="skip" href="#main">skip to the text</a>
+<TopNav here="story" />
+<main id="main" class="storypage">
+<p class="ln">&gt; cat story.md</p>
+<h1>Story</h1>
+<div class="prose">
+{landing.about.story.slice(1).map((p) => <p>{p}</p>)}
+</div>
+<h2 class="lbl">{s.timeline_label}</h2>
+<nav class="months" aria-label="timeline months">{timeline.map((t) => <a href={`#t-${t.month}`}>{t.month}</a>)}</nav>
+<ol class="tl">
+{timeline.map((t) => {
+  const r = s.ledgers[t.month];
+  return <li id={`t-${t.month}`}><h3><a href={`#t-${t.month}`} tabindex="-1"><time datetime={t.month}>{t.month}</time></a></h3><div>{t.lines.map((p) => <p>{p}</p>)}{r && <div class="rec"><p class="lk">{r.label}</p><dl>{r.rows.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl></div>}</div></li>;
+})}
+</ol>
+<p class="links go"><a href="/case/">&gt; ls cases</a></p>
+<p class="links">{pages.outside.map((o, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={o.href} rel="me noopener">{o.label}</a></>)}</p>
+</main>
+<script is:inline type="module" src="/js/story.js"></script>
+</Base>

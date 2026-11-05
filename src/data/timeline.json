@@ -1,0 +1,77 @@
+[
+  {
+    "month": "2025-12",
+    "lines": [
+      "I start the repo on December 14 as a prediction-market arbitrage bot built from a Claude skill. A week later it moves to fifteen-minute crypto markets. 15 commits."
+    ]
+  },
+  {
+    "month": "2026-01",
+    "lines": [
+      "The scripts become a web service with auth, markets and bot endpoints.",
+      "Two days of hardening: ten security and correctness fixes, a paper-trading core, retries and rate limits (PR 7). 18 commits."
+    ]
+  },
+  {
+    "month": "2026-02",
+    "lines": [
+      "One day of \"waves\": VPIN, Monte Carlo Kelly, lifecycle tracking, an operator dashboard, alerts, CI/CD.",
+      "A \"quick wins\" commit strips 226 lines of safety code, and the test run halts on drift. 120 commits."
+    ]
+  },
+  {
+    "month": "2026-03",
+    "lines": [
+      "March 8: 898 paper trades turn out to be fake (no fees, instant fills). I rebuild the paper trader that evening to check its fills against real trades.",
+      "March 28: live code that does not match its backtest (a tenfold scaling slip) leads to a five-step launch rule: backtest, matching check, a day in shadow, review, smallest size.",
+      "I install a code-review graph, and \"query the graph before editing\" becomes a rule. 174 commits."
+    ]
+  },
+  {
+    "month": "2026-04",
+    "lines": [
+      "April 7: a backtest turns out to have used data before it was public, and I kill the strategy.",
+      "The /check skill runs only the tests a change touches. 74 commits."
+    ]
+  },
+  {
+    "month": "2026-05",
+    "lines": [
+      "Two broken upstream releases in one week break the build, and both are fenced off. Rate limiting is made spoof-resistant. 46 commits, 15 merged pull requests."
+    ]
+  },
+  {
+    "month": "2026-06",
+    "lines": [
+      "The knowledge graph becomes the agents' default way around the code. 39 commits."
+    ]
+  },
+  {
+    "month": "2026-07",
+    "lines": [
+      "July 13: I switch off the live bot. I generalize six guardrail skills from the bot's own skills."
+    ]
+  },
+  {
+    "month": "2026-08",
+    "lines": [
+      "August 20: I split the data into raw, cleaned and analysis layers, with a rule that a headline number cites its table. The first table disagrees with a number already shipped.",
+      "August 26: I publish the guardrails as a public repo."
+    ]
+  },
+  {
+    "month": "2026-09",
+    "lines": [
+      "Candidate ideas get a review by a second model before any data is pulled. One agent builds, another checks.",
+      "September 22: memecoin graduation trades close with no edge.",
+      "A knowledge system: a verdict registry that renders the status page, a citation checker that fails the test suite, the whole record re-checked by a separate reviewer agent. 572 commits (380 by a second coding agent)."
+    ]
+  },
+  {
+    "month": "2026-10",
+    "lines": [
+      "A research-protocol skill, a shared statistics library and a data-completeness policy, each built by one agent and reviewed by another. The dead-code merge removes 2,598 lines.",
+      "October 17: I freeze the audit's plan. October 25: the checker passes it on the third run."
+    ]
+  }
+]

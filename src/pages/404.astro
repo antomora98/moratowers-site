@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { pages } from '../lib/pages';
+import { IMPORTMAP } from '../lib/inline';
+// The 404: the glass word turning slowly toward the pointer over the site's dark ground, still under
+// reduced motion, and the way home. GitHub Pages serves it at any depth, so every path in it is absolute.
+---
+<Base title={pages.meta.notfound.title} path="/404/" canonical={false} motion={null} styles={['404']}>
+<div class="lost"><h1>{pages.notfound.h1}</h1><p><a href="/">{pages.notfound.back}</a></p></div>
+<script is:inline type="importmap" set:html={IMPORTMAP}></script>
+<script is:inline type="module" src="/js/404.js"></script>
+</Base>

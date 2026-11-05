@@ -1,0 +1,54 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #0f0e0b;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@font-face {
+  font-family: "Geist Serif";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+}
+.lost {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 18vh;
+  padding: 0 16px;
+  text-align: center;
+  font-family:
+    "Geist Serif",
+    Georgia,
+    serif;
+  color: #e6e1cf;
+}
+.lost h1 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 42px;
+}
+.lost p {
+  margin: 14px 0 0;
+  font-size: 18px;
+  line-height: 26px;
+  color: #a39e8c;
+}
+.lost a {
+  color: #a39e8c;
+  text-decoration: none;
+  padding: 1px 0;
+}
+.lost a:hover,
+.lost a:focus-visible {
+  color: #e6e1cf;
+}
+.lost a:focus-visible {
+  outline: 2px solid #e6e1cf;
+  outline-offset: 4px;
+}

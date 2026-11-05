@@ -1,0 +1,82 @@
+---
+import { GOATCOUNTER_CODE } from '../config';
+import { landing } from '../lib/landing';
+import { MOTION_PLAIN, MOTION_LANDING, MOTION_RULES } from '../lib/inline';
+import { CSP } from '../lib/csp';
+// canonical={false} is for error pages: no canonical URL, no og:url, not indexed.
+// The policy meta tag is the head's first element (src/lib/csp.ts), so it governs everything after it; the charset
+// follows it, still inside the first 1024 bytes (scripts/cspcheck.mjs checks both). The two head scripts (the
+// motion line, and on pages with the faint rain, the rain's module that holds the first frame) end the head. There they stop the body being parsed until the stylesheets have loaded; without that, Chrome dropped the
+// page transition on a cold load (scripts at the top of the body did not stop it, in headless tests).
+interface Props {
+  title: string;
+  ogTitle?: string;
+  description?: string;
+  path: string;
+  canonical?: boolean;
+  htmlAttrs?: Record<string, string | boolean>;
+  bodyClass?: string;
+  motion?: 'plain' | 'landing' | 'rules' | null;
+  fonts?: string[];
+  styles: string[];
+  rain?: boolean;
+}
+const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bodyClass, motion = 'plain', fonts = [], styles, rain = false } = Astro.props;
+const shareTitle = ogTitle ?? title;
+const url = new URL(path, Astro.site).href;
+const MOTION = { plain: MOTION_PLAIN, landing: MOTION_LANDING, rules: MOTION_RULES };
+// The share card: the landing's still frame (reduced motion), without the nav and the enter line (2026-11-05).
+// Its text is fixed in the image, so the alt text is fixed too; when that text changes, render a
+// new card and ship it under a new name, og-v4.png (X caches a card for about 7 days).
+const card = {
+  src: new URL('/og-v3.png', Astro.site).href,
+  alt: 'The word moratowers in glass, over faint falling characters on a dark background. Under it, also in glass: research and writing. Then: now: can AI agents find a trading edge?',
+};
+---
+<!doctype html>
+<html lang="en" {...htmlAttrs}>
+  <head>
+    <meta http-equiv="content-security-policy" content={CSP} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {canonical ? <link rel="canonical" href={url} /> : <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="moratowers" href="/rss.xml" />
+    {fonts.map((f) => <link rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossorigin />)}
+    {styles.map((s) => <link rel="stylesheet" href={`/css/${s}.css`} />)}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={landing.name} />
+    <meta property="og:title" content={shareTitle} />
+    {description && <meta property="og:description" content={description} />}
+    {canonical && <meta property="og:url" content={url} />}
+    <meta property="og:image" content={card.src} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={card.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={shareTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={card.src} />
+    <meta name="twitter:image:alt" content={card.alt} />
+    {motion && <script is:inline set:html={MOTION[motion]} />}
+    {rain && <script is:inline type="module" src="/js/rain.js" blocking="render" />}
+  </head>
+  <body class={bodyClass}>
+    <slot />
+    {GOATCOUNTER_CODE && (
+      <script is:inline define:vars={{ endpoint: `https://${GOATCOUNTER_CODE}.goatcounter.com/count` }}>
+        // GoatCounter's script, served from this site (public/js/count.js, pinned in scripts/firewall.mjs), loads after the page: one second after the load event, when the first lines
+        // have printed, so it is never on the path to the first paint or the largest one.
+        addEventListener('load', function () {
+          setTimeout(function () {
+            var s = document.createElement('script');
+            s.async = true; s.src = '/js/count.js'; s.dataset.goatcounter = endpoint;
+            document.body.appendChild(s);
+          }, 1000);
+        });
+      </script>
+    )}
+  </body>
+</html>

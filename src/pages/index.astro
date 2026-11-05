@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { landing } from '../lib/landing';
+import { pages } from '../lib/pages';
+import { IMPORTMAP } from '../lib/inline';
+// The landing: the glass word over the rain; under it what the site is ('research and
+// writing', in the word's glass, glass-mark.js), a small 'now' line for the current project, and the line that says
+// how to go in, both in chrome. A click anywhere, the
+// line or the Enter key flies the word into the top bar's wordmark, then About opens (glass-flight.js).
+const m = pages.meta.landing;
+const l = pages.landing;
+---
+<Base title={m.title} description={m.description} path="/" bodyClass="land" motion="landing"
+  htmlAttrs={{ 'data-look': 'geistall', 'data-mark': 'glass', 'data-small': 'sans', 'data-glass': 'warm', 'data-splash': '' }}
+  fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'landing', 'landing-page']}>
+<canvas class="rain" aria-hidden="true"></canvas>
+<TopNav here="landing" />
+<main id="main">
+<header class="hero" id="hero" data-mark-src="/models/mark.glb" data-line-src="/models/line1.glb">
+<h1 class="name">{landing.domain}</h1>
+<p class="flat" aria-hidden="true">{landing.name}</p>
+<div class="lede">
+<p class="lq"><span class="metal">{l.lede}</span></p>
+<p class="lr"><span class="metal">{l.now}</span></p>
+<p class="enter"><a href="/about/" aria-label={l.enter_label}><span aria-hidden="true">&gt; <span class="key">{l.enter_key}</span><span class="tap">{l.enter_tap}</span><span class="caret"></span></span></a></p>
+</div>
+</header>
+</main>
+<script is:inline type="importmap" set:html={IMPORTMAP}></script>
+<script is:inline type="module" src="/js/landing.js"></script>
+<script is:inline type="module" src="/js/glass-mark.js"></script>
+<script is:inline type="module" src="/js/glass-flight.js"></script>
+</Base>

@@ -1,0 +1,55 @@
+{
+  "fifteen-minute-reversal": {
+    "description": "Does the next fifteen-minute bitcoin window on Polymarket reverse the last one? It did 50.7% of the time, interval 48.4% to 53.0%, which contains a coin flip.",
+    "number": {
+      "cells": "50.7%",
+      "rest": "(48.4% to 53.0%)",
+      "sr": "50.7%, interval 48.4% to 53.0%",
+      "match": "checker 50.7%, match",
+      "note": "checked by the audit: its checker compared this cell (run 3, 2026-10-25)"
+    },
+    "caption": "Reversal rate with its 95% interval, against a coin flip at 50%."
+  },
+  "futures-basis": {
+    "description": "CME bitcoin futures trade above spot, so cash and carry should beat T-bills. The basis was measured from trade prints, not a book you could trade at.",
+    "number": {
+      "cells": "none printed",
+      "rest": "the kill line did not fire",
+      "sr": "none printed; the kill line did not fire",
+      "note": "the audit's checker compared 270,232 values across all 53 ideas (run 3, 2026-10-25); this case prints no number to compare"
+    },
+    "caption": "A diagram of the trade, not data: the case prints no number, so nothing here is drawn to scale. Above, cash and carry. Below, where the basis was measured: from trade prints, which the kill line read, not from a book you could have traded at, drawn empty."
+  },
+  "logical-arbitrage": {
+    "description": "Related markets on Polymarket must price consistently. A scan of 860 events found five real gaps, and none could fill the order size tested. Cause: capacity.",
+    "number": {
+      "cells": "0 of 5",
+      "rest": "could fill a 500-dollar order",
+      "sr": "0 of 5 could fill a 500-dollar order",
+      "note": "the audit's checker compared 270,232 values across all 53 ideas (run 3, 2026-10-25); this number is not one of them: it is a count from the case's own result table"
+    },
+    "caption": "The 860 events scanned, one dot each; the eight raw opportunities; the five real ones; none that could fill a 500-dollar order."
+  },
+  "novig-favorites": {
+    "description": "Do heavy favorites on Novig win more often than their price says? Scored outcomes beat breakeven by 3.95 points, but 43.7% could not be scored, and not at random.",
+    "number": {
+      "cells": "+3.95",
+      "rest": "points, interval 0.44 to 7.01, scored outcomes only",
+      "sr": "+3.95 points, interval 0.44 to 7.01, scored outcomes only",
+      "note": "the audit's checker compared 270,232 values across all 53 ideas (run 3, 2026-10-25); this number is not one of them: it is the gap between two values it did compare"
+    },
+    "caption": "Above: how far the win rate beat breakeven on the scored outcomes, with its interval, in points. Below: the share of outcomes that could not be scored. The tested price band is withheld."
+  },
+  "pump-graduation": {
+    "description": "Buy a pump.fun memecoin five minutes after it graduates, sell at sixty. Over 4,158 replayed round trips the mean net return was -53.5% per trade, interval -55.8% to -50.9%.",
+    "number": {
+      "cells": "−53.5%",
+      "rest": "(−55.8% to −50.9%)",
+      "sr": "−53.5%, interval −55.8% to −50.9%",
+      "match": "checker −53.5%, match",
+      "note": "checked by the audit: its checker compared this cell (run 3, 2026-10-25)"
+    },
+    "caption": "Mean net return per trade, buying five minutes after graduation and selling at sixty. Dots are the means, lines the 95% intervals, the grey line is break even. The larger-pool row is an exploratory cut.",
+    "attribution": "Data: Slink Dev (slink21taken), PumpFun Launch Corpus, 2026, on Hugging Face, CC BY 4.0."
+  }
+}

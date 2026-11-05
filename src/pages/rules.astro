@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { landing } from '../lib/landing';
+import { pages } from '../lib/pages';
+import { nwWords } from '../lib/site';
+// Rules: one column, each rule's number in a mono gutter linking to its skill, the rule, and
+// where there is one the failure that taught it. Each vet rule links to its own heading in the vet skill's SKILL.md in
+// the public guardrails repo (the design's anchors); rule 5 links its own published skill, typed as a command.
+const m = pages.meta.rules;
+const r = pages.rules;
+const two = (n: number) => String(n).padStart(2, '0');
+const rules = landing.rules.map((rule, k) => {
+  const n = k + 1, own = r.skills[String(n)];
+  const anchor = r.vet_anchors[String(n)];
+  if (!own && !anchor) throw new Error(`rule ${n}: no skill link and no vet anchor`);
+  return { n, rule: rule.rule, taught: rule.taught ?? r.taught[String(n)], skill: own?.name ?? 'vet', href: own?.href ?? `${r.vet_href}#${anchor}`, own: !!own };
+});
+---
+<Base title={m.title} description={m.description} path="/rules/" bodyClass="rules-page" motion="rules"
+  fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-rules']} rain>
+<a class="skip" href="#reading">skip to reading</a>
+<TopNav here="rules" />
+<main id="main">
+<div class="rulelist" id="reading" tabindex="-1">
+<header class="title">
+<p class="ln">&gt; cat rules</p>
+<h1>Rules</h1>
+<p class="intro">{r.intro}</p>
+<p class="intro">{r.vet_before}<a href={r.vet_href}>{r.vet_word}</a>{r.vet_after}</p>
+</header>
+<ol class="rules">
+{rules.map((x) => <li><a class="no" href={x.href} aria-label={`rule ${x.n} in the ${x.skill} skill`}>{two(x.n)}</a><div class="rule"><h2 set:html={nwWords(x.rule)}></h2>{x.taught && <><p class="lbl">{r.learned}</p><p class="fail">{x.taught}</p></>}{x.own && <p class="cmd"><a href={x.href}>&gt; /{x.skill}</a></p>}</div></li>)}
+</ol>
+<p class="ln endprompt"><a href="/story/">&gt; cat story.md</a></p>
+</div>
+</main>
+</Base>

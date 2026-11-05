@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { landing } from '../lib/landing';
+import { pages } from '../lib/pages';
+// About, the front door: who, the question and the result, the luck correction, the way
+// to the ledger and the cases, fig. 1 of the 53 ideas (each closed idea's cause, never its verdict; the five public cases outlined,
+// not linked), then where to read next and the outside links.
+const m = pages.meta.about;
+const a = pages.about;
+const labels = Object.fromEntries(landing.causes.map((c) => [c.id, c.label]));
+const order0 = landing.causes.map((c) => c.id);
+const rows = Object.fromEntries(order0.map((c) => [c, landing.ledger.filter((r) => r.cause === c)]));
+const order = [...order0].sort((p, q) => rows[q].length - rows[p].length || order0.indexOf(p) - order0.indexOf(q));
+const open = landing.counts.tested - landing.counts.closed;
+if (landing.ledger.length !== landing.counts.closed) throw new Error('fig. 1: the ledger and the closed count disagree');
+const [luckHead, luckTail] = [a.luck.slice(0, a.luck.lastIndexOf(': ') + 2), a.luck.slice(a.luck.lastIndexOf(': ') + 2)];
+---
+<Base title={m.title} description={m.description} path="/about/" fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']}
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain>
+<a class="skip" href="#main">skip to the text</a>
+<TopNav here="about" />
+<main id="main" class="aboutpage">
+<p class="ln">&gt; whoami</p>
+<h1>{landing.about.name}</h1>
+<p class="who">{landing.about.story[0]}</p>
+<p class="ask">{pages.landing.question}</p>
+{[pages.landing.result, ...a.results].map((r) => <p class="res">{r}</p>)}
+<p class="ln luck">{luckHead}<span class="nw">{luckTail}</span></p>
+<p class="ln ledgerln"><a href="/ledger/">&gt; cat ledger.md</a></p>
+<p class="ln next"><a href="/case/">&gt; ls cases</a></p>
+<figure class="ideas"><table class="sr-only"><caption>{a.figure_table_caption}</caption><thead><tr><th scope="col">ended</th><th scope="col">ideas</th></tr></thead><tbody>{order.map((c) => <tr><th scope="row">{labels[c]}</th><td>{rows[c].length}</td></tr>)}<tr><th scope="row">not closed</th><td>{open}</td></tr><tr><th scope="row">all</th><td>{landing.counts.tested}</td></tr></tbody></table><div class="grid">{order.map((c) => <div class="row"><span class="k" aria-hidden="true">{labels[c]}</span><span class="n" aria-hidden="true">{rows[c].length}</span><span class="cells">{rows[c].map((r) => <span class={r.slug ? 'c p' : 'c'}></span>)}</span></div>)}<div class="row"><span class="k" aria-hidden="true">not closed</span><span class="n" aria-hidden="true">{open}</span><span class="cells">{Array.from({ length: open }, () => <span class="o"></span>)}</span></div></div><figcaption>{a.figure_caption}</figcaption></figure>
+<p class="links go"><a href="/story/">&gt; cat story.md</a></p>
+<p class="links">{pages.outside.map((o, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={o.href} rel="me noopener">{o.label}</a></>)}</p>
+<p class="notadvice">{a.not_advice}</p>
+</main>
+</Base>

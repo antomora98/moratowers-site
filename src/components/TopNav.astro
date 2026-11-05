@@ -1,0 +1,9 @@
+---
+import { landing } from '../lib/landing';
+// One nav on every page, in the reading order the end prompts walk: the wordmark leads to the landing,
+// the current page is marked for screen readers too. The ledger is not in the nav: About and each case link to it. No underlines; the colours are nav.css's.
+interface Props { here: 'landing' | 'about' | 'story' | 'cases' | 'rules' | 'ledger' }
+const { here } = Astro.props;
+const LINKS = [['about', '/about/'], ['story', '/story/'], ['cases', '/case/'], ['rules', '/rules/']] as const;
+---
+<nav class="topnav" aria-label="site"><a class="home" href="/" aria-current={here === 'landing' ? 'page' : undefined}>{landing.name}</a><span class="links">{LINKS.map(([name, href]) => <a href={href} aria-current={here === name ? 'page' : undefined}>{name}</a>)}</span></nav>

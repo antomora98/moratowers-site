@@ -1,0 +1,583 @@
+.dek {
+  font-size: 21px !important;
+  line-height: 32px !important;
+  margin-top: var(--cell-h);
+}
+.result,
+.method,
+.by {
+  margin: 4px 0 0;
+  color: var(--ink);
+  max-width: 68ch;
+}
+.method {
+  color: var(--chrome);
+}
+.by a {
+  color: var(--ink);
+}
+.ways {
+  margin-top: calc(2 * var(--cell-h));
+}
+.ways ol {
+  max-width: 68ch;
+}
+.ways li {
+  margin: 0 0 calc(var(--cell-h) * .5);
+}
+.ways li a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2px;
+  padding: 10px 1ch;
+  margin: 0 -1ch;
+  text-decoration: none;
+  transition: background-color var(--t-soft) var(--ease-soft);
+}
+.ways .t {
+  color: var(--ink);
+}
+.ways .l {
+  color: var(--chrome);
+}
+.ways .v {
+  color: var(--dim);
+  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  gap: 2ch;
+}
+.ways .c {
+  display: inline-flex;
+  align-items: center;
+}
+.ways li a:hover,
+.ways li a:focus-visible {
+  background: var(--card);
+}
+html.opening .ways li {
+  animation: none;
+}
+.dek {
+  font-size: 16px;
+  line-height: 22px;
+}
+@font-face {
+  font-family: "Geist Serif";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url(../fonts/geist-sans-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+.ways .t,
+.ways li a:hover .t,
+.ways li a:focus-visible .t,
+.by a {
+  text-decoration: none;
+}
+.ways li a:hover .t,
+.ways li a:focus-visible .t {
+  color: var(--paper);
+}
+html[data-look=paper] {
+  --bg: #f2eee3;
+  --ink: #1c1a15;
+  --dim: #7a7466;
+  --chrome: #4d483d;
+  --paper: #000;
+}
+html[data-look=paper] .bar .mode {
+  color: #fffff8;
+}
+html[data-look=serif] .under,
+html[data-look=paper] .under,
+html[data-look=serif] .topnav,
+html[data-look=paper] .topnav {
+  font-family:
+    Charter,
+    "Iowan Old Style",
+    Palatino,
+    Georgia,
+    serif;
+}
+html[data-look=sans] .under,
+html[data-look=sans] .topnav {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+html:not([data-look=mono]) .dek {
+  font-size: 30px !important;
+  line-height: 38px !important;
+  letter-spacing: -.01em;
+}
+html:not([data-look=mono]) .result,
+html:not([data-look=mono]) .method,
+html:not([data-look=mono]) .by {
+  font-size: 17px;
+  line-height: 26px;
+}
+html:not([data-look=mono]) .ways .t {
+  font-size: 19px;
+  line-height: 26px;
+}
+html:not([data-look=mono]) .ways .l {
+  font-size: 16px;
+  line-height: 24px;
+}
+html:not([data-look=mono]) .ways .v {
+  font: 12px / 18px var(--mono);
+}
+html:not([data-look=mono]) .ways li a {
+  row-gap: 4px;
+  padding: 12px 1ch;
+}
+html[data-look=geistall] body,
+html[data-look=geistall] .under,
+html[data-look=geistall] .topnav,
+html[data-look=geistall] .bar,
+html[data-look=geistall] .ways .v {
+  font-family:
+    "Geist Serif",
+    Charter,
+    Georgia,
+    serif;
+  letter-spacing: 0;
+}
+html[data-look=geistall] .ways .v {
+  font-size: 14px;
+  line-height: 20px;
+}
+html[data-look=geist] .under,
+html[data-look=geist] .topnav {
+  font-family:
+    "Geist",
+    system-ui,
+    sans-serif;
+}
+html[data-look^=geist] .dek,
+html[data-look^=geist] .ways .t {
+  font-family:
+    "Geist Serif",
+    Charter,
+    Georgia,
+    serif;
+  letter-spacing: 0;
+}
+html[data-look^=geist] .dek {
+  font-size: 40px !important;
+  line-height: 48px !important;
+}
+html[data-look^=geist] .ways .t {
+  font-size: 24px;
+  line-height: 30px;
+}
+html[data-look=geistmono] .result,
+html[data-look=geistmono] .method,
+html[data-look=geistmono] .by,
+html[data-look=geistmono] .ways .l {
+  font-size: 14px;
+  line-height: 22px;
+}
+html[data-look=geistall] .dek {
+  font-size: clamp(21px, 1.2rem + 1.9vw, 40px) !important;
+  line-height: 1.22 !important;
+}
+html[data-look=geistall] .result,
+html[data-look=geistall] .method,
+html[data-look=geistall] .by {
+  font-size: clamp(15px, 0.85rem + 0.35vw, 17px);
+  line-height: 1.5;
+}
+html[data-look=geistall] .ways .t {
+  font-size: clamp(18px, 0.95rem + 0.8vw, 24px);
+  line-height: 1.25;
+}
+html[data-look=geistall] .ways .l {
+  font-size: clamp(15px, 0.85rem + 0.25vw, 16px);
+  line-height: 1.5;
+}
+.switch {
+  margin: calc(2 * var(--cell-h)) 0 0;
+  color: var(--dim);
+  font: 13px / 22px var(--mono);
+}
+.switch a {
+  color: var(--dim);
+  margin-right: 1.5ch;
+}
+.switch a[aria-current] {
+  color: var(--ink);
+  text-decoration: none;
+}
+html[data-mark=glass] .hero {
+  position: relative;
+  height: clamp(170px, 26vw, 380px);
+}
+.hero canvas.glass {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 46% 44% at 50% 50%,
+      #000 62%,
+      transparent 100%);
+  mask-image:
+    radial-gradient(
+      ellipse 46% 44% at 50% 50%,
+      #000 62%,
+      transparent 100%);
+}
+@media (max-width: 640px) {
+  .hero canvas.glass {
+    -webkit-mask-image:
+      radial-gradient(
+        ellipse 64% 50% at 50% 50%,
+        #000 70%,
+        transparent 100%);
+    mask-image:
+      radial-gradient(
+        ellipse 64% 50% at 50% 50%,
+        #000 70%,
+        transparent 100%);
+  }
+}
+html[data-mark=glass] .dek,
+html[data-mark=glass] .result,
+html[data-mark=glass] .method,
+html[data-mark=glass] .by {
+  transform: translate(var(--drift-x, 0px), var(--drift-y, 0px));
+}
+@font-face {
+  font-family: "Geist";
+  src: url(../fonts/geist-sans-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+html[data-small=sans] .result,
+html[data-small=sans] .method,
+html[data-small=sans] .by,
+html[data-small=sans] .ways .l {
+  font-family:
+    "Geist",
+    system-ui,
+    sans-serif !important;
+  letter-spacing: 0;
+}
+html[data-small=sans] .ways .v {
+  font-family: var(--mono) !important;
+  font-size: 12px !important;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+html[data-splash] .topnav,
+html[data-splash] .bar > *:not(.motion) {
+  display: none;
+}
+html[data-splash] .bar {
+  background: none;
+  border: 0;
+  justify-content: flex-end;
+}
+html[data-splash] body {
+  cursor: pointer;
+}
+html[data-splash] main {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+html[data-splash] .under {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+html[data-splash].flying .topnav {
+  display: flex;
+  position: fixed;
+  inset: 0 0 auto 0;
+  background: none;
+  border-color: transparent;
+}
+html[data-splash].flying .topnav .links {
+  visibility: hidden;
+}
+html[data-splash],
+html[data-splash] body {
+  overflow: hidden;
+}
+html[data-splash] body {
+  padding-bottom: 0;
+}
+html[data-splash] .hero .name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@font-face {
+  font-family: "Geist Serif Mark";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: block;
+}
+html[data-splash] .hero {
+  height: clamp(170px, 26vw, 380px);
+  padding: 0;
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+html[data-splash] .hero .flat {
+  margin: 0;
+  font:
+    400 calc(62cqw / 5.319) / 1 "Geist Serif Mark",
+    Georgia,
+    serif;
+  letter-spacing: 0;
+  color: var(--ink);
+  white-space: nowrap;
+  transform: translateY(-0.039em);
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .flat {
+    font-size: calc(88cqw / 5.319);
+  }
+}
+html[data-splash] .hero.glassed .flat {
+  visibility: hidden;
+}
+html[data-splash] .hero .enter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% + 31cqw / 5.319 * 0.6 + 20px);
+  z-index: 2;
+  margin: 0;
+  text-align: center;
+  font: 400 13px / 24px var(--mono);
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .enter {
+    top: calc(50% + 44cqw / 5.319 * 0.6 + 16px);
+  }
+}
+html[data-splash] .hero .enter a {
+  display: inline-block;
+  padding: 4px 8px;
+  color: var(--chrome);
+  text-decoration: none;
+}
+html[data-splash] .hero .enter a:hover,
+html[data-splash] .hero .enter a:focus-visible {
+  color: var(--ink);
+}
+html[data-splash] .enter .tap {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  html[data-splash] .enter .key {
+    display: none;
+  }
+  html[data-splash] .enter .tap {
+    display: inline;
+  }
+}
+html[data-splash] .enter .caret {
+  display: inline-block;
+  width: .6em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: currentColor;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+html[data-motion=on][data-splash] .enter .caret {
+  animation: caret .8s steps(1) 5;
+}
+html[data-splash] .hero .lede {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: calc(50% + 31cqw / 5.319 * 0.6 + 20px);
+  z-index: 2;
+  margin: 0;
+  text-align: center;
+}
+html[data-splash] .hero .lede p {
+  margin: 0;
+  text-wrap: balance;
+}
+html[data-splash] .hero .lede .enter {
+  position: static;
+  margin-top: 16px;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url(../fonts/geist-mono-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+html[data-splash] .hero .lede {
+  top: calc(50% + 6.5cqw);
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .lede {
+    top: calc(50% + 9.2cqw);
+  }
+}
+html[data-splash] .hero.lined .lede {
+  top: calc(50% + var(--glass-bottom) + 14px);
+}
+html[data-splash] .hero .lede .lq {
+  font:
+    400 calc(62cqw / 5.07 * 0.21) / 1.3 "Geist Serif",
+    Georgia,
+    serif;
+  letter-spacing: .005em;
+  color: #dcdcd9;
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .lede .lq {
+    font-size: calc(88cqw / 5.07 * 0.46);
+  }
+}
+html[data-splash] .hero.lined .lede .lq {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+html[data-splash] .hero .lede .lr {
+  margin-top: 6px;
+  font:
+    400 clamp(14px, .8rem + .25vw, 16px) / 1.5 "Geist",
+    system-ui,
+    sans-serif;
+  letter-spacing: .01em;
+  color: #c8c8c5;
+}
+html[data-splash] .hero .lede .enter {
+  margin-top: 20px;
+  font:
+    400 14px / 24px "Geist Mono",
+    ui-monospace,
+    monospace;
+}
+@media (max-width: 639px) {
+  html[data-splash] .hero .lede .lr {
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  html[data-splash] .hero .lede .enter {
+    font-size: 13px;
+    margin-top: 16px;
+  }
+}
+html[data-splash] .hero .lede .lr,
+html[data-splash] .hero .lede .enter {
+  transform: translate(var(--drift-x, 0px), var(--drift-y, 0px));
+  filter: drop-shadow(0 0 3px var(--bg)) drop-shadow(0 0 8px var(--bg));
+}
+html[data-splash] .hero .enter a {
+  color: #c8c8c5;
+}
+.hero canvas.glass {
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 50% 58% at 50% 50%,
+      #000 66%,
+      transparent 100%);
+  mask-image:
+    radial-gradient(
+      ellipse 50% 58% at 50% 50%,
+      #000 66%,
+      transparent 100%);
+}
+@media (max-width: 640px) {
+  .hero canvas.glass {
+    -webkit-mask-image:
+      radial-gradient(
+        ellipse 66% 60% at 50% 50%,
+        #000 74%,
+        transparent 100%);
+    mask-image:
+      radial-gradient(
+        ellipse 66% 60% at 50% 50%,
+        #000 74%,
+        transparent 100%);
+  }
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .lq .metal,
+  .lr .metal,
+  html[data-splash] .hero .enter a > span {
+    background-image:
+      linear-gradient(
+        100deg,
+        #bdbdba 0%,
+        #d9d9d6 calc(var(--sheen, 50%) - 20%),
+        #ebebe8 var(--sheen, 50%),
+        #d9d9d6 calc(var(--sheen, 50%) + 20%),
+        #bdbdba 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .lr .metal,
+  html[data-splash] .hero .enter a > span {
+    background-image:
+      linear-gradient(
+        100deg,
+        #9e9e9b 0%,
+        #b4b4b1 calc(var(--sheen, 50%) - 20%),
+        #cdcdca var(--sheen, 50%),
+        #b4b4b1 calc(var(--sheen, 50%) + 20%),
+        #9e9e9b 100%);
+  }
+  html[data-splash] .hero .enter .caret {
+    background:
+      linear-gradient(
+        180deg,
+        #cdcdca,
+        #9e9e9b);
+  }
+}
+@media (forced-colors: active) {
+  .metal,
+  .enter a > span {
+    background: none !important;
+    -webkit-text-fill-color: CanvasText !important;
+    color: CanvasText !important;
+  }
+  .enter .caret {
+    background: CanvasText !important;
+  }
+}

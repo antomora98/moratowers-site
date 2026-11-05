@@ -1,0 +1,10 @@
+// The inline scripts at the top of the body, copied from the design: each marks JavaScript on and
+// sets data-motion before the first paint. Their sha256 hashes are listed in astro.config.mjs; scripts/cspcheck.mjs
+// fails the build when a page carries one the policy does not.
+export const MOTION_PLAIN = "(function(){var d=document.documentElement;d.classList.add('js');var s=null;try{s=localStorage.getItem('motion')}catch(e){}var off=/(?:\\?|&)still(?:&|=|$)/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches;d.setAttribute('data-motion',off?'off':'on');})();";
+export const MOTION_LANDING = "(function(){var d=document.documentElement;d.classList.add('js');var s=null;try{s=localStorage.getItem('motion')}catch(e){}var off=/(?:\\?|&)still(?:&|=|$)/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches;d.setAttribute('data-motion',off?'off':'on');if(!off)d.classList.add('opening');})();";
+export const MOTION_RULES = "(function(){var d=document.documentElement;d.classList.add('js');var s=null;try{s=localStorage.getItem('motion')}catch(e){}var off=/(?:\\?|&)still(?:&|=|$)/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches;d.setAttribute('data-motion',off?'off':'on');if(!off){d.classList.add('arming');setTimeout(function(){if(!d.classList.contains('armed'))d.classList.remove('arming')},2500);}})();";
+// three.js 0.170.0, self-hosted: the landing and the 404 load it from /vendor/, never a CDN.
+export const IMPORTMAP = '{ "imports": { "three": "/vendor/three-0.170.0/build/three.module.js", "three/addons/": "/vendor/three-0.170.0/examples/jsm/" } }';
+// /case/ opens a case: the one named by the hash (/case/#futures-basis), else case 1 (the design's case/index.html).
+export const CASE_REDIRECT = "(function(){var s=location.hash.slice(1);if(!/^(logical-arbitrage|fifteen-minute-reversal|novig-favorites|futures-basis|pump-graduation)$/.test(s))s='logical-arbitrage';location.replace(s+'/'+location.search);})();";

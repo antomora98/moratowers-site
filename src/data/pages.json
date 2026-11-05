@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "landing": {
+      "title": "moratowers: research and writing",
+      "description": "Research and writing by Antonio Mora. Now: can AI agents find a trading edge? 53 ideas tested so far."
+    },
+    "about": {
+      "title": "Antonio Mora | moratowers",
+      "description": "Antonio Mora tests whether AI agents can trade prediction markets. Since December 2025 he has tested 53 trading ideas, with one agent building and a different one checking."
+    },
+    "story": {
+      "title": "Story | moratowers",
+      "description": "How the research began in December 2025, why 898 paper trades turned out to be fake, and how the audit of 53 trading ideas was frozen before its programs were written."
+    },
+    "rules": {
+      "title": "Eight research rules for testing trading ideas | moratowers",
+      "description": "Eight rules for testing trading ideas with AI agents, most with the failure that taught them, from modelling fills against the real trade tape to asking whether a question is decidable. Each links to a free Claude Code skill."
+    },
+    "notfound": {
+      "title": "Not found | moratowers"
+    }
+  },
+  "landing": {
+    "question": "Can AI agents find a trading edge?",
+    "result": "53 ideas so far. None has beaten luck yet.",
+    "enter_label": "Enter the site",
+    "enter_key": "click or press enter",
+    "enter_tap": "tap to enter",
+    "lede": "research and writing",
+    "now": "now: can AI agents find a trading edge?"
+  },
+  "about": {
+    "results": [
+      "One program scored them and a second, written separately, checked the numbers, under a plan frozen first.",
+      "The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass."
+    ],
+    "luck": "corrected for luck across all 53: BH, q = 0.10",
+    "figure_table_caption": "The 53 ideas by how they ended",
+    "figure_caption": "fig. 1  The 53 ideas at the audit's snapshot (2026-10-17): 44 closed, grouped by how they ended, and 9 not closed. Outlined: the five public cases.",
+    "not_advice": "This site is not advice and gives no signals or trade ideas."
+  },
+  "outside": [
+    {
+      "label": "guardrails",
+      "href": "https://github.com/antomora98/claude-code-guardrails"
+    },
+    {
+      "label": "X @moratowers",
+      "href": "https://x.com/moratowers"
+    },
+    {
+      "label": "GitHub antomora98",
+      "href": "https://github.com/antomora98"
+    }
+  ],
+  "story": {
+    "timeline_label": "timeline",
+    "ledgers": {
+      "2026-08": {
+        "label": "two agents, one number",
+        "rows": [
+          [
+            "agent A",
+            "99.09%"
+          ],
+          [
+            "agent B",
+            "93.91%"
+          ]
+        ]
+      },
+      "2026-10": {
+        "label": "the audit's checker runs",
+        "rows": [
+          [
+            "run 1",
+            "fail"
+          ],
+          [
+            "run 2",
+            "fail"
+          ],
+          [
+            "run 3",
+            "pass"
+          ],
+          [
+            "verdicts changed",
+            "0"
+          ]
+        ]
+      }
+    }
+  },
+  "rules": {
+    "intro": "Each rule is one sentence, most with the failure that taught it.",
+    "vet_before": "Your agent can run all eight: the ",
+    "vet_word": "vet",
+    "vet_after": " skill.",
+    "learned": "Learned from",
+    "vet_href": "https://github.com/antomora98/claude-code-guardrails/blob/main/skills/vet/SKILL.md",
+    "vet_anchors": {
+      "1": "1-model-fills-against-the-real-trade-tape",
+      "2": "2-replay-only-what-was-public-at-the-time",
+      "3": "3-a-number-is-not-citable-until-its-job-has-finished",
+      "4": "4-a-strong-secondary-result-is-not-an-edge-until-it-replicates-as-the-pre-registered-primary",
+      "6": "6-a-result-that-looks-too-good-is-a-bug-until-you-decompose-it",
+      "7": "7-a-pass-on-the-data-that-chose-it-needs-a-second-look-before-it-counts",
+      "8": "8-ask-whether-the-question-is-decidable-before-you-work-on-it"
+    },
+    "skills": {
+      "5": {
+        "name": "reconcile",
+        "href": "https://github.com/antomora98/claude-code-guardrails/blob/main/skills/reconcile/SKILL.md"
+      }
+    },
+    "taught": {
+      "1": "A fill model built on price candles predicted that almost every order would fill. Few did."
+    }
+  },
+  "notfound": {
+    "h1": "This page does not exist.",
+    "back": "back to moratowers.dev"
+  },
+  "case": {
+    "audit": [
+      "one of 53 ideas",
+      "plan frozen 2026-10-17",
+      "luck-corrected"
+    ],
+    "audit_label": "audit",
+    "index": "the cases start at case 1"
+  }
+}

@@ -1,0 +1,98 @@
+:root {
+  --nav-h: calc(2 * var(--cell-h));
+}
+html {
+  scroll-padding-top: var(--nav-h);
+}
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0 calc(2 * var(--cell-w));
+  height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) calc(2 * var(--cell-w)) 0;
+  background: var(--line);
+  border-bottom: 1px solid var(--edge);
+  white-space: nowrap;
+  view-transition-name: topnav;
+}
+.topnav .links {
+  display: flex;
+  align-items: stretch;
+  gap: 0 calc(2 * var(--cell-w));
+}
+.topnav a {
+  display: flex;
+  align-items: center;
+  min-width: 28px;
+  padding: 0 2px;
+  color: var(--chrome);
+  text-decoration: none;
+}
+.topnav a:hover {
+  color: var(--ink);
+}
+.topnav a:focus-visible {
+  color: var(--ink);
+  outline-offset: -2px;
+}
+.topnav a[aria-current=page] {
+  color: var(--ink);
+}
+@media (max-width: 379px) {
+  .topnav {
+    padding-inline: 10px;
+  }
+  .topnav .links {
+    gap: 0 8px;
+  }
+  .topnav .links a {
+    padding: 0;
+  }
+}
+::view-transition-group(topnav) {
+  animation-duration: 0s;
+}
+::view-transition-old(topnav),
+::view-transition-new(topnav) {
+  animation: none;
+}
+@font-face {
+  font-family: "Geist Serif";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@view-transition {
+  navigation: auto;
+}
+.topnav .home {
+  font-family:
+    "Geist Serif",
+    Georgia,
+    serif;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--ink);
+  view-transition-name: wordmark;
+}
+.topnav .home[aria-current] {
+  text-decoration: none;
+}
+::view-transition-group(wordmark) {
+  animation-duration: 0s;
+}
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation: none !important;
+}
+::view-transition-old(*) {
+  opacity: 0 !important;
+}
+.bar .motion {
+  display: none !important;
+}

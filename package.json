@@ -1,0 +1,18 @@
+{
+  "name": "moratowers-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/contentlint.mjs && node scripts/cspcheck.mjs",
+    "preview": "astro preview",
+    "firewall": "node scripts/firewall.mjs",
+    "prepare": "git config core.hooksPath .githooks || true"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.3.5"
+  }
+}

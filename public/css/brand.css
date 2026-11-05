@@ -1,0 +1,259 @@
+@font-face {
+  font-family: "Geist Serif";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url(../fonts/geist-sans-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url(../fonts/geist-mono-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  --mono:
+    "Geist Mono",
+    ui-monospace,
+    "SF Mono",
+    Menlo,
+    Consolas,
+    monospace;
+  --serif:
+    "Geist Serif",
+    Georgia,
+    serif;
+  --sans:
+    "Geist",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+.rain-in {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+.case .intro h1 {
+  margin: 8px 0 0;
+  font: 400 clamp(24px, 1rem + 1.6vw, 36px) / 1.1 var(--serif);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 599px) {
+  .case .intro h1 {
+    white-space: normal;
+  }
+}
+.case .intro + .scrolly {
+  padding-top: 24px;
+}
+:root {
+  --label: #d98a3d;
+}
+.steps h2 {
+  margin: 24px 0 6px;
+  font: 400 11px / 16px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+.steps > section:first-child h2 {
+  margin-top: 0;
+}
+.steps section > p.ln:not(.note) {
+  font: 400 16px / 24px var(--sans);
+  max-width: 62ch;
+}
+.steps section > p.ln + p.ln {
+  margin-top: 8px;
+}
+.stack .card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 10px;
+  row-gap: 6px;
+  align-content: start;
+  padding: 10px 12px;
+}
+.stack .card .g {
+  grid-column: 1;
+  grid-row: 1;
+  font: 400 10px / 16px var(--mono);
+  letter-spacing: .06em;
+  padding: 0 4px;
+  color: var(--chrome);
+  border: 1px solid var(--edge);
+}
+.stack .card.is-on .g,
+html:not(.js) .stack .card[aria-current] .g {
+  border-color: var(--ink);
+}
+.stack .card .c {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  justify-self: end;
+  align-self: center;
+  font: 400 11px / 16px var(--mono);
+  color: var(--dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.stack .card .s {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+  font: 400 14px / 18px var(--sans);
+  color: var(--chrome);
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.stack .card.is-on .s,
+html:not(.js) .stack .card[aria-current] .s {
+  color: var(--ink);
+}
+.stack .card:hover .s,
+.stack .card:focus-visible .s {
+  text-decoration: none;
+  color: var(--ink);
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--edge);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dim);
+}
+.bar {
+  height: calc(28px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  border-top: 1px solid color-mix(in srgb, var(--dim) 18%, transparent);
+  font: 400 11px / 28px var(--mono);
+  letter-spacing: .02em;
+  text-transform: lowercase;
+  color: var(--dim);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.bar .mode,
+.bar .path,
+.bar .hint {
+  display: none;
+}
+.bar .pos {
+  padding: 0 6px;
+  flex: none;
+}
+.bar .motion {
+  margin-left: auto;
+}
+.bar .pl {
+  display: inline;
+}
+.bar .ps {
+  display: none;
+}
+.bar .step {
+  color: var(--dim);
+  padding: 0 4px;
+  text-decoration: none;
+}
+.bar .step:hover,
+.bar .step:focus-visible {
+  color: var(--ink);
+  text-decoration: none;
+}
+.bar .step[aria-disabled] {
+  visibility: hidden;
+}
+.bar .motion {
+  color: var(--dim);
+  padding: 0;
+}
+.bar .motion:hover,
+.bar .motion:focus-visible {
+  color: var(--ink);
+}
+.bar .motion[aria-pressed=false] {
+  color: var(--dim);
+}
+:root {
+  --bar-h: 28px;
+}
+.stack .card .g {
+  display: none;
+}
+.stack .card .c {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+.bar .frozen {
+  margin-left: auto;
+  padding: 0 4px;
+}
+.bar .pl a {
+  color: inherit;
+}
+.verdict .audit a,
+.steps .endprompt a {
+  color: var(--chrome);
+  text-decoration: none;
+}
+.verdict .audit a:hover,
+.verdict .audit a:focus-visible,
+.steps .endprompt a:hover,
+.steps .endprompt a:focus-visible {
+  color: var(--ink);
+}
+.nw {
+  white-space: nowrap;
+}
+.steps section > p.ln:not(.note) {
+  text-wrap: pretty;
+}
+.stack .card:not(.is-on) .c {
+  color: var(--chrome);
+}
+.verdict .audit a,
+.steps .endprompt a,
+.aboutpage .next a,
+.aboutpage .links a,
+.storypage .links a,
+.rulelist .intro a,
+.rulelist .endprompt a,
+.rules .cmd a {
+  padding: 4px 1px;
+  margin: 0 -1px;
+}

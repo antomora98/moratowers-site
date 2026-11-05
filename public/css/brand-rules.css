@@ -1,0 +1,108 @@
+.rulelist {
+  box-sizing: content-box;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 22px 40px calc(4 * var(--cell-h));
+}
+.rulelist .ln {
+  margin: 0;
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+.rulelist .title h1 {
+  margin: 8px 0 0;
+  font: 400 36px / 1.1 var(--serif);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.rulelist .intro {
+  margin: 0;
+  max-width: 62ch;
+  font: 400 16px / 24px var(--sans);
+  color: var(--chrome);
+}
+.rulelist .title h1 + .intro {
+  margin-top: 24px;
+}
+.rulelist .intro a {
+  color: var(--ink);
+  font: 400 15px / 24px var(--mono);
+}
+.rules {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  max-width: 720px;
+}
+.rules > li {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: first baseline;
+}
+.rules > li + li {
+  margin-top: 48px;
+}
+.rules .no {
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+  justify-self: start;
+  padding: 4px 5px;
+  margin: -4px -5px;
+}
+.rules h2 {
+  margin: 0;
+  max-width: 62ch;
+  font: 400 20px / 32px var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+.rules h2 .nw {
+  white-space: nowrap;
+}
+.rules .lbl {
+  margin: 16px 0 0;
+  font: 400 11px / 16px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+.rules .fail {
+  margin: 0;
+  max-width: 62ch;
+  font: 400 16px / 24px var(--sans);
+  color: var(--chrome);
+}
+.rulelist .intro,
+.rules h2,
+.rules .fail {
+  text-wrap: pretty;
+}
+.rules .cmd {
+  margin: 8px 0 0;
+  font: 400 13px / 16px var(--mono);
+}
+.rules .cmd a,
+.rulelist .endprompt a {
+  color: var(--chrome);
+}
+.rules .no:hover,
+.rules .no:focus-visible,
+.rules .cmd a:hover,
+.rules .cmd a:focus-visible,
+.rulelist .endprompt a:hover,
+.rulelist .endprompt a:focus-visible {
+  color: var(--ink);
+}
+.rulelist .endprompt {
+  margin-top: 48px;
+}
+@media (max-width: 699px) {
+  .rulelist {
+    padding: 22px 16px calc(4 * var(--cell-h));
+  }
+  .rules > li {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,19 @@
+---
+import { pages } from '../../lib/pages';
+import { CASE_REDIRECT } from '../../lib/inline';
+import { CSP } from '../../lib/csp';
+// /case/ (the nav's 'cases') opens case 1, or the case its hash names, as the design's case/index.html does. The
+// refresh is the way when scripts are off; the canonical names the page it opens.
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="content-security-policy" content={CSP} />
+<meta charset="utf-8" />
+<meta http-equiv="refresh" content="0; url=/case/logical-arbitrage/" />
+<title>Cases | moratowers</title>
+<link rel="canonical" href={new URL('/case/logical-arbitrage/', Astro.site).href} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body style="background:#0f0e0b;color:#e6e1cf;font:13px/16px ui-monospace,monospace"><script is:inline set:html={CASE_REDIRECT}></script><p><a style="color:inherit;text-decoration:none" href="/case/logical-arbitrage/">{pages.case.index}</a></p></body>
+</html>

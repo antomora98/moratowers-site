@@ -1,0 +1,355 @@
+{
+  "name": "moratowers",
+  "domain": "moratowers.dev",
+  "causes": [
+    {
+      "id": "priced_right",
+      "label": "priced right",
+      "n": 13
+    },
+    {
+      "id": "undecidable",
+      "label": "needs years",
+      "n": 8
+    },
+    {
+      "id": "blocked",
+      "label": "blocked",
+      "n": 7
+    },
+    {
+      "id": "queue_adverse_selection",
+      "label": "queue",
+      "n": 5
+    },
+    {
+      "id": "capacity",
+      "label": "capacity",
+      "n": 5
+    },
+    {
+      "id": "supply",
+      "label": "supply",
+      "n": 4
+    },
+    {
+      "id": "lookahead_invalid",
+      "label": "look-ahead",
+      "n": 2
+    }
+  ],
+  "rules": [
+    {
+      "id": "fills",
+      "rule": "Model fills against the real trade tape."
+    },
+    {
+      "rule": "Replay only what was public at the time.",
+      "taught": "A backtest edge came from knowing a figure would later be revised."
+    },
+    {
+      "rule": "A number is not citable until its job has finished.",
+      "taught": "A per-trade figure from a partial scan was later withdrawn."
+    },
+    {
+      "rule": "A strong secondary result is not an edge until it replicates as the pre-registered primary.",
+      "taught": "One did not."
+    },
+    {
+      "rule": "Compare with a tolerance, not equality.",
+      "taught": "A match rate that looked like a data problem was a floating-point comparison."
+    },
+    {
+      "rule": "A result that looks too good is a bug until you decompose it."
+    },
+    {
+      "rule": "A pass on the data that chose it needs a second look before it counts."
+    },
+    {
+      "rule": "Ask whether the question is decidable before you work on it.",
+      "taught": "Some needed years of data."
+    }
+  ],
+  "about": {
+    "name": "Antonio Mora",
+    "story": [
+      "I build AI agents for a living. In my own time, I test whether they can trade prediction markets.",
+      "In December 2025, my feed was full of trading bots doing arbitrage on fifteen-minute crypto markets. Automated trading used to belong to firms like Jane Street and Citadel. With AI, one person could try. I wanted to know if the bots were real, and if an AI could trade better than me. So I built one.",
+      "By March it had 898 paper trades, and they said it worked. On Sunday, March 8, I found out why: the simulation charged no fees and filled every order instantly. The results were fake. That evening I rebuilt the paper trader to check its fills against real trades. Two days later I shut down all eight crypto strategies.",
+      "In August, two of my agents reported 99.09% and 93.91% for the same number. One had filtered the data without saying so. On August 20 I split the data into raw files that are never edited, cleaned tables that flag every fix, and analysis tables that state their filter.",
+      "One agent builds and a different one checks. For the audit of all 53 ideas on the record, I froze the plan on October 17, before its two programs were written, and the checker never saw the builder's code. The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass. It failed the check twice: first, mostly because the two programs had rebuilt different sets of rows; then because seven totals were each filed in two places. Under a written stopping rule, only defects a separate triage confirmed could be fixed, and the third run passed. No verdict changed between the runs.",
+      "I give this one to two hours a day, after work. When I'm at the gym, I let a fleet of agents work, behind the same gates.",
+      "The agents write most of the code. They quit early unless I'm clear about what I want. In my use, Opus 4.6, from February, felt the most truthful. Opus 4.7 and 4.8, from April to June, wrote more and gave up sooner on long research.",
+      "On February 26, an Opus 4.6 commit called \"quick wins\" deleted 226 lines of safety code. A 24-hour test run caught it, and that became the guard skill in my public guardrails repo. In August an agent spent about 39 minutes and 144,000 tokens re-testing an idea I had already killed, because my note didn't name the market. Kill notes now name it.",
+      "Every brief I give an agent says the same four things: finish the question, report what is true, gate anything that touches money, and have a different agent check the work.",
+      "One idea made money: a bot that bought the favorite in sports games, on the old finding that favorites win more often than their price says. It ran live from March to July and finished ahead. In August I checked it without its best month: it still came out ahead, but not by enough to rule out luck. Its markets were also too thin for bigger orders. The audit labels it not established. I'll test it again on new data, with its rules frozen first.",
+      "After correcting for luck across all 53 ideas, none has yet shown a durable edge. At the audit's snapshot, forty-four were closed, each with its cause written down, and nine were still open, the sports bot among them. One that passes the same checks is enough.",
+      "Now I'm collecting data for the next test and writing up the closed ideas one at a time.",
+      "Most of it is me and a team of AI agents. The choices and the mistakes are mine.",
+      "This site is not advice and gives no signals or trade ideas. It records what I tested and what happened.",
+      "Start with a case file. If you build with agents, the guardrails are free to use. If you're testing the same kind of thing, I'd like to compare notes: I'm @moratowers on X."
+    ]
+  },
+  "counts": {
+    "tested": 53,
+    "closed": 44,
+    "months": 10,
+    "months_word": "ten",
+    "commits": 958
+  },
+  "home": "~/moratowers",
+  "log": [
+    {
+      "slug": "logical-arbitrage",
+      "gate": "no_edge",
+      "cause": "capacity"
+    },
+    {
+      "slug": "fifteen-minute-reversal",
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "slug": "novig-favorites",
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "slug": "futures-basis",
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "slug": "pump-graduation",
+      "gate": "no_edge",
+      "cause": "priced_right"
+    }
+  ],
+  "ledger": [
+    {
+      "n": 1,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 2,
+      "gate": "undecidable",
+      "cause": "supply"
+    },
+    {
+      "n": 3,
+      "gate": "no_edge",
+      "cause": "queue_adverse_selection"
+    },
+    {
+      "n": 4,
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "n": 5,
+      "gate": "no_edge",
+      "cause": "supply"
+    },
+    {
+      "n": 6,
+      "gate": "no_edge",
+      "cause": "queue_adverse_selection"
+    },
+    {
+      "n": 7,
+      "gate": "not_established",
+      "cause": "blocked",
+      "slug": "fifteen-minute-reversal"
+    },
+    {
+      "n": 8,
+      "gate": "no_edge",
+      "cause": "capacity",
+      "slug": "logical-arbitrage"
+    },
+    {
+      "n": 9,
+      "gate": "not_established",
+      "cause": "blocked",
+      "slug": "novig-favorites"
+    },
+    {
+      "n": 10,
+      "gate": "undecidable",
+      "cause": "supply"
+    },
+    {
+      "n": 11,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 12,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 13,
+      "gate": "no_edge",
+      "cause": "queue_adverse_selection"
+    },
+    {
+      "n": 14,
+      "gate": "not_established",
+      "cause": "queue_adverse_selection"
+    },
+    {
+      "n": 15,
+      "gate": "not_established",
+      "cause": "priced_right"
+    },
+    {
+      "n": 16,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 17,
+      "gate": "no_edge",
+      "cause": "supply"
+    },
+    {
+      "n": 18,
+      "gate": "not_established",
+      "cause": "blocked",
+      "slug": "futures-basis"
+    },
+    {
+      "n": 19,
+      "gate": "not_established",
+      "cause": "priced_right"
+    },
+    {
+      "n": 20,
+      "gate": "no_edge",
+      "cause": "queue_adverse_selection"
+    },
+    {
+      "n": 21,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 22,
+      "gate": "no_edge",
+      "cause": "priced_right",
+      "slug": "pump-graduation"
+    },
+    {
+      "n": 23,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 24,
+      "gate": "no_edge",
+      "cause": "capacity"
+    },
+    {
+      "n": 25,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 26,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 27,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 28,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 29,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 30,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 31,
+      "gate": "not_established",
+      "cause": "priced_right"
+    },
+    {
+      "n": 32,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 33,
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "n": 34,
+      "gate": "no_edge",
+      "cause": "capacity"
+    },
+    {
+      "n": 35,
+      "gate": "not_established",
+      "cause": "lookahead_invalid"
+    },
+    {
+      "n": 36,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 37,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    },
+    {
+      "n": 38,
+      "gate": "no_edge",
+      "cause": "lookahead_invalid"
+    },
+    {
+      "n": 39,
+      "gate": "undecidable",
+      "cause": "blocked"
+    },
+    {
+      "n": 40,
+      "gate": "undecidable",
+      "cause": "undecidable"
+    },
+    {
+      "n": 41,
+      "gate": "no_edge",
+      "cause": "capacity"
+    },
+    {
+      "n": 42,
+      "gate": "not_established",
+      "cause": "blocked"
+    },
+    {
+      "n": 43,
+      "gate": "not_established",
+      "cause": "capacity"
+    },
+    {
+      "n": 44,
+      "gate": "no_edge",
+      "cause": "priced_right"
+    }
+  ]
+}

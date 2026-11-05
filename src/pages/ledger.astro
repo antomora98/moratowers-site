@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { z } from 'astro/zod';
+import rawLedger from '../data/ledger.json';
+import { landing } from '../lib/landing';
+import { text, GATE_WORDS } from '../lib/schema';
+import { gateWord, causeLabel, nwWords, nwDates } from '../lib/site';
+// The ledger of the 53 ideas: one row per closed idea, numbered as in fig. 1 on About (landing.json's
+// ledger gives the number, verdict, cause and public slug; ledger.json adds the kind of market and, where it differs,
+// the audit's own label), a line for the ideas not closed, then the frozen plan's fingerprints. One column like Rules.
+const gate = z.enum(Object.keys(GATE_WORDS) as [keyof typeof GATE_WORDS, ...(keyof typeof GATE_WORDS)[]]);
+const hex = z.string().regex(/^[0-9a-f]{64}$/);
+const L = z.object({
+  meta: z.object({ title: text, description: text }),
+  prompt: text, h1: text, intro: z.array(text), head: z.tuple([text, text, text, text]), audit_word: text,
+  rows: z.array(z.object({ n: z.number().int().positive(), kind: text, audit: gate.optional() }).strict()),
+  audit_note: text, not_closed: text,
+  fp: z.object({ label: text, frozen: text, hashes: z.array(z.tuple([text, hex])).length(2), private: text, cmd: text, expect: text, limit: text }),
+  end: z.object({ label: text, href: z.string().startsWith('/') }),
+}).strict().parse(rawLedger);
+if (L.rows.length !== landing.ledger.length || L.rows.length !== landing.counts.closed) throw new Error('ledger: rows and the closed count disagree');
+if (!L.not_closed.includes(` ${landing.counts.tested - landing.counts.closed} ideas `)) throw new Error('ledger: the not-closed count disagrees');
+const two = (n: number) => String(n).padStart(2, '0');
+const rows = L.rows.map((r, k) => {
+  const s = landing.ledger[k];
+  if (s.n !== r.n) throw new Error(`ledger: row ${k + 1} is numbered ${r.n}, fig. 1 says ${s.n}`);
+  return { ...r, gate: s.gate, cause: s.cause, slug: s.slug };
+});
+---
+<Base title={L.meta.title} description={L.meta.description} path="/ledger/" fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']}
+  styles={['site', 'motion', 'nav', 'brand', 'brand-ledger']} rain>
+<a class="skip" href="#main">skip to the ledger</a>
+<TopNav here="ledger" />
+<main id="main" class="ledgerpage">
+<p class="ln">{L.prompt}</p>
+<h1>{L.h1}</h1>
+{L.intro.map((p) => <p class="intro">{p}</p>)}
+<p class="cols lbl" aria-hidden="true">{L.head.map((h) => <span>{h}</span>)}</p>
+<ol class="closed" aria-label="Closed ideas: number, kind of market, verdict, cause">
+{rows.map((r) => <li id={`n${r.n}`}><span class="no">{two(r.n)}</span><span class="kind">{r.slug ? <a href={`/case/${r.slug}/`}>{r.kind}</a> : r.kind}</span><span class="rec"><span class="gate">{gateWord(r.gate)}</span><span class="cause">{causeLabel(r.cause)}</span>{r.audit && <span class="aud">{L.audit_word}: {gateWord(r.audit)}</span>}</span></li>)}
+</ol>
+<p class="note">{L.audit_note}</p>
+<p class="open">{L.not_closed}</p>
+<section class="fp" aria-labelledby="fp-h">
+<h2 class="lbl" id="fp-h">{L.fp.label}</h2>
+<p set:html={nwDates(L.fp.frozen)}></p>
+<dl>{L.fp.hashes.map(([k, v]) => <><dt>{k} sha256</dt><dd>{v}</dd></>)}</dl>
+<p>{L.fp.private}</p>
+<p class="cmd"><code>{L.fp.cmd}</code></p>
+<p>{L.fp.expect}</p>
+<p set:html={nwWords(L.fp.limit)}></p>
+</section>
+<p class="ln endprompt"><a href={L.end.href}>{L.end.label}</a></p>
+</main>
+</Base>

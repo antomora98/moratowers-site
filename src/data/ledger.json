@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "title": "Ledger of the 53 ideas | moratowers",
+    "description": "The 44 closed trading ideas from the audit of 53: the kind of market, how each one ended and why, plus the sha256 fingerprints of the audit's frozen plan and its result table."
+  },
+  "prompt": "> cat ledger.md",
+  "h1": "Ledger",
+  "intro": [
+    "Every idea the audit scored. For each of the 44 closed ones: the kind of market, the recorded verdict and the cause."
+  ],
+  "head": [
+    "no.",
+    "market",
+    "verdict",
+    "cause"
+  ],
+  "audit_word": "audit",
+  "rows": [
+    {
+      "n": 1,
+      "kind": "short-term commodity prices",
+      "audit": "not_established"
+    },
+    {
+      "n": 2,
+      "kind": "sports favorites"
+    },
+    {
+      "n": 3,
+      "kind": "esports market making"
+    },
+    {
+      "n": 4,
+      "kind": "short-term commodity prices"
+    },
+    {
+      "n": 5,
+      "kind": "short-term stock index prices"
+    },
+    {
+      "n": 6,
+      "kind": "speech and media events"
+    },
+    {
+      "n": 7,
+      "kind": "fifteen-minute bitcoin, Polymarket"
+    },
+    {
+      "n": 8,
+      "kind": "related markets, Polymarket"
+    },
+    {
+      "n": 9,
+      "kind": "heavy favorites, Novig"
+    },
+    {
+      "n": 10,
+      "kind": "sports favorites"
+    },
+    {
+      "n": 11,
+      "kind": "market making, commodities"
+    },
+    {
+      "n": 12,
+      "kind": "market making, commodities"
+    },
+    {
+      "n": 13,
+      "kind": "market making, commodities"
+    },
+    {
+      "n": 14,
+      "kind": "speech and media events"
+    },
+    {
+      "n": 15,
+      "kind": "speech and media events"
+    },
+    {
+      "n": 16,
+      "kind": "interest-rate decisions"
+    },
+    {
+      "n": 17,
+      "kind": "weather outcomes"
+    },
+    {
+      "n": 18,
+      "kind": "bitcoin futures basis, CME"
+    },
+    {
+      "n": 19,
+      "kind": "college sports, ratings model"
+    },
+    {
+      "n": 20,
+      "kind": "esports favorites"
+    },
+    {
+      "n": 21,
+      "kind": "stock index levels against options"
+    },
+    {
+      "n": 22,
+      "kind": "memecoin graduations, pump.fun"
+    },
+    {
+      "n": 23,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 24,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 25,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 26,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 27,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 28,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 29,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 30,
+      "kind": "entertainment and media rankings",
+      "audit": "not_established"
+    },
+    {
+      "n": 31,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 32,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 33,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 34,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 35,
+      "kind": "in-game sports price jumps"
+    },
+    {
+      "n": 36,
+      "kind": "sports favorites",
+      "audit": "not_established"
+    },
+    {
+      "n": 37,
+      "kind": "short-term crypto prices",
+      "audit": "not_established"
+    },
+    {
+      "n": 38,
+      "kind": "short-term crypto prices, momentum model",
+      "audit": "not_established"
+    },
+    {
+      "n": 39,
+      "kind": "short-term commodity prices"
+    },
+    {
+      "n": 40,
+      "kind": "economic data releases"
+    },
+    {
+      "n": 41,
+      "kind": "entertainment and media rankings",
+      "audit": "not_established"
+    },
+    {
+      "n": 42,
+      "kind": "entertainment and media rankings"
+    },
+    {
+      "n": 43,
+      "kind": "perpetual futures funding"
+    },
+    {
+      "n": 44,
+      "kind": "short-term commodity prices"
+    }
+  ],
+  "audit_note": "The recorded verdict stays. Where the audit's own label differs, on 6 ideas, it sits beside it: 4 of them have no result table, and for the other 2 the luck correction does not rule out a small edge.",
+  "not_closed": "At the audit's snapshot, 9 ideas were not closed. Each is listed here when it closes. One idea closed on 2026-10-24, after the audit's snapshot; the audit treats it as open.",
+  "fp": {
+    "label": "fingerprints",
+    "frozen": "I froze the audit's plan at 2026-10-17 20:36:10 UTC, before its two programs were written. Its result table was frozen at 2026-10-25 00:04:29 UTC, after the checker passed.",
+    "hashes": [
+      [
+        "plan",
+        "3b5cf4df90921400c0ca26ccb930912a63564761d5142939a0d7f93a0432e333"
+      ],
+      [
+        "result table",
+        "c199d65300c8852723927e3b55cd7d4e94fc03ccbbb0bca3d9c34e5d5e097226"
+      ]
+    ],
+    "private": "Both files are private for now. If they are published, anyone can hash them and compare:",
+    "cmd": "> shasum -a 256 PREREG.md",
+    "expect": "It must print the plan's hash above. The same command on the result table must print the second.",
+    "limit": "This page is the first public place these hashes appear, so they do not prove when the plan was written. They prove that a file published later is the one this page describes."
+  },
+  "end": {
+    "label": "> ls cases",
+    "href": "/case/"
+  }
+}

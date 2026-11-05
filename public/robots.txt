@@ -1,0 +1,5 @@
+# Every crawler is welcome, AI training included.
+User-agent: *
+Allow: /
+
+Sitemap: https://moratowers.dev/sitemap-index.xml

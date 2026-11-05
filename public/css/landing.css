@@ -1,0 +1,199 @@
+.rain {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-soft) var(--ease-soft);
+}
+.rain.drawn {
+  opacity: 1;
+}
+html:not(.js) .rain {
+  display: none;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+.hero {
+  position: relative;
+  height: clamp(240px, 40svh, 480px);
+}
+@media (max-width: 640px) {
+  .hero {
+    height: clamp(300px, 44svh, 400px);
+  }
+}
+.hero .name {
+  margin: 0;
+  font: inherit;
+}
+html.js .hero .name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+html:not(.js) .hero {
+  height: auto;
+  padding: calc(2 * var(--cell-h)) var(--m) 0;
+}
+.under {
+  padding: 0 var(--m) calc(2 * var(--cell-h));
+}
+.dek {
+  margin: var(--cell-h) 0 0;
+  max-width: 68ch;
+  color: var(--ink);
+}
+.ways {
+  margin-top: var(--cell-h);
+}
+.ways-h {
+  margin: 0 0 var(--cell-h);
+  color: var(--chrome);
+}
+.ways ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ways li {
+  margin: 0 0 4px;
+}
+.ways li a {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr);
+  column-gap: 1ch;
+  padding: 6px 1ch 6px 6px;
+  margin: 0 -1ch 0 -6px;
+  text-decoration: none;
+  color: var(--ink);
+  background: transparent;
+  transition: background-color var(--t-soft) var(--ease-soft);
+}
+.ways .tag {
+  grid-row: 1 / span 2;
+  align-self: start;
+  justify-self: start;
+  min-width: 2ch;
+  padding: 0 .5ch;
+  background: var(--ink);
+  color: var(--bg);
+  text-align: center;
+}
+.ways .t {
+  transition: color var(--t-soft) var(--ease-soft);
+}
+.ways .m {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 2ch;
+  color: var(--dim);
+}
+.ways .v {
+  letter-spacing: .04em;
+  color: var(--chrome);
+}
+.ways .c {
+  display: inline-flex;
+  align-items: center;
+}
+.ways li a:hover,
+.ways li a:focus-visible {
+  background: var(--card);
+}
+.ways li a:hover .t,
+.ways li a:focus-visible .t {
+  color: var(--paper);
+}
+.ways li a:focus-visible {
+  outline-offset: 0;
+}
+@media (min-width: 800px) {
+  .ways ol {
+    max-width: 82ch;
+  }
+  .ways li a {
+    grid-template-columns: 3ch minmax(0, 38ch) minmax(0, 1fr);
+    align-items: center;
+  }
+  .ways .tag {
+    grid-row: auto;
+    align-self: center;
+  }
+  .ways .v {
+    min-width: 17ch;
+  }
+}
+.go {
+  margin: var(--cell-h) 0 0;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2ch;
+  min-height: 40px;
+  padding: 0 1.5ch;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  transition: background-color var(--t-soft) var(--ease-soft);
+}
+.cta .arr {
+  display: inline-block;
+  transition: transform var(--t-soft) var(--ease-soft);
+}
+.cta:hover,
+.cta:focus-visible {
+  background: var(--paper);
+}
+.cta:hover .arr,
+.cta:focus-visible .arr {
+  transform: translateX(4px);
+}
+.key {
+  margin: calc(2 * var(--cell-h)) 0 0;
+  max-width: 68ch;
+  color: var(--dim);
+}
+html:not(.js) .key {
+  display: none;
+}
+.compare {
+  margin: var(--cell-h) 0 0;
+  color: var(--dim);
+}
+.compare a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  color: var(--dim);
+  transition: color var(--t-soft) var(--ease-soft);
+}
+.compare a:hover,
+.compare a:focus-visible {
+  color: var(--ink);
+}
+.bar .motion {
+  flex: none;
+}
+@view-transition {
+  navigation: auto;
+}
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: var(--t-soft);
+  animation-timing-function: var(--ease-soft);
+}
