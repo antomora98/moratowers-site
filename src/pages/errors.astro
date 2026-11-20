@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import { z } from 'astro/zod';
+import rawErrors from '../data/errors.json';
+import { pages } from '../lib/pages';
+import { text } from '../lib/schema';
+import { nwDates } from '../lib/site';
+// The error log: every agent error written down in the research, one row each, from the private log's errors.csv
+// (dates, days, stage, period, finder and reach copied by script; the plain-words line per row written for this page,
+// with no venue, strategy or money). Counts are computed here and checked against the log's SUMMARY.md, so a changed
+// data file that disagrees with the reviewed summary fails the build. One column like the ledger.
+const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const E = z.object({
+  rows: z.array(z.object({
+    id: z.string().regex(/^E\d{3}$/),
+    stage: z.enum(['pre_ship', 'shipped']),
+    era: z.enum(['A', 'B', 'C', 'D']),
+    in: date.nullable(),
+    found: date,
+    days: z.number().int().nonnegative().nullable(),
+    by: z.enum(['control', 'reviewer_agent', 'antonio', 'builder_self', 'outside', 'unknown']),
+    reach: z.enum(['none', 'owner_briefing', 'public', 'live_orders_or_money']),
+    text,
+  }).strict()),
+}).strict().parse(rawErrors);
+const rows = E.rows;
+const count = (f: (r: (typeof rows)[number]) => boolean) => rows.filter(f).length;
+const pct = (a: number, b: number) => `${Math.round((100 * a) / b)}%`;
+const median = (xs: number[]) => { const s = [...xs].sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+
+const BY = [
+  ['control', 'a check that runs on its own, or a planned sweep'],
+  ['reviewer_agent', 'a separate reviewer agent'],
+  ['builder_self', 'the agents themselves, in later work'],
+  ['antonio', 'me'],
+  ['unknown', 'not recorded'],
+  ['outside', 'someone outside the project'],
+] as const;
+const REACH = [
+  ['none', 'stayed in work files'],
+  ['owner_briefing', 'reached my notes or a briefing to me'],
+  ['live_orders_or_money', "reached a live run's orders"],
+  ['public', 'reached anything public'],
+] as const;
+const byWord = Object.fromEntries(BY.map(([k, v]) => [k, k === 'antonio' ? 'found by me' : `found by ${v}`]));
+const reachWord = Object.fromEntries(REACH);
+const ERAS = [['A', 'to 2026-03-28'], ['B', 'to 2026-08-20'], ['C', 'to 2026-10-07'], ['D', 'after 2026-10-07']] as const;
+const eras = ERAS.map(([e, span]) => {
+  const r = rows.filter((x) => x.era === e);
+  const d = r.flatMap((x) => (x.days === null ? [] : [x.days]));
+  const cr = r.filter((x) => x.by === 'control' || x.by === 'reviewer_agent').length;
+  return { e, span, n: r.length, pre: r.filter((x) => x.stage === 'pre_ship').length, share: pct(cr, r.length), med: median(d), max: Math.max(...d) };
+});
+
+const n = rows.length, pre = count((r) => r.stage === 'pre_ship'), shipped = n - pre;
+const ctlRev = count((r) => r.by === 'control' || r.by === 'reviewer_agent'), mine = count((r) => r.by === 'antonio');
+const live = count((r) => r.reach === 'live_orders_or_money'), pub = count((r) => r.reach === 'public');
+const withheld = count((r) => r.text === 'withheld');
+
+// The reviewed summary (error_log/SUMMARY.md); every number on the page must agree with it.
+const EXPECT = {
+  n: 54, pre: 13, shipped: 41, ctlRev: 35, mine: 6, live: 5, pub: 0,
+  by: { control: 16, reviewer_agent: 19, antonio: 6, builder_self: 12, outside: 0, unknown: 1 },
+  reach: { none: 22, owner_briefing: 27, public: 0, live_orders_or_money: 5 },
+  eras: [['A', 9, 1, '33%', 3, 161], ['B', 14, 0, '64%', 2.5, 205], ['C', 21, 7, '76%', 2, 53], ['D', 10, 5, '70%', 1.5, 7]],
+};
+const got = {
+  n, pre, shipped, ctlRev, mine, live, pub,
+  by: Object.fromEntries(Object.keys(EXPECT.by).map((k) => [k, count((r) => r.by === k)])) as Record<string, number>,
+  reach: Object.fromEntries(Object.keys(EXPECT.reach).map((k) => [k, count((r) => r.reach === k)])) as Record<string, number>,
+  eras: eras.map((x) => [x.e, x.n, x.pre, x.share, x.med, x.max]),
+};
+if (JSON.stringify(got) !== JSON.stringify(EXPECT)) throw new Error(`errors: counts disagree with SUMMARY.md: ${JSON.stringify(got)}`);
+const months = rows.map((r) => r.found.slice(0, 7)).sort();
+if (months[0] !== '2026-02' || months[months.length - 1] !== '2026-11') throw new Error('errors: the found range is not February to November 2026');
+
+const when = (r: (typeof rows)[number]) => {
+  const came = r.in ? `came in ${r.in}` : 'came in on several dates';
+  const found = r.days === 0 ? 'found the same day' : r.days === null ? `found ${r.found}` : `found ${r.found}, ${r.days} ${r.days === 1 ? 'day' : 'days'} later`;
+  return `${came} · ${found}`;
+};
+const groups = [
+  { id: 'pre', label: `Caught before shipping: ${pre}`, rows: rows.filter((r) => r.stage === 'pre_ship') },
+  { id: 'shipped', label: `Shipped: ${shipped}`, rows: rows.filter((r) => r.stage === 'shipped') },
+];
+const title = 'Error log';
+---
+<Base title={`${title} | moratowers`} ogTitle={title} description="Every error my AI agents made in this research that was written down: when each came in, when it was found, and who found it." path="/errors/"
+  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-errors']} rain>
+<a class="skip" href="#main">skip to the log</a>
+<TopNav here="post" />
+<main id="main" class="errpage">
+<p class="ln">&gt; cat errors.csv</p>
+<h1>{title}</h1>
+<p class="intro">Every error my AI agents made in this research that was written down, found between February and November 2026: when it came in, when it was found, and who or what found it.</p>
+<p class="intro">{n} errors. {pre} were caught before they shipped and {shipped} shipped. Checks and reviewer agents found {ctlRev} of the {n} ({pct(ctlRev, n)}); I found {mine}. {live} reached a live run's orders. None reached anything public.</p>
+<p class="intro">{withheld} rows are withheld: they come from work that is not public yet. They stay in every count.</p>
+<p class="intro">It is a count, not a rate: it lists the errors that were written down, not how many were made.</p>
+<p class="intro">An AI agent built the log from the project's records, re-reading each date from its source. A separate agent reviewed it and recomputed every count. I asked for it.</p>
+
+<section class="block" aria-labelledby="by-h">
+<h2 class="lbl" id="by-h">Who found them</h2>
+<dl class="tally">{BY.map(([k, v]) => <><dt>{v}</dt><dd>{got.by[k]}</dd></>)}</dl>
+<p class="note">The {got.by.control} checks include 5 sweeps the agents ran on purpose; those do not run unasked.</p>
+</section>
+
+<section class="block" aria-labelledby="reach-h">
+<h2 class="lbl" id="reach-h">How far they got</h2>
+<dl class="tally">{REACH.map(([k, v]) => <><dt>{v}</dt><dd>{got.reach[k]}</dd></>)}</dl>
+</section>
+
+<section class="block" aria-labelledby="era-h">
+<h2 class="lbl" id="era-h">By period</h2>
+<div class="tw"><table>
+<thead><tr><th>period</th><th>errors</th><th>caught before shipping</th><th>found by a check or reviewer</th><th>median days to find</th><th>longest</th></tr></thead>
+<tbody>{eras.map((x) => <tr><td set:html={nwDates(x.span)}></td><td>{x.n}</td><td>{x.pre}</td><td>{x.share}</td><td>{x.med}</td><td>{x.max}</td></tr>)}</tbody>
+</table></div>
+<p class="note">Periods are the source's. The median and the longest leave out the one error with no single start date.</p>
+</section>
+
+{groups.map((g) => (
+<section class="block" aria-labelledby={`${g.id}-h`}>
+<h2 class="lbl" id={`${g.id}-h`}>{g.label}</h2>
+<ol class="errs">
+{g.rows.map((r) => <li id={r.id}><span class="no">{r.id}</span><div><p class={r.text === 'withheld' ? 'what withheld' : 'what'}>{r.text}</p><p class="meta" set:html={nwDates(`${when(r)} · ${byWord[r.by]} · ${reachWord[r.reach]}`)}></p></div></li>)}
+</ol>
+</section>
+))}
+
+<p class="ln endprompt"><a href="/rules/">&gt; cat rules</a></p>
+<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
+</main>
+</Base>

@@ -2,11 +2,14 @@
   "meta": {
     "landing": {
       "title": "moratowers: research and writing",
-      "description": "Research and writing by Antonio Mora. Now: can AI agents find a trading edge? 53 ideas tested so far."
+      "description": "Research and writing by Antonio Mora: 53 trading ideas tested with AI agents, and a benchmark that tests the agents."
     },
     "about": {
       "title": "Antonio Mora | moratowers",
-      "description": "Antonio Mora tests whether AI agents can trade prediction markets. Since December 2025 he has tested 53 trading ideas, with one agent building and a different one checking."
+      "description": "Antonio Mora builds AI agents and tests them: 53 trading ideas since December 2025, and a benchmark built from the ways those results went wrong."
+    },
+    "cases": {
+      "title": "Cases | moratowers"
     },
     "story": {
       "title": "Story | moratowers",
@@ -16,28 +19,119 @@
       "title": "Eight research rules for testing trading ideas | moratowers",
       "description": "Eight rules for testing trading ideas with AI agents, most with the failure that taught them, from modelling fills against the real trade tape to asking whether a question is decidable. Each links to a free Claude Code skill."
     },
+    "evals": {
+      "title": "Evals | moratowers",
+      "description": "vet-bench, a pre-registered pilot benchmark built from the trading research's method, with its appendix, the agent error log, the public repository and the free skills."
+    },
     "notfound": {
       "title": "Not found | moratowers"
     }
   },
   "landing": {
-    "question": "Can AI agents find a trading edge?",
-    "result": "53 ideas so far. None has beaten luck yet.",
     "enter_label": "Enter the site",
     "enter_key": "click or press enter",
     "enter_tap": "tap to enter",
-    "lede": "research and writing",
-    "now": "now: can AI agents find a trading edge?"
+    "lede": "research and writing"
   },
   "about": {
+    "lines": [
+      "I grew up in Quito, Ecuador, a city in the Andes. I left to study in the United States and stayed to follow the American dream.",
+      
+      "I studied computer science and business, then earned an MBA.",
+      "Today I am an agent architect. I design AI agents from the first sketch to the last test. An agent will answer with the same confidence whether it knows or not, so I measure what mine do.",
+      "This site is that habit turned on my own ideas. One agent builds and a different one checks. The agents write most of the code.",
+      "I lift, I play golf, and I read philosophy and theology.",
+      "I did not get here alone. I am grateful to God and to the people who helped me."
+    ],
+    "ways": [
+      {
+        "label": "> ls evals",
+        "href": "/evals/",
+        "text": "Can AI agents catch a false claim without rejecting a true one?"
+      },
+      {
+        "label": "> ls cases",
+        "href": "/case/",
+        "text": "Can AI agents find a trading edge?"
+      }
+    ],
+    "not_advice": "This site is not advice and gives no signals or trade ideas.",
+    "contact": {
+      "h": "Contact",
+      "intro": "Write to me if you test the same kind of thing, have data or access that would move a next test, or find an error in the record.",
+      "channels": [
+        {
+          "label": "X @moratowers",
+          "href": "https://x.com/moratowers",
+          "me": true
+        },
+        {
+          "label": "GitHub antomora98",
+          "href": "https://github.com/antomora98",
+          "me": true
+        },
+        {
+          "label": "Corrections: open an issue on the site's repository",
+          "href": "https://github.com/antomora98/moratowers-site/issues",
+          "me": false
+        },
+        {
+          "label": "RSS /rss.xml",
+          "href": "/rss.xml",
+          "me": false
+        }
+      ]
+    },
+    "photo_alt": "Antonio Mora outdoors, smiling, holding a coffee cup. Black and white."
+  },
+  "cases": {
+    "prompt": "> ls cases",
+    "h1": "Cases",
+    "question": "Can AI agents find a trading edge?",
+    "result": "53 ideas so far. None has beaten luck yet.",
     "results": [
       "One program scored them and a second, written separately, checked the numbers, under a plan frozen first.",
       "The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass."
     ],
-    "luck": "corrected for luck across all 53: BH, q = 0.10",
-    "figure_table_caption": "The 53 ideas by how they ended",
-    "figure_caption": "fig. 1  The 53 ideas at the audit's snapshot (2026-10-17): 44 closed, grouped by how they ended, and 9 not closed. Outlined: the five public cases.",
-    "not_advice": "This site is not advice and gives no signals or trade ideas."
+    "luck": "Corrected for luck across all 53: BH, q = 0.10",
+    "figure_caption": "fig. 1  How the 53 ideas ended, at the audit's snapshot of 2026-10-17. One square per idea.",
+    "list_intro": "Five closed ideas written up in full: the test, the number and the lesson.",
+    "ledger": {
+      "label": "ledger",
+      "href": "/ledger/",
+      "text": "Every closed idea, how it ended and why, with the fingerprints of the frozen plan."
+    },
+    "next": {
+      "h": "Next",
+      "date": "planned as of 2026-11-10",
+      "items": [
+        "Collect data for the next trading test, and freeze its rules before reading any result.",
+        "Write up more of the closed ideas, one case at a time."
+      ]
+    },
+    "help": {
+      "h": "What would help",
+      "intro": "For most closed ideas, more data would not change the answer: the price already had it, as far as the test could tell, or the market was too small. For a few, it might:",
+      "items": [
+        {
+          "text": "A dated daily history of song streaming counts, or the storage and machine time to record one forward. One music-chart idea passed its volume check and stopped there, for lack of that history."
+        },
+        {
+          "text": "The settled winners for the 43.7% of heavy-favorite outcomes on Novig that could not be scored.",
+          "case": "novig-favorites"
+        },
+        {
+          "text": "A futures order book you could have traded at, with coin borrow costs, to measure the bitcoin futures basis.",
+          "case": "futures-basis"
+        },
+        {
+          "text": "A licensed round-the-clock price feed for off-hours commodity markets. Even with it, a fair answer may take years."
+        },
+        {
+          "text": "A second checker: someone who tests the same kind of thing and would check a case."
+        }
+      ]
+    }
   },
   "outside": [
     {
@@ -54,6 +148,55 @@
     }
   ],
   "story": {
+    "sections": [
+      {
+        "h": "Why I built a bot",
+        "sub": "December 2025",
+        "from": 1,
+        "to": 1
+      },
+      {
+        "h": "The paper trades",
+        "sub": "March 2026",
+        "from": 2,
+        "to": 2
+      },
+      {
+        "h": "Builders and checkers",
+        "sub": "August to October 2026",
+        "from": 3,
+        "to": 4
+      },
+      {
+        "h": "How I work with the agents",
+        "sub": "February to August 2026",
+        "from": 5,
+        "to": 8
+      },
+      {
+        "h": "The sports bot",
+        "sub": "live, March to July 2026",
+        "from": 9,
+        "to": 9
+      },
+      {
+        "h": "The method becomes a test",
+        "sub": "November 2026",
+        "from": 10,
+        "to": 12
+      },
+      {
+        "h": "Where it stands",
+        "sub": "the audit's snapshot, 2026-10-17",
+        "from": 13,
+        "to": 14
+      },
+      {
+        "h": "About this site",
+        "from": 15,
+        "to": 17
+      }
+    ],
     "timeline_label": "timeline",
     "ledgers": {
       "2026-08": {
@@ -89,6 +232,23 @@
             "0"
           ]
         ]
+      },
+      "2026-11": {
+        "label": "the pilot's two tests",
+        "rows": [
+          [
+            "separation",
+            "pass"
+          ],
+          [
+            "headroom",
+            "not established"
+          ],
+          [
+            "pilot works",
+            "no"
+          ]
+        ]
       }
     }
   },
@@ -118,6 +278,46 @@
       "1": "A fill model built on price candles predicted that almost every order would fill. Few did."
     }
   },
+  "evals": {
+    "prompt": "> ls evals",
+    "h1": "Evals",
+    "intro": [
+      "My trading research is where I learned the method: write the test down first, then close each idea with its proof.",
+      "vet-bench turns that method into a test for AI agents.",
+      "Its traps are built on the ways those results went wrong."
+    ],
+    "items": [
+      {
+        "label": "errors",
+        "href": "/errors/",
+        "text": "Every agent error on record: when it came in, when it was found, and who found it."
+      },
+      {
+        "label": "vet-bench",
+        "href": "/vet-bench/",
+        "text": "A pilot benchmark: can an AI agent turn down a wrong claim and still accept a true one? Pre-registered. It passed one of its two registered tests."
+      },
+      {
+        "label": "appendix",
+        "href": "/vet-bench/appendix/",
+        "text": "Everything else the plan said to report whatever the outcome: grader agreement, controls, voids and hashes."
+      },
+      {
+        "label": "repository",
+        "href": "https://github.com/moratowers/vet-bench",
+        "text": "The seven public pairs and an open environment built from them, with the pre-registration and results on two open models."
+      },
+      {
+        "label": "guardrails",
+        "href": "https://github.com/antomora98/claude-code-guardrails",
+        "text": "Free Claude Code skills from this work, vet among them."
+      }
+    ],
+    "end": {
+      "label": "> ls cases",
+      "href": "/case/"
+    }
+  },
   "notfound": {
     "h1": "This page does not exist.",
     "back": "back to moratowers.dev"
@@ -128,7 +328,32 @@
       "plan frozen 2026-10-17",
       "luck-corrected"
     ],
-    "audit_label": "audit",
-    "index": "the cases start at case 1"
-  }
+    "audit_label": "audit"
+  },
+  "contact_link": {
+    "label": "contact",
+    "href": "/about/#contact"
+  },
+  "nav": [
+    {
+      "label": "about",
+      "href": "/about/"
+    },
+    {
+      "label": "story",
+      "href": "/story/"
+    },
+    {
+      "label": "cases",
+      "href": "/case/"
+    },
+    {
+      "label": "evals",
+      "href": "/evals/"
+    },
+    {
+      "label": "rules",
+      "href": "/rules/"
+    }
+  ]
 }

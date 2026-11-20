@@ -62,18 +62,6 @@ html.opening .ways li {
   font-size: 16px;
   line-height: 22px;
 }
-@font-face {
-  font-family: "Geist Serif";
-  src: url(../fonts/geist-serif-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist";
-  src: url(../fonts/geist-sans-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
 .ways .t,
 .ways li a:hover .t,
 .ways li a:focus-visible .t,
@@ -83,36 +71,6 @@ html.opening .ways li {
 .ways li a:hover .t,
 .ways li a:focus-visible .t {
   color: var(--paper);
-}
-html[data-look=paper] {
-  --bg: #f2eee3;
-  --ink: #1c1a15;
-  --dim: #7a7466;
-  --chrome: #4d483d;
-  --paper: #000;
-}
-html[data-look=paper] .bar .mode {
-  color: #fffff8;
-}
-html[data-look=serif] .under,
-html[data-look=paper] .under,
-html[data-look=serif] .topnav,
-html[data-look=paper] .topnav {
-  font-family:
-    Charter,
-    "Iowan Old Style",
-    Palatino,
-    Georgia,
-    serif;
-}
-html[data-look=sans] .under,
-html[data-look=sans] .topnav {
-  font-family:
-    system-ui,
-    -apple-system,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
 }
 html:not([data-look=mono]) .dek {
   font-size: 30px !important;
@@ -147,7 +105,6 @@ html[data-look=geistall] .bar,
 html[data-look=geistall] .ways .v {
   font-family:
     "Geist Serif",
-    Charter,
     Georgia,
     serif;
   letter-spacing: 0;
@@ -156,18 +113,10 @@ html[data-look=geistall] .ways .v {
   font-size: 14px;
   line-height: 20px;
 }
-html[data-look=geist] .under,
-html[data-look=geist] .topnav {
-  font-family:
-    "Geist",
-    system-ui,
-    sans-serif;
-}
 html[data-look^=geist] .dek,
 html[data-look^=geist] .ways .t {
   font-family:
     "Geist Serif",
-    Charter,
     Georgia,
     serif;
   letter-spacing: 0;
@@ -179,13 +128,6 @@ html[data-look^=geist] .dek {
 html[data-look^=geist] .ways .t {
   font-size: 24px;
   line-height: 30px;
-}
-html[data-look=geistmono] .result,
-html[data-look=geistmono] .method,
-html[data-look=geistmono] .by,
-html[data-look=geistmono] .ways .l {
-  font-size: 14px;
-  line-height: 22px;
 }
 html[data-look=geistall] .dek {
   font-size: clamp(21px, 1.2rem + 1.9vw, 40px) !important;
@@ -258,12 +200,6 @@ html[data-mark=glass] .result,
 html[data-mark=glass] .method,
 html[data-mark=glass] .by {
   transform: translate(var(--drift-x, 0px), var(--drift-y, 0px));
-}
-@font-face {
-  font-family: "Geist";
-  src: url(../fonts/geist-sans-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: swap;
 }
 html[data-small=sans] .result,
 html[data-small=sans] .method,
@@ -452,12 +388,6 @@ html[data-splash] .hero .lede .enter {
   position: static;
   margin-top: 16px;
 }
-@font-face {
-  font-family: "Geist Mono";
-  src: url(../fonts/geist-mono-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
 html[data-splash] .hero .lede {
   top: calc(50% + 8.979cqw + 14px);
 }
@@ -490,15 +420,6 @@ html[data-splash] .hero.lined .lede .lq {
   clip-path: inset(50%);
   white-space: nowrap;
 }
-html[data-splash] .hero .lede .lr {
-  margin-top: 6px;
-  font:
-    400 clamp(14px, .8rem + .25vw, 16px) / 1.5 "Geist",
-    system-ui,
-    sans-serif;
-  letter-spacing: .01em;
-  color: #c8c8c5;
-}
 html[data-splash] .hero .lede .enter {
   margin-top: 20px;
   font:
@@ -507,16 +428,11 @@ html[data-splash] .hero .lede .enter {
     monospace;
 }
 @media (max-width: 639px) {
-  html[data-splash] .hero .lede .lr {
-    margin-top: 8px;
-    font-size: 13px;
-  }
   html[data-splash] .hero .lede .enter {
     font-size: 13px;
     margin-top: 16px;
   }
 }
-html[data-splash] .hero .lede .lr,
 html[data-splash] .hero .lede .enter {
   transform: translate(var(--drift-x, 0px), var(--drift-y, 0px));
   filter: drop-shadow(0 0 3px var(--bg)) drop-shadow(0 0 8px var(--bg));
@@ -552,7 +468,6 @@ html[data-splash] .hero .enter a {
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .lq .metal,
-  .lr .metal,
   html[data-splash] .hero .enter a > span {
     background-image:
       linear-gradient(
@@ -567,7 +482,6 @@ html[data-splash] .hero .enter a {
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
-  .lr .metal,
   html[data-splash] .hero .enter a > span {
     background-image:
       linear-gradient(

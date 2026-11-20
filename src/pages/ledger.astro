@@ -4,9 +4,10 @@ import TopNav from '../components/TopNav.astro';
 import { z } from 'astro/zod';
 import rawLedger from '../data/ledger.json';
 import { landing } from '../lib/landing';
+import { pages } from '../lib/pages';
 import { text, GATE_WORDS } from '../lib/schema';
-import { gateWord, causeLabel, nwWords, nwDates } from '../lib/site';
-// The ledger of the 53 ideas: one row per closed idea, numbered as in fig. 1 on About (landing.json's
+import { gateWord, causeLabel, nwWords, nwDates, getCases } from '../lib/site';
+// The ledger of the 53 ideas: one row per closed idea, numbered as in fig. 1 above it (landing.json's
 // ledger gives the number, verdict, cause and public slug; ledger.json adds the kind of market and, where it differs,
 // the audit's own label), a line for the ideas not closed, then the frozen plan's fingerprints. One column like Rules.
 const gate = z.enum(Object.keys(GATE_WORDS) as [keyof typeof GATE_WORDS, ...(keyof typeof GATE_WORDS)[]]);
@@ -16,25 +17,49 @@ const L = z.object({
   prompt: text, h1: text, intro: z.array(text), head: z.tuple([text, text, text, text]), audit_word: text,
   rows: z.array(z.object({ n: z.number().int().positive(), kind: text, audit: gate.optional() }).strict()),
   audit_note: text, not_closed: text,
-  fp: z.object({ label: text, frozen: text, hashes: z.array(z.tuple([text, hex])).length(2), private: text, cmd: text, expect: text, limit: text }),
+  fp: z.object({ label: text, frozen: text, hashes: z.array(z.tuple([text, hex])).length(2), private: text, cmd: text, expect: text, limit: text, repo: z.object({ text, label: text, href: z.string().startsWith('https://github.com/moratowers/') }) }),
   end: z.object({ label: text, href: z.string().startsWith('/') }),
 }).strict().parse(rawLedger);
 if (L.rows.length !== landing.ledger.length || L.rows.length !== landing.counts.closed) throw new Error('ledger: rows and the closed count disagree');
 if (!L.not_closed.includes(` ${landing.counts.tested - landing.counts.closed} ideas `)) throw new Error('ledger: the not-closed count disagrees');
 const two = (n: number) => String(n).padStart(2, '0');
+// The trading question, its result, the audit and luck lines and fig. 1 (each closed idea's cause in plain groups,
+// never its verdict; rows with a public case link to it) open the page; what is next and what would help close it.
+const C = pages.cases;
+const cases = await getCases();
+const closedBy = (id: string) => landing.ledger.filter((r) => r.cause === id);
+for (const c of landing.causes) if (closedBy(c.id).length !== c.n) throw new Error(`fig. 1: ${c.id} counts ${closedBy(c.id).length} rows, causes says ${c.n}`);
+const titles = Object.fromEntries(cases.map((e) => [e.id, e.data.title]));
+const groups = landing.groups.map((g) => {
+  const rs = landing.causes.filter((c) => c.group === g.id)
+    .map((c) => ({ n: closedBy(c.id).length, short: c.short, meaning: c.meaning, open: false,
+      cases: landing.log.filter((l) => l.cause === c.id).map((l) => ({ slug: l.slug, title: titles[l.slug] })) }))
+    .sort((p, q) => q.n - p.n);
+  return { label: g.label, n: rs.reduce((t, r) => t + r.n, 0), rows: rs };
+});
+const open = landing.counts.tested - landing.counts.closed;
+const og = landing.open_group;
+groups.push({ label: og.label, n: open, rows: [{ n: open, short: og.short, meaning: og.meaning, open: true, cases: [] }] });
+if (groups.reduce((t, g) => t + g.n, 0) !== landing.counts.tested) throw new Error('fig. 1: the groups do not sum to the ideas tested');
+for (const it of C.help.items) if (it.case && !landing.log.some((l) => l.slug === it.case)) throw new Error(`ledger: no public case ${it.case}`);
+const [luckHead, luckTail] = [C.luck.slice(0, C.luck.lastIndexOf(': ') + 2), C.luck.slice(C.luck.lastIndexOf(': ') + 2)];
 const rows = L.rows.map((r, k) => {
   const s = landing.ledger[k];
   if (s.n !== r.n) throw new Error(`ledger: row ${k + 1} is numbered ${r.n}, fig. 1 says ${s.n}`);
   return { ...r, gate: s.gate, cause: s.cause, slug: s.slug };
 });
 ---
-<Base title={L.meta.title} description={L.meta.description} path="/ledger/" fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']}
-  styles={['site', 'motion', 'nav', 'brand', 'brand-ledger']} rain>
+<Base title={L.meta.title} description={L.meta.description} path="/ledger/" fonts={['geist-serif-400', 'geist-mono-400']}
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about', 'brand-ledger']} rain>
 <a class="skip" href="#main">skip to the ledger</a>
 <TopNav here="ledger" />
 <main id="main" class="ledgerpage">
 <p class="ln">{L.prompt}</p>
 <h1>{L.h1}</h1>
+<p class="intro ask">{C.question}</p>
+{[C.result, ...C.results].map((r) => <p class="intro">{r}</p>)}
+<p class="ln luck">{luckHead}<span class="nw">{luckTail}</span></p>
+<figure class="ideas" aria-labelledby="fig1"><div class="grid">{groups.map((g) => <div class="grp"><p class="gh"><span class="gl">{g.label}</span><span class="gn">{g.n}</span></p><ul>{g.rows.map((r) => <li class="row"><span class="n">{r.n}</span><span class="k">{r.short}</span><span class="cells" aria-hidden="true">{Array.from({ length: r.n }, () => <span class={r.open ? 'o' : 'c'}></span>)}</span><span class="m">{r.meaning}</span>{r.cases.length > 0 && <span class="cs">{r.cases.length > 1 ? 'cases ' : 'case '}{r.cases.map((c, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={`/case/${c.slug}/`}>{c.title}</a></>)}</span>}</li>)}</ul></div>)}</div><figcaption id="fig1">{C.figure_caption}</figcaption></figure>
 {L.intro.map((p) => <p class="intro">{p}</p>)}
 <p class="cols lbl" aria-hidden="true">{L.head.map((h) => <span>{h}</span>)}</p>
 <ol class="closed" aria-label="Closed ideas: number, kind of market, verdict, cause">
@@ -50,7 +75,11 @@ const rows = L.rows.map((r, k) => {
 <p class="cmd"><code>{L.fp.cmd}</code></p>
 <p>{L.fp.expect}</p>
 <p set:html={nwWords(L.fp.limit)}></p>
+<p>{L.fp.repo.text} <a href={L.fp.repo.href} rel="noopener">{L.fp.repo.label}</a></p>
 </section>
+<section class="more" aria-labelledby="next-h"><h2 class="lbl" id="next-h">{C.next.h}</h2><p class="date">{C.next.date}</p><ul>{C.next.items.map((t) => <li>{t}</li>)}</ul></section>
+<section class="more" aria-labelledby="help-h"><h2 class="lbl" id="help-h">{C.help.h}</h2><p>{C.help.intro}</p><ul>{C.help.items.map((it) => <li>{it.text}{it.case && <> <a href={`/case/${it.case}/`}>&gt; cat {it.case}.md</a></>}</li>)}</ul></section>
 <p class="ln endprompt"><a href={L.end.href}>{L.end.label}</a></p>
+<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 </Base>

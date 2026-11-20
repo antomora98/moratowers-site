@@ -1,5 +1,6 @@
 // Leak firewall engine. It holds no patterns: they are read from the file named by
-// FIREWALL_PATTERNS (one `rule<TAB>regex<TAB>options` per line). It prints rule names
+// FIREWALL_PATTERNS (one `rule<TAB>regex<TAB>options` per line; options are skip=, scope=,
+// and allow= with pin=, explained where `allowed` is defined). It prints rule names
 // and file paths only, never the matched text, and exits non-zero on any hit.
 //
 //   node scripts/firewall.mjs                 scan src/, public/, dist/ and the last commit message
@@ -30,11 +31,22 @@ for (const line of rawRules.split('\n')) {
   let re;
   try { re = new RegExp(src, flags); } catch { fail(`rule ${name} does not compile. Failing closed.`); }
   const o = Object.fromEntries(opts.split(/\s+/).filter(Boolean).map((kv) => kv.split('=')).map(([k, v]) => [k, v.split(',')]));
-  rules.push({ name, re, skip: o.skip ?? [], scope: o.scope ?? null });
+  if (o.allow && !/^[0-9a-f]{64}$/.test(o.pin?.[0] ?? '')) fail(`rule ${name} has allow= without a valid pin=. Failing closed.`);
+  rules.push({ name, re, skip: o.skip ?? [], scope: o.scope ?? null, allow: o.allow ?? [], pin: o.pin?.[0] ?? null });
 }
 if (rules.length === 0) fail('the patterns file holds no rules. Failing closed.');
 
 const root = process.cwd();
+// Allowed paths (Antonio's yes, 2026-11-20T21:31Z): a rule with allow=SOURCE[,BUILT,...] and pin=SHA256 does not scan
+// the content of those paths. SOURCE is skipped only while the bytes being scanned hash to the pin, so --staged and
+// --history judge the staged or historic bytes; each BUILT path only while SOURCE on disk still does. Any edit voids
+// the allowance. Every other rule, and this rule's file-name check, still apply to these paths.
+const sha256 = (data) => createHash('sha256').update(data).digest('hex');
+for (const r of rules) {
+  const s = r.allow.length ? join(root, r.allow[0]) : null;
+  r.pinOnDisk = s !== null && existsSync(s) && sha256(readFileSync(s)) === r.pin;
+}
+const allowed = (r, rel, content) => r.allow.includes(rel) && (rel === r.allow[0] ? sha256(content) === r.pin : r.pinOnDisk);
 const BINARY = new Set(['.woff2', '.woff', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.pdf']);
 const hits = new Set();
 // Machine-generated, no prose: never scanned.
@@ -68,7 +80,7 @@ function check(path, content, shown = null) {
     if (r.scope && !r.scope.some((s) => rel === s || rel.startsWith(s))) continue;
     // skip=ext applies to bundled output only (dist/), never to source scripts.
     const skipped = rel.startsWith('dist/') && r.skip.includes(ext);
-    if (content !== null && !skipped && r.re.test(content)) hits.add(`${r.name}  ${where}`);
+    if (content !== null && !skipped && !allowed(r, rel, content) && r.re.test(content)) hits.add(`${r.name}  ${where}`);
     if (r.re.test(rel)) hits.add(`${r.name}  ${where} (file name)`);
   }
 }

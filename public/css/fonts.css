@@ -1,0 +1,27 @@
+/* Every font face the site uses, declared once and loaded first on every page but the 404 (it keeps its own rule in 404.css):
+   Geist Serif for reading text, Geist Mono for the machine's text, IBM Plex Mono for the rain. One weight, upright only:
+   no bold or italic file exists, so the browser must never fake one, and bold text renders regular. The landing's flat
+   word also declares "Geist Serif Mark" (landing-page.css), the same serif file with font-display: block. */
+@font-face {
+  font-family: "Geist Serif";
+  src: url(../fonts/geist-serif-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url(../fonts/geist-mono-400.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+/* The landing's falling rain draws in this face (public/js/landing.js, FACE). */
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/plex-mono-400.woff2) format("woff2");
+}
+html {
+  font-synthesis: none;
+}

@@ -3,12 +3,20 @@ import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import { landing, timeline } from '../lib/landing';
 import { pages } from '../lib/pages';
-// Story: the approved story (landing.json about.story, after the who line that opens About),
+// Story: the approved story (landing.json about.story, after the who line that opens About), under seven headings
+// (pages.json story.sections), all but the last with a date line,
 // the timeline (timeline.json) with its month index and two ledgers of record rows, then where to read next.
 const m = pages.meta.story;
 const s = pages.story;
+// Every paragraph after the who line belongs to exactly one section, in order.
+const story = landing.about.story;
+s.sections.forEach((x, k) => {
+  const start = k === 0 ? 1 : s.sections[k - 1].to + 1;
+  if (x.from !== start || x.to < x.from) throw new Error(`story: section ${k + 1} must start at paragraph ${start}`);
+});
+if (s.sections[s.sections.length - 1].to !== story.length - 1) throw new Error('story: the sections do not cover every paragraph');
 ---
-<Base title={m.title} description={m.description} path="/story/" fonts={['geist-sans-400', 'geist-serif-400', 'geist-mono-400']}
+<Base title={m.title} description={m.description} path="/story/" fonts={['geist-serif-400', 'geist-mono-400']}
   styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain>
 <a class="skip" href="#main">skip to the text</a>
 <TopNav here="story" />
@@ -16,7 +24,7 @@ const s = pages.story;
 <p class="ln">&gt; cat story.md</p>
 <h1>Story</h1>
 <div class="prose">
-{landing.about.story.slice(1).map((p) => <p>{p}</p>)}
+{s.sections.map((x, k) => <section aria-labelledby={`s-${k + 1}`}><h2 class="sh" id={`s-${k + 1}`}>{x.h}</h2>{x.sub && <p class="date">{x.sub}</p>}{story.slice(x.from, x.to + 1).map((p) => <p>{p}</p>)}</section>)}
 </div>
 <h2 class="lbl">{s.timeline_label}</h2>
 <nav class="months" aria-label="timeline months">{timeline.map((t) => <a href={`#t-${t.month}`}>{t.month}</a>)}</nav>
@@ -27,7 +35,7 @@ const s = pages.story;
 })}
 </ol>
 <p class="links go"><a href="/case/">&gt; ls cases</a></p>
-<p class="links">{pages.outside.map((o, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={o.href} rel="me noopener">{o.label}</a></>)}</p>
+<p class="links">{pages.outside.map((o, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={o.href} rel="me noopener">{o.label}</a></>)}<span class="sep" aria-hidden="true"> · </span><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 <script is:inline type="module" src="/js/story.js"></script>
 </Base>

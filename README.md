@@ -2,7 +2,7 @@
 
 Source for [moratowers.dev](https://moratowers.dev): research and writing by Antonio Mora (@moratowers).
 
-The first project asks whether AI agents can find a trading edge. The site opens on the name, drawn in glass. About gives the result of an audit of 53 trading ideas, with a figure of how each one ended. Story tells how the work went, month by month. Five case files are public: logical arbitrage on Polymarket, a fifteen-minute reversal, Novig favorites, the CME bitcoin futures basis, and pump.fun graduations. Rules lists the rules the work taught, most with the failure behind it. The audit's plan was frozen before its two programs were written; separately briefed AI agents wrote one to compute it and one to check every number in its table.
+The first project asks whether AI agents can find a trading edge. The site opens on the name, drawn in glass. About says who I am. Cases gives the result of an audit of 53 trading ideas, with a figure of how each one ended. Story tells how the work went, month by month. Five case files are public: logical arbitrage on Polymarket, a fifteen-minute reversal, Novig favorites, the CME bitcoin futures basis, and pump.fun graduations. Rules lists the rules the work taught, most with the failure behind it. The audit's plan was frozen before its two programs were written; separately briefed AI agents wrote one to compute it and one to check every number in its table.
 
 This site is not advice and gives no signals or trade ideas.
 
@@ -10,7 +10,7 @@ This site is not advice and gives no signals or trade ideas.
 
 - **Astro, static.** Every page is plain HTML rendered at build time. Turn JavaScript off and you can still read every page.
 - **Motion is an extra, not a requirement.** The glass word, the rain and the page transitions switch on after the page has loaded, and stay off if your system asks for reduced motion (`prefers-reduced-motion`).
-- **Nothing from a CDN.** The fonts (Geist, Geist Mono, Geist Serif and IBM Plex Mono, all under the SIL Open Font License) are self-hosted in `public/fonts/`. three.js 0.170.0 and the glass model are copies in `public/vendor/` and `public/models/`, checked by sha256 in the firewall below.
+- **Nothing from a CDN.** The fonts (Geist Mono, Geist Serif and IBM Plex Mono, all under the SIL Open Font License) are self-hosted in `public/fonts/`. three.js 0.170.0 and the glass model are copies in `public/vendor/` and `public/models/`, checked by sha256 in the firewall below.
 - **A strict content security policy.** Each page writes its policy first in `<head>`; `scripts/cspcheck.mjs` fails the build if it moves.
 - **Analytics after the page.** GoatCounter loads a second after the page has loaded, so it never blocks reading.
 - **A small house-style lint.** The build fails if the rendered pages contain an em dash or a dollar sign directly before a digit (`scripts/contentlint.mjs`).
@@ -57,7 +57,7 @@ A pattern file is one rule per line: `rule<TAB>regex<TAB>options`. A regex that 
 
 ## Credits
 
-- Typefaces: Geist, Geist Mono and Geist Serif by Vercel, under the SIL Open Font License 1.1 (`public/fonts/GEIST-OFL.txt`); IBM Plex Mono, Copyright 2017 IBM Corp., under the same license (`public/fonts/OFL.txt`).
+- Typefaces: Geist Mono and Geist Serif by Vercel, under the SIL Open Font License 1.1 (`public/fonts/GEIST-OFL.txt`); IBM Plex Mono, Copyright 2017 IBM Corp., under the same license (`public/fonts/OFL.txt`).
 - three.js 0.170.0, MIT (`public/vendor/three-0.170.0/LICENSE`).
 - Pump.fun data: Slink Dev (slink21taken), PumpFun Launch Corpus, 2026, CC BY 4.0.
 

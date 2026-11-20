@@ -8,3 +8,5 @@ export const MOTION_RULES = "(function(){var d=document.documentElement;d.classL
 export const IMPORTMAP = '{ "imports": { "three": "/vendor/three-0.170.0/build/three.module.js", "three/addons/": "/vendor/three-0.170.0/examples/jsm/" } }';
 // /case/ opens a case: the one named by the hash (/case/#futures-basis), else case 1 (the design's case/index.html).
 export const CASE_REDIRECT = "(function(){var s=location.hash.slice(1);if(!/^(logical-arbitrage|fifteen-minute-reversal|novig-favorites|futures-basis|pump-graduation)$/.test(s))s='logical-arbitrage';location.replace(s+'/'+location.search);})();";
+// /evals/ opens the first eval card, keeping ?still, as /case/ opens case 1.
+export const EVALS_REDIRECT = "(function(){location.replace('/evals/pilot/'+location.search);})();";

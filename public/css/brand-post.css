@@ -1,0 +1,186 @@
+/* A long-form post (src/pages/vet-bench.astro): Story's column, type and colours (brand-about.css), for prose that
+   comes from Markdown. No new size: 12, 13, 16, 20 and 36 px, as on Story and About. */
+.postpage {
+  width: min(720px, 100% - 32px);
+  margin-inline: auto;
+  padding: 22px 0 calc(4 * var(--cell-h));
+}
+.postpage .ln {
+  margin: 0;
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+.postpage a {
+  color: inherit;
+  text-decoration: none;
+}
+.postpage a:hover,
+.postpage a:focus-visible {
+  color: var(--ink);
+}
+/* A link inside a sentence is set in mono, the site's cue for one (the 'vet' link on Rules); no colour, no underline. */
+.postpage .prose p a,
+.postpage .prose li a {
+  font-family: var(--mono);
+}
+.postpage .prose h1 {
+  margin: 8px 0 0;
+  max-width: 62ch;
+  font: 400 36px / 40px var(--serif);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.postpage .prose h2 {
+  margin: 48px 0 0;
+  font: 400 20px / 28px var(--sans);
+  color: var(--ink);
+}
+.postpage .prose h3 {
+  margin: 32px 0 0;
+  font: 400 16px / 24px var(--sans);
+  color: var(--chrome);
+}
+.postpage .prose p,
+.postpage .prose li {
+  max-width: 62ch;
+  font: 400 16px / 24px var(--sans);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.postpage .prose p {
+  margin: 16px 0 0;
+}
+.postpage .prose h1 + p {
+  margin-top: 8px;
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+/* A post whose first paragraph is its opening sentence, not a status line: body type, as on Story. */
+.postpage.lead .prose h1 + p {
+  margin-top: 16px;
+  font: 400 16px / 24px var(--sans);
+  color: var(--ink);
+}
+/* Geist Serif ships in one weight (its variable file varies letter shape, not weight), and font-synthesis is off, so
+   bold run-in labels render at regular weight. */
+.postpage .prose strong {
+  font-weight: 400;
+}
+.postpage .prose em,
+.postpage .tw th {
+  font-weight: 400;
+  font-style: normal;
+}
+.postpage .prose ul {
+  margin: 16px 0 0;
+  padding-left: 2ch;
+}
+.postpage .prose li + li {
+  margin-top: 12px;
+}
+.postpage .prose li::marker {
+  color: var(--dim);
+}
+.postpage .prose code {
+  font: 400 13px / 16px var(--mono);
+  color: var(--chrome);
+  overflow-wrap: anywhere;
+}
+/* The summary: the post's first quote block, set off as a card (the site's card fill and edge, no accent bar). */
+.postpage .prose blockquote {
+  margin: 16px 0 0 2ch;
+  max-width: 62ch;
+}
+.postpage .prose blockquote p {
+  color: var(--chrome);
+}
+.postpage .prose blockquote > :first-child {
+  margin-top: 0;
+}
+.postpage .prose h1 + p + blockquote {
+  margin: 24px 0 0;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--edge);
+}
+.postpage .prose h1 + p + blockquote > p:first-child {
+  font: 400 12px / 16px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+.postpage .prose h1 + p + blockquote li {
+  color: var(--ink);
+}
+/* Tables scroll inside their own box, never the page. */
+.postpage .tw {
+  margin: 16px 0 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.postpage .tw table {
+  border-collapse: collapse;
+  font: 400 13px / 16px var(--mono);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.postpage .tw th,
+.postpage .tw td {
+  padding: 4px 3ch 4px 0;
+  text-align: left;
+  font-weight: 400;
+  vertical-align: top;
+}
+.postpage .tw th {
+  color: var(--dim);
+  border-bottom: 1px solid var(--edge);
+}
+.postpage .tw td:first-child {
+  white-space: nowrap;
+}
+.postpage .prose p:has(> em:only-child) {
+  font: 400 12px / 16px var(--mono);
+  color: var(--dim);
+}
+/* The figure: the wide drawing, or under 600 px the compact one, in the site's colours. */
+/* The figure sits on the page colour, so no rain glyph can read as part of a number in it. */
+.postpage .fig {
+  margin: 24px 0 0;
+  max-width: 620px;
+  background: var(--bg);
+  /* site.css dims any ".fig" until a case page's script marks it ".on". This figure has no such script, so it is
+     always fully drawn; at part opacity the rain showed through it and the caption lost its contrast. */
+  transition: none;
+}
+html.js[data-motion=on] .postpage .fig:not(.on),
+.postpage .fig {
+  opacity: 1;
+}
+.postpage .fig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.postpage .fig .compact {
+  display: none;
+}
+@media (max-width: 599px) {
+  .postpage .fig .wide {
+    display: none;
+  }
+  .postpage .fig .compact {
+    display: block;
+    max-width: 440px;
+  }
+}
+.postpage .fig figcaption {
+  margin-top: 16px;
+  max-width: 62ch;
+  font: 400 12px / 16px var(--mono);
+  color: var(--dim);
+}
+.postpage .endlinks {
+  margin-top: 48px;
+  color: var(--chrome);
+}

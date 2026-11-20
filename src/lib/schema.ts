@@ -42,6 +42,20 @@ export const caseSchema = z.object({
   lesson: text.optional(),
 });
 
+// An eval case file (src/content/evals): the same case design as the trading cases, with its own fields. The body's
+// sections are Question, Test, Result, What this does not show and Lesson (checked in src/lib/site.ts). The front
+// matter holds the verdict, the rest of the label block in order, the figure (model-scores, or else the card's own in
+// src/data/figures/evals/), and the links of the label block's record row.
+export const evalSchema = z.object({
+  title: text,
+  n: z.number().int().positive(),
+  verdict: text,
+  label: z.array(z.tuple([text, text])).min(1),
+  // model-scores: the vet-bench post's figure (src/posts/figures/), with the post's caption.
+  figure: z.enum(['model-scores']).optional(),
+  links: z.array(z.object({ label: text, href: z.string().refine((s) => s.startsWith('/') || s.startsWith('https://'), 'a path or an https URL') })).min(1),
+});
+
 export const landingSchema = z
   .object({
     name: text,
@@ -55,7 +69,11 @@ export const landingSchema = z
       months_word: text,
       commits: z.number().int().positive(),
     }),
-    causes: z.array(z.object({ id: cause, label: text, n: z.number().int().nonnegative() })),
+    // label: the cause's short name on the cards, the ledger and the rain. short, meaning and group: fig. 1 on /case/,
+    // which groups the causes into plain endings (groups, in the figure's order), then the ideas not closed (open_group).
+    causes: z.array(z.object({ id: cause, label: text, n: z.number().int().nonnegative(), short: text, meaning: text, group: z.string() })),
+    groups: z.array(z.object({ id: z.string().regex(/^[a-z_]+$/), label: text })).min(1),
+    open_group: z.object({ label: text, short: text, meaning: text }),
     log: z.array(z.object({ slug, gate, cause })),
     // One row per closed idea. Only the five public rows carry a slug; the rest read "not published".
     ledger: z.array(z.object({ n: z.number().int().positive(), gate, cause, slug: slug.optional() }).strict()),
@@ -73,6 +91,12 @@ export const landingSchema = z
     }
     if (d.ledger.length !== d.counts.closed) {
       ctx.addIssue({ code: 'custom', message: `ledger has ${d.ledger.length} rows, closed is ${d.counts.closed}` });
+    }
+    for (const c of d.causes) {
+      if (!d.groups.some((g) => g.id === c.group)) ctx.addIssue({ code: 'custom', message: `cause ${c.id}: no group ${c.group}` });
+    }
+    for (const g of d.groups) {
+      if (!d.causes.some((c) => c.group === g.id)) ctx.addIssue({ code: 'custom', message: `group ${g.id} has no cause` });
     }
     const slugs = d.ledger.filter((r) => r.slug).map((r) => r.slug).sort();
     const logSlugs = d.log.map((l) => l.slug).sort();

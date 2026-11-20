@@ -4,14 +4,15 @@ import TopNav from '../components/TopNav.astro';
 import { landing } from '../lib/landing';
 import { pages } from '../lib/pages';
 import { IMPORTMAP } from '../lib/inline';
+import { homeLd } from '../lib/jsonld';
 // The landing: the glass word over the rain; under it what the site is ('research and
-// writing', in the word's glass, glass-mark.js), a small 'now' line for the current project, and the line that says
-// how to go in, both in chrome. A click anywhere, the
+// writing', in the word's glass, glass-mark.js), and the line that says
+// how to go in, in chrome. A click anywhere, the
 // line or the Enter key flies the word into the top bar's wordmark, then About opens (glass-flight.js).
 const m = pages.meta.landing;
 const l = pages.landing;
 ---
-<Base title={m.title} description={m.description} path="/" bodyClass="land" motion="landing"
+<Base title={m.title} description={m.description} path="/" bodyClass="land" motion="landing" jsonld={homeLd()}
   htmlAttrs={{ 'data-look': 'geistall', 'data-mark': 'glass', 'data-small': 'sans', 'data-glass': 'warm', 'data-splash': '' }}
   fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'landing', 'landing-page']}
   importmap={IMPORTMAP} preloads={[
@@ -32,7 +33,6 @@ const l = pages.landing;
 <div class="poster" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="/img/poster-phone.webp" width="1262" height="330" /><img src="/img/poster-desktop.webp" width="2768" height="594" alt="" fetchpriority="high" decoding="async" /></picture></div>
 <div class="lede">
 <p class="lq"><span class="metal">{l.lede}</span></p>
-<p class="lr"><span class="metal">{l.now}</span></p>
 <p class="enter"><a href="/about/" aria-label={l.enter_label}><span aria-hidden="true">&gt; <span class="key">{l.enter_key}</span><span class="tap">{l.enter_tap}</span><span class="caret"></span></span></a></p>
 </div>
 </header>

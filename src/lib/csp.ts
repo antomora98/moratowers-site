@@ -14,6 +14,7 @@ const SCRIPT_HASHES = [
   'sha256-MSn8RKOcdayyMVMKbxP8mhsazDo9hWofkpnSVQsYbIo=', // MOTION_RULES: Rules
   'sha256-qSU+ifBqUoi7QaH/v6EocCEUwYbBT+2P4agPDT8ApNE=', // IMPORTMAP: three.js from /vendor/ (the landing, the 404)
   'sha256-eJOh0TP+0fUG7bBfGpI8L/H9EY3/r4TWUxfUgYGsDKQ=', // CASE_REDIRECT: /case/
+  'sha256-UppCKS2Tfjo/yLeBUqRHSlaSWKjBBvr95BNHsGMAP/E=', // EVALS_REDIRECT: /evals/
   ...(GOATCOUNTER_CODE ? ['sha256-+uyItYcpIsRQhh5M70YiRL1TrkX92JLv7PlPFxuP8ow='] : []), // Base.astro: the GoatCounter loader
 ];
 export const CSP = [

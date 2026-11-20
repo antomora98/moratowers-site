@@ -20,7 +20,7 @@
 .aboutpage h1,
 .storypage h1 {
   margin-top: 8px;
-  font: 400 36px / 1.1 var(--serif);
+  font: 400 36px / 40px var(--serif);
   letter-spacing: -0.01em;
   color: var(--ink);
   white-space: nowrap;
@@ -42,10 +42,14 @@
   font: 400 16px / 24px var(--sans);
   color: var(--ink);
 }
+/* About's lines about me, one paragraph each. */
+.aboutpage .who + .who {
+  margin-top: 16px;
+}
 .aboutpage .ask {
   margin-top: 24px;
   max-width: 62ch;
-  font: 400 20px / 32px var(--sans);
+  font: 400 20px / 28px var(--sans);
   color: var(--ink);
 }
 .aboutpage .res {
@@ -59,45 +63,80 @@
 }
 .aboutpage .luck {
   margin-top: 8px;
+  max-width: 62ch;
+  font: 400 16px / 24px var(--sans);
+  color: var(--chrome);
 }
-.aboutpage .next {
+.aboutpage .luck .nw {
+  font-family: var(--mono);
+}
+/* The section gap (.sec), so fig. 1 reads as a new part after the luck line above it. */
+.ideas {
+  margin: 48px 0 0;
+  max-width: 720px;
+}
+.ideas .grp + .grp {
   margin-top: 24px;
 }
-.aboutpage .ledgerln {
-  margin-top: 8px;
+.ideas .gh {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  font: 400 16px / 24px var(--sans);
+  color: var(--ink);
 }
-.aboutpage .ledgerln a {
+.ideas .gn {
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+.ideas ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.ideas .row {
+  display: grid;
+  grid-template-columns: 3ch 21ch minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: center;
+}
+.ideas .row + .row {
+  margin-top: 12px;
+}
+.ideas .n,
+.ideas .k {
+  font: 400 13px / 16px var(--mono);
+  color: var(--chrome);
+  white-space: nowrap;
+}
+.ideas .n {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ideas .m,
+.ideas .cs {
+  grid-column: 2 / -1;
+  max-width: 62ch;
+}
+.ideas .m {
+  margin-top: 4px;
+  font: 400 16px / 24px var(--sans);
+  color: var(--dim);
+  text-wrap: pretty;
+}
+.ideas .cs {
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+.ideas .cs a {
   color: var(--chrome);
   padding: 4px 1px;
   margin: 0 -1px;
 }
-.aboutpage .next a {
+.ideas .cs a:hover,
+.ideas .cs a:focus-visible {
   color: var(--ink);
-}
-.ideas {
-  margin: 40px 0 0;
-  max-width: 720px;
-}
-.ideas .row {
-  display: grid;
-  grid-template-columns: 13ch 3ch minmax(0, 1fr);
-  column-gap: 8px;
-  align-items: center;
-  min-height: 16px;
-}
-.ideas .row + .row {
-  margin-top: 4px;
-}
-.ideas .k {
-  font: 400 11px / 16px var(--mono);
-  color: var(--dim);
-  white-space: nowrap;
-}
-.ideas .n {
-  font: 400 11px / 16px var(--mono);
-  color: var(--dim);
-  text-align: right;
-  font-variant-numeric: tabular-nums;
 }
 .ideas .cells {
   display: flex;
@@ -117,17 +156,21 @@
 .ideas .o {
   border: 1px solid var(--dim);
 }
-.ideas .c.p {
-  background: var(--ink);
-  outline: 1px solid var(--ink);
-  outline-offset: 1px;
-}
 .ideas figcaption {
   margin-top: 16px;
   max-width: 62ch;
-  font: 400 12px / 18px var(--mono);
+  font: 400 12px / 16px var(--mono);
   color: var(--dim);
   white-space: pre-wrap;
+}
+@media (max-width: 599px) {
+  .ideas .row {
+    grid-template-columns: 3ch minmax(0, 1fr);
+  }
+  .ideas .cells {
+    grid-column: 2;
+    margin-top: 4px;
+  }
 }
 .aboutpage .links,
 .storypage .links {
@@ -154,7 +197,7 @@
 .aboutpage .notadvice {
   margin-top: 24px;
   max-width: 62ch;
-  font: 400 14px / 20px var(--sans);
+  font: 400 16px / 24px var(--sans);
   color: var(--dim);
 }
 .aboutpage .who,
@@ -178,7 +221,7 @@
 }
 .storypage .lbl {
   margin-top: 48px;
-  font: 400 11px / 16px var(--mono);
+  font: 400 12px / 16px var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--label);
@@ -250,7 +293,7 @@
   font-variant-numeric: tabular-nums;
 }
 .storypage .tl .rec .lk {
-  font: 400 11px / 16px var(--mono);
+  font: 400 12px / 16px var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--label);
@@ -276,4 +319,132 @@
   .storypage .tl h3 {
     margin-bottom: 4px;
   }
+}
+.aboutpage .sec {
+  margin-top: 48px;
+  max-width: 62ch;
+}
+.aboutpage .sec h2 {
+  margin: 0;
+  font: 400 20px / 28px var(--sans);
+  color: var(--ink);
+}
+.aboutpage .sec .date {
+  margin-top: 4px;
+  font: 400 12px / 16px var(--mono);
+  color: var(--dim);
+}
+.aboutpage .sec p:not(.date),
+.aboutpage .sec li,
+.aboutpage .sec dd,
+.aboutpage .ways dd {
+  font: 400 16px / 24px var(--sans);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.aboutpage .sec h2 + p,
+.aboutpage .sec .date + ul {
+  margin-top: 16px;
+}
+.aboutpage .sec ul {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+.aboutpage .sec li + li {
+  margin-top: 12px;
+}
+.aboutpage .sec .cs {
+  display: block;
+  width: fit-content;
+  margin-top: 4px;
+  font: 400 13px / 16px var(--mono);
+  color: var(--chrome);
+  padding: 4px 1px;
+  margin-inline: -1px;
+}
+.aboutpage .built {
+  display: grid;
+  grid-template-columns: 11ch minmax(0, 1fr);
+  gap: 12px 16px;
+  align-items: first baseline;
+  margin: 16px 0 0;
+}
+.aboutpage .built dt {
+  font: 400 13px / 16px var(--mono);
+}
+.aboutpage .built dd {
+  margin: 0;
+  color: var(--chrome);
+}
+.aboutpage .built a,
+.aboutpage .chan a {
+  color: var(--ink);
+  padding: 4px 1px;
+  margin: 0 -1px;
+}
+.aboutpage .sec .chan li {
+  font: 400 13px / 16px var(--mono);
+}
+.aboutpage .sec .chan li + li {
+  margin-top: 8px;
+}
+.aboutpage #contact {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+.aboutpage .sec + .links.go,
+.aboutpage .sec + .endlinks {
+  margin-top: 48px;
+}
+/* About's two ways on: the 'What I built' list, a command beside its question. */
+.aboutpage .ways {
+  margin-top: 32px;
+}
+/* A list of titled rows, each title over its line at every width: the case files on /case/ and on /evals/. */
+.aboutpage .built.one {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 4px;
+}
+.aboutpage .built.one dd + dt {
+  margin-top: 16px;
+}
+/* An eval case's verdict under its question, in the label block's mono capitals. */
+.aboutpage .built .verdict {
+  display: block;
+  margin-top: 4px;
+  font: 400 13px / 16px var(--mono);
+  letter-spacing: .04em;
+}
+@media (max-width: 599px) {
+  .aboutpage .built {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4px;
+  }
+  .aboutpage .built dd + dt {
+    margin-top: 12px;
+  }
+}
+.storypage .prose section + section {
+  margin-top: 32px;
+}
+.storypage .prose .sh {
+  font: 400 20px / 28px var(--sans);
+  color: var(--ink);
+}
+.storypage .prose p.date {
+  margin-top: 4px;
+  font: 400 12px / 16px var(--mono);
+  color: var(--dim);
+}
+.storypage .prose .sh + p,
+.storypage .prose .date + p {
+  margin-top: 16px;
+}
+/* About's portrait: one photograph, under the name, on a solid ground so the rain never shows through its edge. */
+.aboutpage .me {
+  display: block;
+  margin-top: 24px;
+  width: 240px;
+  height: auto;
+  background: var(--bg);
 }

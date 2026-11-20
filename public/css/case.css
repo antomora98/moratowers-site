@@ -89,7 +89,7 @@ html:not(.js) .stack .track {
 .steps .notadvice {
   margin-top: 24px;
   max-width: 62ch;
-  font: 400 14px / 20px var(--sans);
+  font: 400 16px / 24px var(--sans);
   color: var(--dim);
   text-wrap: pretty;
 }
@@ -256,6 +256,67 @@ html {
 .dw .glyph path {
   vector-effect: non-scaling-stroke;
 }
+/* The eval case files (src/pages/evals/[slug].astro) use this layout. Their label keys run to eleven characters
+   ('plan frozen'), so the key column is 12ch there, and a long verdict wraps. */
+.evalcase .verdict .head .ln {
+  padding-left: 12ch;
+  text-indent: -12ch;
+}
+.evalcase .verdict .head .k {
+  min-width: 12ch;
+}
+.evalcase .verdict .stamp {
+  white-space: normal;
+  vertical-align: top;
+}
+/* Every eval figure sits on the page colour, so the rain never shows through it. */
+.evalcase .unfold {
+  background: var(--bg);
+}
+/* The first eval case's figure, the vet-bench post's: each drawing near its drawn size, the compact one in the side
+   column and on phones. */
+.evalcase .scores .plot .wide {
+  display: none;
+}
+.evalcase .scores .plot .compact {
+  display: block;
+  max-width: 340px;
+}
+/* The figures drawn for the other eval cards: drawn at 400 and 360 wide, shown no larger, so their 12 and 13 px text
+   stays 12 and 13 px. Each has a solid rectangle of the page colour under it, the coin flip as a dashed tick, and a
+   number that may wrap under the main one. */
+.evalcase .unfold:not(.scores) .plot .wide {
+  max-width: 400px;
+}
+.evalcase .unfold:not(.scores) .plot .compact {
+  max-width: 360px;
+}
+.dw .bgr {
+  fill: var(--bg);
+}
+.dw .chance {
+  stroke: var(--dim);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.evalcase .number .match {
+  white-space: normal;
+}
+/* The number and its note start at the record's 12ch column too. */
+.evalcase .verdict .number {
+  padding-left: 12ch;
+}
+.evalcase .verdict .number .k {
+  min-width: 12ch;
+  margin: 0 -1ch 0 -12ch;
+}
+.evalcase .verdict .note {
+  padding-left: 12ch;
+}
+/* The reward audit's 0 to 0.18 band, a little stronger than the trading figures' bands so it reads as a band. */
+.evalcase .dw .band {
+  fill-opacity: .14;
+}
 @media (max-width: 1099px) {
   .fc {
     grid-template-columns: minmax(0, 1fr);
@@ -325,6 +386,27 @@ html {
   .cap-narrow {
     display: block;
     margin: calc(2 * var(--cell-h)) 0 0;
+  }
+}
+/* It is taller than the trading cases' strips, so under 900 px it stays in the flow above the text, with its caption,
+   instead of pinned under the menu; from 600 px the wide drawing fits. */
+@media (max-width: 899px) {
+  .evalcase .scores {
+    position: static;
+  }
+  .evalcase .scores .cap-wide {
+    display: block;
+  }
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  .evalcase .scores .plot {
+    max-width: 620px;
+  }
+  .evalcase .scores .plot .wide {
+    display: block;
+  }
+  .evalcase .scores .plot .compact {
+    display: none;
   }
 }
 @media (max-width: 959px) {

@@ -5,39 +5,83 @@
     {
       "id": "priced_right",
       "label": "priced right",
-      "n": 13
+      "n": 13,
+      "short": "already priced in",
+      "meaning": "As far as the test could tell, the price already had it, after fees.",
+      "group": "market_right"
     },
     {
       "id": "undecidable",
       "label": "needs years",
-      "n": 8
+      "n": 8,
+      "short": "needs years",
+      "meaning": "A fair answer needs more than a year of data.",
+      "group": "undecided"
     },
     {
       "id": "blocked",
       "label": "blocked",
-      "n": 7
+      "n": 7,
+      "short": "blocked",
+      "meaning": "Something outside the idea stopped the test: a venue not open to US traders, a price feed or data I could not get, no order book to trade at, or outcomes that could not be scored.",
+      "group": "undecided"
     },
     {
       "id": "queue_adverse_selection",
       "label": "queue",
-      "n": 5
+      "n": 5,
+      "short": "only losers filled",
+      "meaning": "The orders that would have filled were the losing ones.",
+      "group": "market_right"
     },
     {
       "id": "capacity",
       "label": "capacity",
-      "n": 5
+      "n": 5,
+      "short": "too little volume",
+      "meaning": "Even if real, too little traded to be worth it.",
+      "group": "too_small"
     },
     {
       "id": "supply",
       "label": "supply",
-      "n": 4
+      "n": 4,
+      "short": "almost never came up",
+      "meaning": "The setup came up too rarely to test or trade.",
+      "group": "too_small"
     },
     {
       "id": "lookahead_invalid",
       "label": "look-ahead",
-      "n": 2
+      "n": 2,
+      "short": "used future data",
+      "meaning": "The test used information that was not public yet.",
+      "group": "test_wrong"
     }
   ],
+  "groups": [
+    {
+      "id": "market_right",
+      "label": "The price seemed to have it"
+    },
+    {
+      "id": "too_small",
+      "label": "Too small or too rare"
+    },
+    {
+      "id": "undecided",
+      "label": "Needs more time or data"
+    },
+    {
+      "id": "test_wrong",
+      "label": "The test was wrong"
+    }
+  ],
+  "open_group": {
+    "label": "Still open",
+    "short": "not closed",
+    "meaning": "Not decided at the audit's snapshot."
+  },
   "rules": [
     {
       "id": "fills",
@@ -75,7 +119,7 @@
     "story": [
       "I build AI agents for a living. In my own time, I test whether they can trade prediction markets.",
       "In December 2025, my feed was full of trading bots doing arbitrage on fifteen-minute crypto markets. Automated trading used to belong to firms like Jane Street and Citadel. With AI, one person could try. I wanted to know if the bots were real, and if an AI could trade better than me. So I built one.",
-      "By March it had 898 paper trades, and they said it worked. On Sunday, March 8, I found out why: the simulation charged no fees and filled every order instantly. The results were fake. That evening I rebuilt the paper trader to check its fills against real trades. Two days later I shut down all eight crypto strategies.",
+      "By March it had 898 paper trades, and they said it worked. On March 4 a live run's balance did not add up, and I stopped the bot. The simulation was the cause: it charged no fees and filled every order instantly. The results were fake. On Sunday, March 8, I rebuilt the paper trader to check its fills against real trades. Two days later I shut down all eight crypto strategies.",
       "In August, two of my agents reported 99.09% and 93.91% for the same number. One had filtered the data without saying so. On August 20 I split the data into raw files that are never edited, cleaned tables that flag every fix, and analysis tables that state their filter.",
       "One agent builds and a different one checks. For the audit of all 53 ideas on the record, I froze the plan on October 17, before its two programs were written, and the checker never saw the builder's code. The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass. It failed the check twice: first, mostly because the two programs had rebuilt different sets of rows; then because seven totals were each filed in two places. Under a written stopping rule, only defects a separate triage confirmed could be fixed, and the third run passed. No verdict changed between the runs.",
       "I give this one to two hours a day, after work. When I'm at the gym, I let a fleet of agents work, behind the same gates.",
@@ -83,11 +127,14 @@
       "On February 26, an Opus 4.6 commit called \"quick wins\" deleted 226 lines of safety code. A 24-hour test run caught it, and that became the guard skill in my public guardrails repo. In August an agent spent about 39 minutes and 144,000 tokens re-testing an idea I had already killed, because my note didn't name the market. Kill notes now name it.",
       "Every brief I give an agent says the same four things: finish the question, report what is true, gate anything that touches money, and have a different agent check the work.",
       "One idea made money: a bot that bought the favorite in sports games, on the old finding that favorites win more often than their price says. It ran live from March to July and finished ahead. In August I checked it without its best month: it still came out ahead, but not by enough to rule out luck. Its markets were also too thin for bigger orders. The audit labels it not established. I'll test it again on new data, with its rules frozen first.",
+      "By the fall, the most useful thing I had was not a trading idea. It was the habit of checking a claim before believing it. I had written that habit down as a checklist for my agents. So I asked whether an AI agent could do the checking itself.",
+      "I built a small benchmark. Each task is a folder with a research claim in it. Some claims are wrong in a way that looks right. Each wrong one has a twin, nearly identical and true. A pair counts only when the agent rejects the trap and accepts the twin.",
+      "The pilot passed one of its two tests, so it did not pass. It ranked a stronger model above a weaker one, narrowly, but it could not show there was room above the best. Whether the checklist helps an agent was not established. Before any run I also attacked my own scoring with scripted answers, and one of the rewards broke. Show an agent both folders at once and an answer built from their differences gets every pair. So each folder has to be scored in its own run.",
       "After correcting for luck across all 53 ideas, none has yet shown a durable edge. At the audit's snapshot, forty-four were closed, each with its cause written down, and nine were still open, the sports bot among them. One that passes the same checks is enough.",
       "Now I'm collecting data for the next test and writing up the closed ideas one at a time.",
-      "Most of it is me and a team of AI agents. The choices and the mistakes are mine.",
+      "Most of it is me and a team of AI agents.",
       "This site is not advice and gives no signals or trade ideas. It records what I tested and what happened.",
-      "Start with a case file. If you build with agents, the guardrails are free to use. If you're testing the same kind of thing, I'd like to compare notes: I'm @moratowers on X."
+      "Start with a case file or an eval card. If you build with agents, the guardrails are free to use. If you're testing the same kind of thing, I'd like to compare notes: I'm @moratowers on X."
     ]
   },
   "counts": {

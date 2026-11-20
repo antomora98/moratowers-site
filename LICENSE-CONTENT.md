@@ -14,7 +14,7 @@ to https://moratowers.dev, for non-commercial purposes and without changes.
 Third-party material keeps its own terms:
 - Pump.fun data: Slink Dev (slink21taken), PumpFun Launch Corpus, 2026,
   CC BY 4.0.
-- Typefaces: Geist, Geist Mono and Geist Serif by Vercel, SIL Open Font License 1.1
+- Typefaces: Geist Mono and Geist Serif by Vercel, SIL Open Font License 1.1
   (public/fonts/GEIST-OFL.txt); IBM Plex Mono, SIL Open Font License 1.1 (public/fonts/OFL.txt).
 - GoatCounter's counter script (public/js/count.js), copied unchanged from gc.zgo.at, ISC license.
 - The glass wordmark models (public/models/) were made by Antonio Mora with the Vitrum app from

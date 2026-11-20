@@ -42,7 +42,8 @@ html {
 .topnav a[aria-current=page] {
   color: var(--ink);
 }
-@media (max-width: 379px) {
+/* Five menu words: the tighter spacing now starts at 439 px, where the wider spacing stops fitting. */
+@media (max-width: 439px) {
   .topnav {
     padding-inline: 10px;
   }
@@ -53,6 +54,33 @@ html {
     padding: 0;
   }
 }
+/* Five menu words beside the wordmark need more room than a 360 px screen has: the wordmark steps down one size and
+   the words sit closer, so nothing touches down to 320 px. */
+@media (max-width: 369px) {
+  .topnav {
+    gap: 0 8px;
+    padding-inline: 8px;
+  }
+  .topnav .home {
+    font-size: 16px;
+  }
+  .topnav .links {
+    gap: 0 6px;
+  }
+  .topnav .links a {
+    min-width: 0;
+    font-size: 12px;
+  }
+}
+@media (max-width: 339px) {
+  .topnav {
+    gap: 0 6px;
+    padding-inline: 6px;
+  }
+  .topnav .links {
+    gap: 0 4px;
+  }
+}
 ::view-transition-group(topnav) {
   animation-duration: 0s;
 }
@@ -60,16 +88,11 @@ html {
 ::view-transition-new(topnav) {
   animation: none;
 }
-@font-face {
-  font-family: "Geist Serif";
-  src: url(../fonts/geist-serif-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
 @view-transition {
   navigation: auto;
 }
 .topnav .home {
+  flex: none;
   font-family:
     "Geist Serif",
     Georgia,

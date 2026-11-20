@@ -1,0 +1,22 @@
+---
+import { pages } from '../lib/pages';
+import { EVALS_REDIRECT } from '../lib/inline';
+import { CSP } from '../lib/csp';
+// /evals/ (the nav's 'evals', About's '> ls evals') opens the first eval card, as /case/ opens case 1
+// (case/index.astro, copied). The refresh is the way when scripts are off; the canonical names the page it opens.
+// The dark page colour comes from site.css, a render-blocking stylesheet, so nothing flashes white and no element
+// carries a style attribute.
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="content-security-policy" content={CSP} />
+<meta charset="utf-8" />
+<meta http-equiv="refresh" content="0; url=/evals/pilot/" />
+<title>{pages.meta.evals.title}</title>
+<link rel="canonical" href={new URL('/evals/pilot/', Astro.site).href} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/css/site.css" />
+</head>
+<body><script is:inline set:html={EVALS_REDIRECT}></script><p><a href="/evals/pilot/">&gt; cat pilot.md</a></p></body>
+</html>

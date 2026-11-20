@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import { pages } from '../../lib/pages';
+import * as post from '../../posts/vet-bench-appendix.md';
+// Draft page: the results appendix of the vet-bench post. src/posts/vet-bench-appendix.md is its source copied word for
+// word, minus the one bullet of model costs in A8 (the site carries no money figures; the line under the title says so).
+// Each section head gets a short id (a1 to a19) so the post can link "A12" to it; each table scrolls in its own box.
+const md = await post.compiledContent();
+const title = (md.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) ?? [])[1];
+if (!title) throw new Error('vet-bench appendix: no title');
+const heads = md.match(/<h2 id="[^"]*">A\d+\./g) ?? [];
+if (heads.length !== 19) throw new Error(`vet-bench appendix: expected 19 sections, found ${heads.length}`);
+const html = md
+  .replace(/<h2 id="[^"]*">A(\d+)\./g, (_, n) => `<h2 id="a${n}">A${n}.`)
+  .replaceAll('<table>', '<div class="tw"><table>')
+  .replaceAll('</table>', '</table></div>');
+const plain = title.replace(/<[^>]+>/g, '');
+---
+<Base title={`${plain} | moratowers`} ogTitle={plain} description="The registered tables behind the vet-bench pilot." path="/vet-bench/appendix/" fonts={['geist-serif-400', 'geist-mono-400']}
+  styles={['site', 'motion', 'nav', 'brand', 'brand-post']} rain>
+<a class="skip" href="#main">skip to the text</a>
+<TopNav here="post" />
+<main id="main" class="postpage lead">
+<p class="ln">&gt; cat vet-bench-appendix.md</p>
+<p class="ln">Model costs (one bullet of A8) are left off this page.</p>
+<article class="prose" set:html={html}></article>
+<p class="ln endlinks"><a href="/vet-bench/">&gt; cat vet-bench.md</a></p>
+</main>
+</Base>

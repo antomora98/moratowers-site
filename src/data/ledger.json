@@ -217,7 +217,12 @@
     "private": "Both files are private for now. If they are published, anyone can hash them and compare:",
     "cmd": "> shasum -a 256 PREREG.md",
     "expect": "It must print the plan's hash above. The same command on the result table must print the second.",
-    "limit": "This page is the first public place these hashes appear, so they do not prove when the plan was written. They prove that a file published later is the one this page describes."
+    "limit": "The plan's hash is also in a public registry with a Bitcoin timestamp at block 972859 (2026-10-24 02:04 UTC), so the plan existed by then. The audit's first build attempt began on 2026-10-22, so that stamp alone does not show the plan came first. The result table's hash has no stamp. It proves only that a file published later is the one this page describes.",
+    "repo": {
+      "text": "The test registry, with its timestamp proofs, and the audit's multiple-testing code are in a public repository:",
+      "label": "moratowers/receipts",
+      "href": "https://github.com/moratowers/receipts"
+    }
   },
   "end": {
     "label": "> ls cases",

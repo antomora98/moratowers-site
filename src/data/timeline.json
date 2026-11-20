@@ -22,7 +22,7 @@
   {
     "month": "2026-03",
     "lines": [
-      "March 8: 898 paper trades turn out to be fake (no fees, instant fills). I rebuild the paper trader that evening to check its fills against real trades.",
+      "March 4: a live run shows the 898 paper trades were fake (no fees, instant fills). March 8: I rebuild the paper trader to check its fills against real trades.",
       "March 28: live code that does not match its backtest (a tenfold scaling slip) leads to a five-step launch rule: backtest, matching check, a day in shadow, review, smallest size.",
       "I install a code-review graph, and \"query the graph before editing\" becomes a rule. 174 commits."
     ]
@@ -72,6 +72,14 @@
     "lines": [
       "A research-protocol skill, a shared statistics library and a data-completeness policy, each built by one agent and reviewed by another. The dead-code merge removes 2,598 lines.",
       "October 17: I freeze the audit's plan. October 25: the checker passes it on the third run."
+    ]
+  },
+  {
+    "month": "2026-11",
+    "lines": [
+      "November 9: I freeze the plan for a benchmark of 24 tasks in 12 pairs. An expired login is recorded as 335 answers. A pace check catches it, and all are rerun.",
+      "The pilot passes one of its two tests, so it does not pass.",
+      "November 11: two open models run the seven public pairs, 168 runs."
     ]
   }
 ]

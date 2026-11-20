@@ -12,6 +12,7 @@ const GATE = main.dataset.gate;
 const bar = document.querySelector(".bar");
 const F = { mode: bar.querySelector(".mode"), path: bar.querySelector(".path"), pl: bar.querySelector(".pl"), ps: bar.querySelector(".ps") };
 const BAR0 = { path: F.path.textContent, pl: F.pl.textContent, ps: F.ps.textContent };
+const DIR = BAR0.path.slice(0, BAR0.path.lastIndexOf("/") + 1);
 function swap(el, text) {
   if (el.textContent === text) return;
   el.textContent = text;
@@ -55,7 +56,7 @@ if (/(?:\?|&)still(?:&|=|$)/.test(location.search)) cards.forEach((c) => {
 });
 function place() {
   const W = stack.clientWidth, H = stack.clientHeight;
-  const top = Math.max(0, (H - (4 * PITCH + CARD_H)) / 2);
+  const top = Math.max(0, (H - ((cards.length - 1) * PITCH + CARD_H)) / 2);
   cards.forEach((c, i) => {
     const d = i - cur, a = Math.min(3, Math.abs(d));
     if (tall()) {
@@ -97,9 +98,9 @@ function move(to, how) {
   cur = to;
   place();
   const c = cards[cur];
-  swap(F.path, `~/moratowers/src/content/cases/${c.dataset.slug}.md`);
-  swap(F.pl, `case ${c.dataset.n} of 5`);
-  swap(F.ps, `${c.dataset.n} of 5`);
+  swap(F.path, `${DIR}${c.dataset.slug}.md`);
+  swap(F.pl, `case ${c.dataset.n} of ${cards.length}`);
+  swap(F.ps, `${c.dataset.n} of ${cards.length}`);
   if (how === "key" && stack.contains(document.activeElement)) c.focus({ preventScroll: true });
   clearTimeout(navT);
   if (cur === here) return;
