@@ -50,7 +50,9 @@ const card = {
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical ? <link rel="canonical" href={url} /> : <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="moratowers" href="/rss.xml" />
     {fonts.map((f) => <link rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossorigin />)}
     {fontFaces && <link rel="stylesheet" href="/css/fonts.css" />}
