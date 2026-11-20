@@ -22,6 +22,8 @@ export const CSP = [
   "font-src 'self'",
   `img-src 'self'${goatcounter}`,
   `connect-src 'self'${goatcounter}`,
+  // The web app manifest (/site.webmanifest): the home-screen icons and colours, same-origin only.
+  "manifest-src 'self'",
   "base-uri 'none'",
   "form-action 'none'",
   "object-src 'none'",

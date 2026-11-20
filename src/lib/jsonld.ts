@@ -7,7 +7,7 @@ import { pages } from './pages';
 const SITE = 'https://moratowers.dev/';
 const PROFILES = pages.about.contact.channels.filter((c) => c.me).map((c) => c.href);
 export const person = { '@type': 'Person', '@id': `${SITE}#person`, name: landing.about.name, url: SITE, sameAs: PROFILES };
-const website = { '@type': 'WebSite', '@id': `${SITE}#website`, url: SITE, name: landing.name, description: pages.meta.landing.description, author: { '@id': person['@id'] } };
+const website = { '@type': 'WebSite', '@id': `${SITE}#website`, url: SITE, name: landing.name, description: pages.meta.landing.description, image: `${SITE}icon-512.png`, author: { '@id': person['@id'] } };
 const graph = (...nodes: object[]) => ({ '@context': 'https://schema.org', '@graph': nodes });
 
 export const homeLd = () => graph(website, person);
