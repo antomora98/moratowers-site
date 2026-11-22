@@ -54,6 +54,8 @@ export const evalSchema = z.object({
   // model-scores: the vet-bench post's figure (src/posts/figures/), with the post's caption.
   figure: z.enum(['model-scores']).optional(),
   links: z.array(z.object({ label: text, href: z.string().refine((s) => s.startsWith('/') || s.startsWith('https://'), 'a path or an https URL') })).min(1),
+  // What is planned next for this eval, under the lesson, as the cases page lists its own: a date line and the items.
+  next: z.object({ date: text, items: z.array(text).min(1) }).optional(),
 });
 
 export const landingSchema = z

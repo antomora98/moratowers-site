@@ -313,6 +313,11 @@ html {
 .evalcase .verdict .note {
   padding-left: 12ch;
 }
+/* The date line of an eval card's Next list: dim, flush with its heading. */
+.evalcase .verdict .planned {
+  margin: 4px 0 8px;
+  color: var(--dim);
+}
 /* The reward audit's 0 to 0.18 band, a little stronger than the trading figures' bands so it reads as a band. */
 .evalcase .dw .band {
   fill-opacity: .14;
