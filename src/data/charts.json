@@ -1,0 +1,89 @@
+{
+  "fifteen-minute-reversal": {
+    "source": "The case's result table: the reversal rate, its Wilson interval and the count of window pairs.",
+    "rate": "50.7",
+    "lo": "48.4",
+    "hi": "53.0",
+    "coin_flip": "50",
+    "pairs": "1,812",
+    "scale": { "min": 46, "max": 54 }
+  },
+  "pump-graduation": {
+    "source": "The case's result table: the row for all trades, and the row for the larger pools after costs, an exploratory cut.",
+    "break_even": "0",
+    "scale": { "min": -60, "max": 0, "ticks": [-60, -40, -20, 0] },
+    "rows": [
+      { "label": "all trades", "table_label": "All trades", "mean": "−53.5", "lo": "−55.8", "hi": "−50.9", "exploratory": false },
+      { "label": "larger pools", "table_label": "Larger pools, after costs", "mean": "−14.3", "lo": "−20.0", "hi": "−7.8", "exploratory": true }
+    ]
+  },
+  "novig-favorites": {
+    "source": "The case's result table: the win rate over breakeven on the scored outcomes with its Wilson interval, the share not scored and the count of outcomes.",
+    "points": "+3.95",
+    "lo": "0.44",
+    "hi": "7.01",
+    "breakeven": "0",
+    "not_scored": "43.7",
+    "outcomes": "943",
+    "scale": { "min": -2, "max": 8, "ticks": [-2, 0, 2, 4, 6, 8] }
+  },
+  "logical-arbitrage": {
+    "source": "The case's result table: the count of raw gaps and the count of real ones with how many could fill the order; the count of events scanned is from the table's filter note.",
+    "events": 860,
+    "raw": 8,
+    "never": 3,
+    "real": 5,
+    "could_fill": 0,
+    "order": "500"
+  },
+  "futures-basis": {
+    "source": "No numbers: the case prints none, so the figure is a diagram."
+  },
+  "pilot": {
+    "source": "The write-up's table of primary results, from the scored runs, which is also the figure's own table.",
+    "coin_flip": "0.25",
+    "headroom_bar": "0.85",
+    "clusters": "11",
+    "scale": { "min": 0, "max": 1, "ticks": [0, 0.5, 1] },
+    "graders": ["Opus 4.8", "Opus 5"],
+    "rows": [
+      { "model": "Opus", "scores": [{ "score": "0.82", "lo": "0.61", "hi": "1.03" }, { "score": "0.70", "lo": "0.46", "hi": "0.93" }] },
+      { "model": "Sonnet", "scores": [{ "score": "0.68", "lo": "0.46", "hi": "0.89" }, { "score": "0.68", "lo": "0.47", "hi": "0.90" }] },
+      { "model": "Haiku", "scores": [{ "score": "0.34", "lo": "0.16", "hi": "0.52" }, { "score": "0.31", "lo": "0.11", "hi": "0.50" }] }
+    ],
+    "opus_minus_haiku": [{ "diff": "+0.48", "lo": "0.14", "hi": "0.82" }, { "diff": "+0.39", "lo": "0.004", "hi": "0.77" }]
+  },
+  "open-models": {
+    "source": "The Results section of the vet-bench README: pair score, 95% t interval, and the trap and twin runs that passed.",
+    "coin_flip": "0.25",
+    "clusters": "six",
+    "runs": 21,
+    "scale": { "min": 0, "max": 1, "ticks": [0, 0.5, 1] },
+    "models": [
+      {
+        "name": "deepseek-v4.1-flash",
+        "rows": [
+          { "label": "no checklist", "table_label": "without the checklist", "score": "0.056", "lo": "-0.087", "hi": "0.198", "traps": 19, "twins": 1 },
+          { "label": "checklist", "table_label": "with the checklist", "score": "0.056", "lo": "-0.087", "hi": "0.198", "traps": 21, "twins": 1, "twins_note": "an answer cut off at the output limit" }
+        ]
+      },
+      {
+        "name": "qwen3.6-35b-a3b",
+        "rows": [
+          { "label": "no checklist", "table_label": "without the checklist", "score": "0.000", "lo": "0.000", "hi": "0.000", "traps": 1, "twins": 0 },
+          { "label": "checklist", "table_label": "with the checklist", "score": "0.111", "lo": "-0.070", "hi": "0.292", "traps": 12, "twins": 3 }
+        ]
+      }
+    ]
+  },
+  "reward-audit": {
+    "source": "Appendix A17 of the write-up and the card's own table; pre-run marks.",
+    "scale": { "min": 0, "max": 1, "ticks": [0, 0.25, 0.5, 0.75, 1] },
+    "rows": [
+      { "id": "verdict", "label": "verdict only", "coin_flip": "0.50", "best": "0.54", "constant": "0.50" },
+      { "id": "evidence", "label": "verdict and evidence", "coin_flip": "0.50", "best": "0.54", "second_grader": "0.50" },
+      { "id": "pair", "label": "pair score", "coin_flip": "0.25", "best": "0.18", "or_less": true, "constant": "0" },
+      { "id": "both", "label": "both folders in one episode", "coin_flip": "0.25", "best": "1.00", "sizes_rule": "0.73" }
+    ]
+  }
+}

@@ -59,9 +59,7 @@ I registered two tests, both without the skill, each to pass under both graders.
 
 A model score is the mean pair score over 11 clusters (two pairs share a mechanism). A coin flip on the verdict scores 0.25.
 
-![Dot-and-whisker chart of the pair scores of Opus, Sonnet and Haiku under each of two graders, with a line at the 0.25 coin flip and a line at the 0.85 headroom bar.](figures/model_scores.svg)
-
-*Figure. Pair scores without the skill for three models on 11 task clusters, three repeats each, as scored by each of two graders. Dots are scores. Bars are 95% t intervals over the 11 clusters, and one upper end above 1 is clipped at 1. Opus and Sonnet sit above the 0.25 coin flip under both graders, and Haiku's interval includes it. Opus's and Sonnet's upper ends do not fall under the 0.85 headroom bar.*
+*Figure. Pair score without the skill and its 95% t interval over 11 clusters. Opus's upper end, 1.03, is drawn at 1. Opus and Sonnet sit above the 0.25 coin flip under both graders.*
 
 **The same scores by half, Opus 4.8 grader / Opus 5 grader.**
 

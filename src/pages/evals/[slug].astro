@@ -3,15 +3,14 @@ import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 import { getEvals, nwWords, nwDates } from '../../lib/site';
 import { landing } from '../../lib/landing';
-import { pages, evalExtras } from '../../lib/pages';
-import * as post from '../../posts/vet-bench.md';
-import wide from '../../posts/figures/model_scores.svg?raw';
-import compact from '../../posts/figures/model_scores_compact.svg?raw';
+import { evalExtras } from '../../lib/pages';
+import { chart } from '../../lib/charts';
 
-// One page per eval case file, a draft, as a sibling of a trading case (case/[slug].astro): the card stack, each card
-// with its mark and plain word; the case's sections from its file; the record (the verdict, the mark and word, the
-// label rows, the record links); the number; the lesson; one figure. Nothing appears on scroll; case.js moves the stack
-// and the bar.
+// One page per eval case file, a draft, as a sibling of a trading case (case/[slug].astro): the card strip, each card
+// with its mark and plain word; the case's sections from its file, with the chart in the text under Result; the record
+// (the verdict, the mark and word, the label rows, the record links, the number); the lesson. The record is one block.
+// Under 1100 px it sits in the text after the fourth section. From 1100 px case.css places it beside the text. Nothing
+// appears on scroll; case.js moves the strip and the bar.
 export async function getStaticPaths() {
   const all = await getEvals();
   return all.map((card, i) => ({ params: { slug: card.entry.id }, props: { card, i, all } }));
@@ -23,25 +22,11 @@ const x = evalExtras[entry.id];
 if (!x) throw new Error(`${entry.id}: no entry in evals.json`);
 const steps = sections.slice(0, 4);
 const lesson = sections[4];
-// The figure. model-scores is the vet-bench post's: its two drawings and the post's own caption without its first
-// word, with its screen-reader table from src/data/figures/evals/. Any other card's figure is drawn for it there (the
-// plot, then the table), with its caption in evals.json.
-const figs = import.meta.glob('../../data/figures/evals/*.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
-const file = figs[`../../data/figures/evals/${entry.id}.html`];
-if (!file) throw new Error(`${entry.id}: no figure`);
-const postFig = d.figure === 'model-scores';
-let plot: string, table: string, cap: string;
-if (postFig) {
-  const c = ((await post.compiledContent()).match(/<p><em>Figure\. ([\s\S]*?)<\/em><\/p>/) ?? [])[1];
-  if (!c) throw new Error(`${entry.id}: the post has no figure caption`);
-  [plot, table, cap] = [`<div class="plot">${wide}${compact}</div>`, file.trim(), c];
-} else {
-  if (!x.caption) throw new Error(`${entry.id}: no caption in evals.json`);
-  [plot, table] = file.trim().split('\n');
-  cap = nwDates(x.caption);
-}
-// One mark per card, drawn as the trading causes' marks are, and repeated in the card's record and, where it fits, in
-// its figure (the same paths are in the figure files).
+// The chart (src/lib/charts.ts): drawn at two widths, with its caption and its screen-reader table. It follows Result.
+const fig = chart(entry.id);
+const FIG_AFTER = 'Result';
+if (!steps.some((s) => s.h === FIG_AFTER)) throw new Error(`${entry.id}: no section "${FIG_AFTER}" for the chart to follow`);
+// One mark per card, drawn as the trading causes' marks are, and repeated in the card's record.
 const MARKS: Record<string, string> = {
   pilot: '<path shape-rendering="crispEdges" d="M2.5 3.5h11"/><path shape-rendering="crispEdges" d="M6.5 8.5h3v5h-3z"/>',
   'reward-audit': '<path shape-rendering="crispEdges" d="M2.5 5.5h10v5h-10zM7.5 5.5v5"/>',
@@ -57,7 +42,7 @@ const N = all.length;
 const sep = ' · ';
 ---
 <Base title={`${d.title} | moratowers`} description={question} path={`/evals/${entry.id}/`}
-  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'case', 'brand']} rain>
+  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'case', 'brand', 'charts']} rain footer>
 <a class="skip" href="#case">skip to the case</a>
 <TopNav here="evals" />
 <svg class="sprite" width="0" height="0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" set:html={sprite}></svg>
@@ -68,22 +53,14 @@ const sep = ' · ';
 <article class="case buffer" id="case" tabindex="-1" aria-labelledby="case-h">
 <header class="intro"><p class="ln">&gt; cat {entry.id}.md</p>
 <h1 id="case-h" set:html={nwWords(d.title)}></h1></header>
-<div class="scrolly">
 <div class="steps">
-{steps.map((s) => <section><h2>{s.h}</h2><p class="ln">{s.paras.join(' ')}</p></section>)}
-<section class="verdict"><div class="head file-head"><p class="ln"><span class="k">verdict</span><span class="stamp">{d.verdict}</span></p><p class="ln"><span class="k">found</span><svg class="mark" aria-hidden="true"><use href={`#m-${entry.id}`}/></svg>{x.word}</p>{d.label.map(([k, v]) => <p class="ln"><span class="k">{k}</span><span set:html={nwDates(v)}></span></p>)}<p class="ln audit"><span class="k">record</span>{d.links.map((l, k) => <>{k > 0 && sep}<a href={l.href}><span class="nw">{l.label}</span></a></>)}</p></div><p class={x.number.match ? 'number checked' : 'number'} id="num"><span class="k">the number</span><span class="cells" aria-hidden="true">{[...x.number.cells].map((ch) => <span class="cell">{ch}</span>)}</span><span class="rest" aria-hidden="true">{x.number.rest}</span><span class="sr-only">{x.number.sr}</span>{x.number.match && <span class="match" aria-hidden="true">{x.number.match}</span>}</p><p class="ln note" set:html={nwDates(x.number.note)}></p><h2>{lesson.h}</h2><p class="ln lesson">{lesson.paras.join(' ')}</p>{d.next && <><h2>Next</h2><p class="ln planned" set:html={nwDates(d.next.date)}></p>{d.next.items.map((t) => <p class="ln">{t}</p>)}</>}</section>
-{!postFig && <div class="cap-narrow" aria-hidden="true"><p class="figcap"><span class="chrome">fig. 1</span>  <Fragment set:html={cap} /></p></div>}
+{steps.map((s) => <><section><h2>{s.h}</h2><p class="ln">{s.paras.join(' ')}</p></section>{s.h === FIG_AFTER && <figure class="chart" aria-label="Figure 1"><Fragment set:html={fig.wide} /><Fragment set:html={fig.narrow} /><figcaption class="chart-cap"><span class="f">fig. 1</span> {fig.caption}</figcaption><Fragment set:html={fig.table} /></figure>}</>)}
+<section class="verdict"><div class="head file-head"><p class="ln"><span class="k">verdict</span><span class="stamp">{d.verdict}</span></p><p class="ln"><span class="k">found</span><svg class="mark" aria-hidden="true"><use href={`#m-${entry.id}`}/></svg>{x.word}</p>{d.label.map(([k, v]) => <p class="ln"><span class="k">{k}</span><span set:html={nwDates(v)}></span></p>)}<p class="ln audit"><span class="k">record</span>{d.links.map((l, k) => <>{k > 0 && sep}<a href={l.href}><span class="nw">{l.label}</span></a></>)}</p></div><p class={x.number.match ? 'number checked' : 'number'} id="num"><span class="k">the number</span><span class="cells" aria-hidden="true">{[...x.number.cells].map((ch) => <span class="cell">{ch}</span>)}</span><span class="rest" aria-hidden="true">{x.number.rest}</span><span class="sr-only">{x.number.sr}</span>{x.number.match && <span class="match" aria-hidden="true">{x.number.match}</span>}</p><p class="ln note" set:html={nwDates(x.number.note)}></p></section>
+<section><h2>{lesson.h}</h2><p class="ln lesson">{lesson.paras.join(' ')}</p>{d.next && <><h2>Next</h2><p class="ln planned" set:html={nwDates(d.next.date)}></p>{d.next.items.map((t) => <p class="ln">{t}</p>)}</>}</section>
 <p class="ln endprompt">{next ? <a href={`/evals/${next.id}/`}>&gt; cat {next.id}.md</a> : <a href="/errors/">&gt; cat errors</a>}</p>
-<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
-</div>
-<figure class={postFig ? 'unfold scores' : 'unfold'} aria-label="Figure 1">
-<Fragment set:html={plot} />
-<figcaption class="cap-wide"><p class="figcap"><span class="chrome">fig. 1</span>  <Fragment set:html={cap} /></p></figcaption>
-<Fragment set:html={table} />
-</figure>
 </div>
 </article>
 </main>
-<footer class="bar" aria-label="case navigation"><b class="mode">{d.verdict}</b><span class="path">{`${landing.home}/src/content/evals/${entry.id}.md`}</span>{prev ? <a class="step" href={`/evals/${prev.id}/`} aria-label="previous case">&larr;</a> : <span class="step" aria-disabled="true">&larr;</span>}<span class="pos"><span class="pl">{`case ${d.n} of ${N}`}</span><span class="ps">{`${d.n} of ${N}`}</span></span>{next ? <a class="step" href={`/evals/${next.id}/`} aria-label="next case">&rarr;</a> : <span class="step" aria-disabled="true">&rarr;</span>}<button type="button" class="motion" aria-pressed="true">motion: on</button></footer>
+<nav class="bar" aria-label="case navigation"><b class="mode">{d.verdict}</b><span class="path">{`${landing.home}/src/content/evals/${entry.id}.md`}</span>{prev ? <a class="step" href={`/evals/${prev.id}/`} aria-label="previous case">&larr;</a> : <span class="step" aria-disabled="true">&larr;</span>}<span class="pos"><span class="pl">{`case ${d.n} of ${N}`}</span><span class="ps">{`${d.n} of ${N}`}</span></span>{next ? <a class="step" href={`/evals/${next.id}/`} aria-label="next case">&rarr;</a> : <span class="step" aria-disabled="true">&rarr;</span>}<button type="button" class="motion" aria-pressed="true">motion: on</button></nav>
 <script is:inline type="module" src="/js/case.js"></script>
 </Base>

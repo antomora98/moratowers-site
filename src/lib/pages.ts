@@ -26,7 +26,8 @@ export const pagesSchema = z.object({
     not_advice: text,
     contact: z.object({ h: text, intro: text, channels: z.array(z.object({ label: text, href, me: z.boolean() })).min(1) }),
   }),
-  // /case/, the cases page: the trading question and its result, the audit and luck lines, fig. 1's caption, the line
+  // /case/, the cases page: the trading question and its result, the audit and luck lines, fig. 1's caption (its text
+  // only; the page prints "fig. 1" before it), the line
   // over the five cases and the ledger's row under them, then what is next and what would help.
   cases: z.object({
     prompt: text, h1: text, question: text, result: text, results: z.array(text), luck: text, figure_caption: text,
@@ -34,8 +35,11 @@ export const pagesSchema = z.object({
     next: z.object({ h: text, date: text, items: z.array(text).min(1) }),
     help: z.object({ h: text, intro: text, items: z.array(z.object({ text, case: slugRef.optional() })).min(1) }),
   }),
-  // The one link to About's contact section that ends every inner page.
+  // The link to About's contact section, in the footer of every inner page.
   contact_link: z.object({ label: text, href: z.string().startsWith('/about/#') }),
+  // The footer's line (WordFooter.astro): the name and 'updated' before the date, then the error log; contact_link
+  // follows it.
+  footer: z.object({ errors: z.object({ label: text, href: z.string().startsWith('/') }), updated: text }),
   // The menu on every page, in order (TopNav.astro).
   nav: z.array(z.object({ label: text, href: z.string().startsWith('/') })).min(1),
   outside: z.array(link),
@@ -64,7 +68,7 @@ export const casesSchema = z.record(z.string(), z.object({
   attribution: text.optional(),
 }));
 // The eval cards' extras (evals.json), as cases.json is for the trading cases: the plain word beside each card's mark,
-// the number, and the caption of a figure drawn for the card (the pilot's figure and caption are the post's).
+// the number, and the caption of the card's figure (src/lib/charts.ts draws it and returns this caption).
 export const evalsSchema = z.record(z.string(), z.object({
   word: text,
   number: z.object({ cells: text, rest: text, sr: text, match: text.optional(), note: text }),

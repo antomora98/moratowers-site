@@ -1,0 +1,16 @@
+---
+import { pages } from '../lib/pages';
+import { landing } from '../lib/landing';
+import { UPDATED } from '../lib/updated';
+// The footer of every inner page: one line (the site's name with the date of its last change, the error log, contact),
+// and under it the site's name in Geist Serif at the window's width, dim, cut off by the page's end (on case and eval pages, by
+// the fixed bar). A small rain of
+// digits falls inside the letters (public/js/word-rain.js). The big word is decoration, hidden from assistive
+// technology; the line is the content.
+const f = pages.footer;
+---
+<footer class="wordfoot">
+<p class="axis"><span class="under">{f.updated} <span class="nw">{UPDATED}</span></span><a href={f.errors.href}>{f.errors.label}</a><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
+<p class="word" aria-hidden="true"><span data-word>{landing.name}</span></p>
+</footer>
+<script is:inline type="module" src="/js/word-rain.js"></script>

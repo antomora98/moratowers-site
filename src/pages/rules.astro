@@ -18,7 +18,7 @@ const rules = landing.rules.map((rule, k) => {
 });
 ---
 <Base title={m.title} description={m.description} path="/rules/" bodyClass="rules-page" motion="rules"
-  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-rules']} rain>
+  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-rules']} rain footer>
 <a class="skip" href="#reading">skip to reading</a>
 <TopNav here="rules" />
 <main id="main">
@@ -33,7 +33,6 @@ const rules = landing.rules.map((rule, k) => {
 {rules.map((x) => <li><a class="no" href={x.href} aria-label={`rule ${x.n} in the ${x.skill} skill`}>{two(x.n)}</a><div class="rule"><h2 set:html={nwWords(x.rule)}></h2>{x.taught && <><p class="lbl">{r.learned}</p><p class="fail">{x.taught}</p></>}{x.own && <p class="cmd"><a href={x.href}>&gt; /{x.skill}</a></p>}</div></li>)}
 </ol>
 <p class="ln endprompt"><a href="/story/">&gt; cat story.md</a></p>
-<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </div>
 </main>
 </Base>

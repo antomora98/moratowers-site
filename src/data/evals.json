@@ -7,7 +7,8 @@
       "sr": "+0.48, interval 0.14 to 0.82: Opus over Haiku on the pair score without the skill, under the Opus 4.8 grader. Under the Opus 5 grader, +0.39, interval 0.004 to 0.77.",
       "match": "second grader +0.39 (0.004 to 0.77)",
       "note": "pair score without the skill, 95% intervals over 11 clusters (two of the twelve pairs share a mechanism); first grader Opus 4.8, second Opus 5"
-    }
+    },
+    "caption": "Pair score without the skill and its 95% t interval over 11 clusters. Opus's upper end, 1.03, is drawn at 1."
   },
   "reward-audit": {
     "word": "one reward broke",
@@ -17,7 +18,7 @@
       "sr": "0.18 or less: the best scripted answer on the pair score, from the pre-run marks. A coin flip scores 0.25.",
       "note": "the best scripted answer, pre-run marks only; a coin flip scores 0.25"
     },
-    "caption": "What a scripted answer earns under each of four rewards, pre-run marks, with the verdict-only and both-folder values by arithmetic. The dashed tick in each row is a coin flip, and the skeptic's two dots are the two graders' marks. Last row: an answer written from the diff of the two folders, and a rule reading only file sizes and row counts."
+    "caption": "The best scripted answer under each reward, pre-run marks; the both-folder value is by arithmetic. Ticks: each reward's coin flip."
   },
   "open-models": {
     "word": "pair score 0.00 to 0.11",
@@ -27,6 +28,6 @@
       "sr": "The four pair scores ran from 0.00 to 0.11; a coin flip scores 0.25. The upper end of the 95% interval was under 0.25 in three of the four rows and reached 0.292 in the fourth.",
       "note": "a coin flip scores 0.25; the upper end of the 95% interval was under 0.25 in three of the four rows and reached 0.292 in the fourth"
     },
-    "caption": "Pair scores of deepseek-v4.1-flash and qwen3.6-35b-a3b over six task clusters, each task run three times, without and with the checklist, as scored by one grader. Dots are scores. Bars are 95% t intervals over the six clusters, and a lower end below 0 is drawn at 0. All four dots sit under the 0.25 coin flip, and one bar reaches past it. The trap and twin counts are runs that passed the task (verdict and key evidence both marked PASS), descriptive only."
+    "caption": "Pair score and its 95% t interval over six clusters, one grader. A lower end below 0 is drawn at 0."
   }
 }

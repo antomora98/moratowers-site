@@ -1,0 +1,121 @@
+/* The footer of every inner page: one quiet line, and under it the site's name at the window's width, dim, cut off by
+   the end of the page (on case and eval pages, by the fixed bar). word-rain.js lets a small rain of digits fall inside
+   the letters. */
+.wordfoot {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  /* A text page ends with 64 px of its own space. Pull the footer up through most of it, so the footer's line is
+     the next row under the page's last one and the two read as one block, not as two footers. Case and eval pages
+     are set further down. */
+  margin-top: -52px;
+  height: calc(17vw + 36px);
+}
+/* The line sits in the page's text column (pages whose column differs are set further down), above the big word, so
+   its links can be reached. */
+.wordfoot .axis {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  margin: 0;
+  padding: 0 max(16px, calc(50vw - 360px));
+  font: 400 12px/24px var(--mono);
+  color: var(--dim);
+}
+.wordfoot .axis .nw {
+  white-space: nowrap;
+}
+.wordfoot .axis a {
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color var(--t-fade-out, 120ms) ease;
+}
+.wordfoot .axis a:focus-visible {
+  color: var(--ink);
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .wordfoot .axis a:hover {
+    color: var(--ink);
+  }
+}
+/* The word: a little wider than the window, so the page's edges cut its first and last letters, and taller than the
+   footer, so the page's end cuts its feet. */
+.wordfoot .word {
+  position: absolute;
+  left: 50%;
+  top: 36px;
+  margin: 0;
+  translate: -50% 0;
+  font: 400 22.6vw/1 var(--serif);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: #1f1d17;
+  user-select: none;
+  /* The word's box is taller than its line and reaches over the links above it: it must not take their clicks. */
+  pointer-events: none;
+}
+/* The digits, drawn only inside the letters. */
+.wordfoot canvas.digits {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* On a phone the date takes its own row, and the two links share the next. */
+@media (max-width: 599px) {
+  .wordfoot .axis .under {
+    flex-basis: 100%;
+  }
+}
+/* Every page keeps a strip at its end for the fixed bar that only case and eval pages have. On the other pages, take
+   the footer down through that strip, so the page's end is what cuts the word. */
+body:not(:has(.bar)) .wordfoot {
+  margin-bottom: calc(-1 * var(--bar-h));
+}
+/* Case and eval pages: the line starts where their text column does. Under 1100 px that is the page's side padding.
+   From 1100 px the line is as wide as the text column and the record together (500, 48 and 280 px, set in case.css)
+   and centered as they are. An eval page ends with 48 px of its own space, so its pull is smaller; a case page ends
+   with 64 px, like a text page, and keeps the same pull. Either way the line lands 12 px under the last row. */
+main.fc ~ .wordfoot {
+  margin-top: -52px;
+}
+main.fc.evalcase ~ .wordfoot {
+  margin-top: -36px;
+}
+main.fc ~ .wordfoot .axis {
+  padding-left: 28px;
+}
+@media (min-width: 1100px) {
+  main.fc ~ .wordfoot .axis {
+    width: 828px;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+}
+/* From 900 to 1099 px these pages are one centered column, 484 px of text. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  main.fc ~ .wordfoot .axis {
+    width: 484px;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+}
+@media (max-width: 899px) {
+  main.fc ~ .wordfoot .axis {
+    padding-left: 16px;
+  }
+}
+/* Rules, the error log and Cases keep 40 px at the sides of their column down to a 700 px window, where the other
+   text pages keep 16 px: match them, so the line starts where their text does. */
+@media (min-width: 700px) {
+  .rules-page .wordfoot .axis,
+  main:is(.errpage, .ledgerpage) ~ .wordfoot .axis {
+    padding-inline: max(40px, calc(50vw - 360px));
+  }
+}

@@ -105,7 +105,7 @@
       "The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass."
     ],
     "luck": "Corrected for luck across all 53: BH, q = 0.10",
-    "figure_caption": "fig. 1  How the 53 ideas ended, at the audit's snapshot of 2026-10-17. One square per idea.",
+    "figure_caption": "How the 53 ideas ended, at the audit's snapshot of 2026-10-17. One square per idea; the five lit ones have a case page.",
     "list_intro": "Five closed ideas written up in full: the test, the number and the lesson.",
     "ledger": {
       "label": "ledger",
@@ -344,6 +344,13 @@
   "contact_link": {
     "label": "contact",
     "href": "/about/#contact"
+  },
+  "footer": {
+    "errors": {
+      "label": "error log",
+      "href": "/errors/"
+    },
+    "updated": "moratowers, updated"
   },
   "nav": [
     {

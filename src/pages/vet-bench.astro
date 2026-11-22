@@ -1,39 +1,46 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
-import { pages } from '../lib/pages';
 import * as post from '../posts/vet-bench.md';
-import wide from '../posts/figures/model_scores.svg?raw';
-import compact from '../posts/figures/model_scores_compact.svg?raw';
-// The vet-bench post: src/posts/vet-bench.md is the write-up copied word for word from its source (one spend sentence
-// left out, as the site carries no money), rendered by Astro's Markdown. Two things are swapped in the HTML, never in
-// the words: the figure's image becomes the site-local SVG pair (a wide and a compact drawing in the site's colours,
-// src/posts/figures/), with the post's own caption under it; and each table sits in a box that scrolls on its own.
+import { chart } from '../lib/charts';
+// The vet-bench post: src/posts/vet-bench.md is the write-up copied from its source (one spend sentence left out, as
+// the site carries no money, the figure's caption shortened for the site's chart, and the figure's image line left out),
+// rendered by Astro's Markdown. Two things are changed in the HTML, never in the words: the site's own chart of the
+// benchmark scores (src/lib/charts.ts, drawn at two widths, with its screen-reader table) goes in above the post's
+// caption, which becomes the chart's caption; and each table sits in a box that scrolls on its own.
+const fig = chart('pilot');
 const md = await post.compiledContent();
 const title = (md.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) ?? [])[1];
 if (!title) throw new Error('vet-bench: no title');
-const FIG = /<p><img [^>]*><\/p>\s*<p><em>(Figure\.[\s\S]*?)<\/em><\/p>/g;
-if ((md.match(FIG) ?? []).length !== 1) throw new Error('vet-bench: expected one figure followed by its caption');
+const FIG = /<p><em>(Figure\.[\s\S]*?)<\/em><\/p>/g;
+if ((md.match(FIG) ?? []).length !== 1) throw new Error('vet-bench: expected one figure caption');
+// The post's caption opens with the chart's own caption (evals.json); any sentence after it is the post's.
+const figCap = (c: string) => {
+  const text = c.replace(/^Figure\.\s*/, '');
+  if (!text.startsWith(fig.caption.replace(/'/g, '&#39;')) && !text.startsWith(fig.caption)) throw new Error("vet-bench: the figure's caption does not open with the chart's caption");
+  return text;
+};
 const html = md
-  .replace(FIG, (_, cap) => `<figure class="fig scores">${wide}${compact}<figcaption>${cap}</figcaption></figure>`)
   .replaceAll('<table>', '<div class="tw"><table>')
   .replaceAll('</table>', '</table></div>');
 // Each appendix reference in the text (A1 to A19) becomes a link to its section on the appendix page. Words are not
 // changed: only text between tags is touched, and never inside code or an existing link.
 let skip = 0;
-const linked = html.split(/(<[^>]+>)/).map((part) => {
+const withLinks = html.split(/(<[^>]+>)/).map((part) => {
   if (part.startsWith('<')) { if (/^<(code|a)[\s>]/.test(part)) skip++; else if (/^<\/(code|a)>/.test(part)) skip--; return part; }
   return skip ? part : part.replace(/\bA(1[0-9]|[1-9])\b/g, (_, n) => `<a href="/vet-bench/appendix/#a${n}">A${n}</a>`);
 }).join('');
+// The chart goes in last, so the two steps above do not touch its table or its text.
+const linked = withLinks.replace(FIG, (_, cap) => `<figure class="chart scores">${fig.wide}${fig.narrow}<figcaption class="chart-cap"><span class="f">fig. 1</span> ${figCap(cap)}</figcaption>${fig.table}</figure>`);
+if (!linked.includes('<figure class="chart scores">')) throw new Error('vet-bench: the chart was not placed');
 const plain = title.replace(/<[^>]+>/g, '');
 ---
 <Base title={`${plain} | moratowers`} ogTitle={plain} description="A pre-registered pilot benchmark: can an AI agent turn down a wrong claim and still accept a true one? It passed one of its two registered tests." path="/vet-bench/" fonts={['geist-serif-400', 'geist-mono-400']}
-  styles={['site', 'motion', 'nav', 'brand', 'brand-post']} rain>
+  styles={['site', 'motion', 'nav', 'brand', 'brand-post', 'charts']} rain footer>
 <a class="skip" href="#main">skip to the text</a>
 <TopNav here="post" />
 <main id="main" class="postpage">
 <p class="ln">&gt; cat vet-bench.md</p>
 <article class="prose" set:html={linked}></article>
-<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 </Base>

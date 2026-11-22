@@ -1,4 +1,5 @@
 ---
+import WordFooter from '../components/WordFooter.astro';
 import { GOATCOUNTER_CODE } from '../config';
 import { landing } from '../lib/landing';
 import { MOTION_PLAIN, MOTION_LANDING, MOTION_RULES } from '../lib/inline';
@@ -28,8 +29,10 @@ interface Props {
   fontFaces?: boolean;
   // schema.org structured data for this page (src/lib/jsonld.ts), printed as a JSON-LD data block.
   jsonld?: object;
+  // The footer (WordFooter.astro): on every page but the landing and the 404.
+  footer?: boolean;
 }
-const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bodyClass, motion = 'plain', fonts = [], styles, rain = false, importmap, preloads = [], jsonld, fontFaces = true } = Astro.props;
+const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bodyClass, motion = 'plain', fonts = [], styles, rain = false, importmap, preloads = [], jsonld, fontFaces = true, footer = false } = Astro.props;
 const shareTitle = ogTitle ?? title;
 const url = new URL(path, Astro.site).href;
 const MOTION = { plain: MOTION_PLAIN, landing: MOTION_LANDING, rules: MOTION_RULES };
@@ -59,6 +62,7 @@ const card = {
     {fonts.map((f) => <link rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossorigin />)}
     {fontFaces && <link rel="stylesheet" href="/css/fonts.css" />}
     {styles.map((s) => <link rel="stylesheet" href={`/css/${s}.css`} />)}
+    {footer && <link rel="stylesheet" href="/css/wordfoot.css" />}
     {importmap && <script is:inline type="importmap" set:html={importmap} />}
     {preloads.map((p) => p.as === 'module' ? <link rel="modulepreload" href={p.href} /> : p.as === 'image' ? <link rel="preload" href={p.href} as="image" media={p.media} fetchpriority="high" /> : <link rel="preload" href={p.href} as="fetch" crossorigin />)}
     <meta property="og:type" content="website" />
@@ -81,6 +85,7 @@ const card = {
   </head>
   <body class={bodyClass}>
     <slot />
+    {footer && <WordFooter />}
     {GOATCOUNTER_CODE && (
       <script is:inline define:vars={{ endpoint: `https://${GOATCOUNTER_CODE}.goatcounter.com/count` }}>
         // GoatCounter's script, served from this site (public/js/count.js, pinned in scripts/firewall.mjs), loads after the page: one second after the load event, when the first lines

@@ -49,18 +49,18 @@ const track = stack.querySelector(".track");
 const cards = [...stack.querySelectorAll(".card")];
 const here = cards.findIndex((c) => c.hasAttribute("aria-current"));
 let cur = here;
-const tall = () => matchMedia("(min-width: 1100px)").matches;
-const PITCH = 96, CARD_H = 88, GAP = 12;
+// From 1100 px the strip shows every card in a row and the style sheet places them.
+const row = () => matchMedia("(min-width: 1100px)").matches;
+const GAP = 12;
 if (/(?:\?|&)still(?:&|=|$)/.test(location.search)) cards.forEach((c) => {
   c.href += "?still";
 });
 function place() {
-  const W = stack.clientWidth, H = stack.clientHeight;
-  const top = Math.max(0, (H - ((cards.length - 1) * PITCH + CARD_H)) / 2);
+  const W = stack.clientWidth;
   cards.forEach((c, i) => {
     const d = i - cur, a = Math.min(3, Math.abs(d));
-    if (tall()) {
-      c.style.transform = `translate3d(0, ${(top + i * PITCH).toFixed(2)}px, 0)`;
+    if (row()) {
+      c.style.transform = "";
       c.style.opacity = i === cur ? "1" : "0.8";
     } else {
       const x = (W - c.offsetWidth) / 2 + d * (c.offsetWidth + GAP), s = 1 - a * 0.04, inset = c.offsetWidth * (1 - s) / 2;
@@ -84,8 +84,7 @@ function lean(dir) {
   if (!motionOn() || now - leaned < ms("--t-end", 300)) return;
   leaned = now;
   const px = (parseFloat(token("--lean")) || 8) * -dir;
-  const to = tall() ? `translate3d(0, ${px}px, 0)` : `translate3d(${px}px, 0, 0)`;
-  track.animate([{ transform: "none" }, { transform: to, offset: 0.35, easing: "ease-out" }, { transform: "none", easing: "ease-in-out" }], { duration: ms("--t-end", 300) });
+  track.animate([{ transform: "none" }, { transform: `translate3d(${px}px, 0, 0)`, offset: 0.35, easing: "ease-out" }, { transform: "none", easing: "ease-in-out" }], { duration: ms("--t-end", 300) });
 }
 let navT = 0;
 function move(to, how) {
@@ -116,8 +115,8 @@ function open(card, how) {
 }
 let acc = 0, lastWheel = 0;
 stack.addEventListener("wheel", (e) => {
-  let d = tall() ? e.deltaY : e.deltaX;
-  if (!tall() && Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+  let d = e.deltaX;
+  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
   e.preventDefault();
   if (e.deltaMode === 1) d *= 16;
   else if (e.deltaMode === 2) d *= 400;
@@ -143,10 +142,9 @@ stack.addEventListener("pointerup", (e) => {
   press = null;
   if (!p || !p.moved) return;
   const dx = p.x - e.clientX, dy = p.y - e.clientY;
-  const d = tall() ? dy : dx, other = tall() ? dx : dy;
-  if (Math.abs(d) < 24 || Math.abs(d) < Math.abs(other)) return;
+  if (Math.abs(dx) < 24 || Math.abs(dx) < Math.abs(dy)) return;
   swallow = true;
-  move(cur + Math.sign(d), "swipe");
+  move(cur + Math.sign(dx), "swipe");
 });
 stack.addEventListener("pointercancel", () => {
   press = null;

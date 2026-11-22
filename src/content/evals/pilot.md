@@ -7,7 +7,6 @@ label:
   - ["graders", "Opus 4.8, Opus 5"]
   - ["runs", "432 main and 72 placebo on Sonnet; 501 scored"]
   - ["plan frozen", "2026-11-09T02:11:55Z"]
-figure: "model-scores"
 links:
   - { label: "the write-up", href: "/vet-bench/" }
   - { label: "the appendix", href: "/vet-bench/appendix/" }

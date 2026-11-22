@@ -467,27 +467,6 @@ html:not(.js) .bar .cmdopen {
   height: auto;
   display: block;
 }
-.dw text {
-  font-family: var(--mono);
-  fill: var(--ink);
-}
-.dw .grey {
-  fill: var(--dim);
-}
-.dw .ink-line {
-  stroke: var(--ink);
-  stroke-width: 1;
-  fill: none;
-  transform-box: view-box;
-}
-.dw .hurdle-line {
-  stroke: var(--dim);
-  stroke-width: 1;
-  fill: none;
-}
-.dw .dot {
-  fill: var(--ink);
-}
 html[data-motion=on] .dw-figure.pending .dot,
 html[data-motion=on] .dw-figure.pending .ink-line,
 html[data-motion=on] .dw-figure.pending .num,

@@ -10,7 +10,11 @@ function show(id) {
 let held = 0;
 function pick() {
   if (Date.now() < held) return;
-  const top = items.find((li) => seen.has(li.id));
+  // At the page's end the last month cannot always reach the top of the window: there, it is the current one.
+  if (scrollY + innerHeight >= document.documentElement.scrollHeight - 2) return show(items.at(-1).id);
+  // The current month is the last one inside the band from the index's lower edge to the middle of the window, so the
+  // months near the page's end, which cannot climb to the top, still get their turn.
+  const top = items.findLast((li) => seen.has(li.id));
   if (top) show(top.id);
   else if (items[0].getBoundingClientRect().top > innerHeight / 2) show(null);
 }
@@ -18,18 +22,11 @@ function watch() {
   if (io) io.disconnect();
   seen.clear();
   const edge = Math.round(parseFloat(getComputedStyle(idx).top) + idx.offsetHeight);
-  room(edge);
   io = new IntersectionObserver((es) => {
     for (const e of es) e.isIntersecting ? seen.add(e.target.id) : seen.delete(e.target.id);
     pick();
   }, { rootMargin: `-${edge}px 0px -50% 0px` });
   items.forEach((li) => io.observe(li));
-}
-const page = document.querySelector(".storypage"), base = parseFloat(getComputedStyle(page).paddingBottom);
-function room(edge) {
-  page.style.paddingBottom = "";
-  const need = items.at(-1).getBoundingClientRect().top + scrollY + innerHeight - edge - document.documentElement.scrollHeight;
-  if (need > 0) page.style.paddingBottom = `${base + need}px`;
 }
 watch();
 if (document.fonts) document.fonts.ready.then(watch);

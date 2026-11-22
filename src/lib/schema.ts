@@ -44,15 +44,13 @@ export const caseSchema = z.object({
 
 // An eval case file (src/content/evals): the same case design as the trading cases, with its own fields. The body's
 // sections are Question, Test, Result, What this does not show and Lesson (checked in src/lib/site.ts). The front
-// matter holds the verdict, the rest of the label block in order, the figure (model-scores, or else the card's own in
-// src/data/figures/evals/), and the links of the label block's record row.
+// matter holds the verdict, the rest of the label block in order, and the links of the label block's record row. The
+// card's chart is drawn by src/lib/charts.ts from the card's id.
 export const evalSchema = z.object({
   title: text,
   n: z.number().int().positive(),
   verdict: text,
   label: z.array(z.tuple([text, text])).min(1),
-  // model-scores: the vet-bench post's figure (src/posts/figures/), with the post's caption.
-  figure: z.enum(['model-scores']).optional(),
   links: z.array(z.object({ label: text, href: z.string().refine((s) => s.startsWith('/') || s.startsWith('https://'), 'a path or an https URL') })).min(1),
   // What is planned next for this eval, under the lesson, as the cases page lists its own: a date line and the items.
   next: z.object({ date: text, items: z.array(text).min(1) }).optional(),

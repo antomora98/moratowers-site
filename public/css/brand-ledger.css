@@ -211,8 +211,28 @@
 .ledgerpage .luck .nw {
   white-space: nowrap;
 }
-.ledgerpage .ideas {
+/* Fig. 1 (src/lib/charts.ts; its look is charts.css) and, under its caption, the plain-words line of each cause. */
+.ledgerpage .ideasfig {
   margin-top: 32px;
+  max-width: 484px;
+}
+.ledgerpage .meanings {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  max-width: 62ch;
+}
+.ledgerpage .meanings li {
+  font: 400 16px / 24px var(--sans);
+  color: var(--chrome);
+  text-wrap: pretty;
+}
+.ledgerpage .meanings li + li {
+  margin-top: 8px;
+}
+.ledgerpage .meanings .k {
+  color: var(--dim);
+  margin-right: 0.6ch;
 }
 .ledgerpage .more {
   margin-top: 48px;

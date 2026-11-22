@@ -143,42 +143,10 @@
   font: 400 12px / 16px var(--mono);
   color: var(--dim);
 }
-/* The figure: the wide drawing, or under 600 px the compact one, in the site's colours. */
-/* The figure sits on the page colour, so no rain glyph can read as part of a number in it. */
-.postpage .fig {
-  margin: 24px 0 0;
-  max-width: 620px;
-  background: var(--bg);
-  /* site.css dims any ".fig" until a case page's script marks it ".on". This figure has no such script, so it is
-     always fully drawn; at part opacity the rain showed through it and the caption lost its contrast. */
-  transition: none;
-}
-html.js[data-motion=on] .postpage .fig:not(.on),
-.postpage .fig {
-  opacity: 1;
-}
-.postpage .fig svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.postpage .fig .compact {
-  display: none;
-}
-@media (max-width: 599px) {
-  .postpage .fig .wide {
-    display: none;
-  }
-  .postpage .fig .compact {
-    display: block;
-    max-width: 440px;
-  }
-}
-.postpage .fig figcaption {
-  margin-top: 16px;
-  max-width: 62ch;
-  font: 400 12px / 16px var(--mono);
-  color: var(--dim);
+/* The chart of the benchmark scores (src/lib/charts.ts; its look is charts.css), at the text's width. */
+.postpage .chart {
+  margin-top: 24px;
+  max-width: 484px;
 }
 .postpage .endlinks {
   margin-top: 48px;

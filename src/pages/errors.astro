@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import { z } from 'astro/zod';
 import rawErrors from '../data/errors.json';
-import { pages } from '../lib/pages';
 import { text } from '../lib/schema';
 import { nwDates } from '../lib/site';
 // The error log: every agent error written down in the research, one row each, from the private log's errors.csv
@@ -91,7 +90,7 @@ const groups = [
 const title = 'Error log';
 ---
 <Base title={`${title} | moratowers`} ogTitle={title} description="Every error my AI agents made in this research that was written down: when each came in, when it was found, and who found it." path="/errors/"
-  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-errors']} rain>
+  fonts={['geist-serif-400', 'geist-mono-400']} styles={['site', 'motion', 'nav', 'brand', 'brand-errors']} rain footer>
 <a class="skip" href="#main">skip to the log</a>
 <TopNav here="post" />
 <main id="main" class="errpage">
@@ -134,6 +133,5 @@ const title = 'Error log';
 ))}
 
 <p class="ln endprompt"><a href="/rules/">&gt; cat rules</a></p>
-<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 </Base>

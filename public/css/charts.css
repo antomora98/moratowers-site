@@ -1,0 +1,137 @@
+/* The charts (src/lib/charts.ts draws them when the site is built). One look for every chart: the page's dark ground,
+   Geist Serif for every label, two text sizes, no card and no border. */
+
+/* The figure has the page's ground as its own, with 10 px of bleed, so the rain stops at its edge. */
+.chart {
+  position: relative;
+  margin: 0;
+  padding: 10px 0 6px;
+  background: var(--bg);
+  box-shadow: 0 0 0 10px var(--bg);
+  container-type: inline-size;
+}
+/* Each chart is drawn twice, at 484 px and at 343 px. The figure shows the wide drawing when it is at least 484 px
+   wide and the narrow one when it is not. Under 343 px the narrow drawing shrinks to fit. */
+.chart .ch {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.chart .ch-wide {
+  display: none;
+}
+@container (min-width: 484px) {
+  .chart .ch-wide {
+    display: block;
+  }
+  .chart .ch-narrow {
+    display: none;
+  }
+}
+
+/* The caption: "fig. 1" in chrome, then the text. */
+.chart-cap {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  font: 400 14px / 20px var(--serif);
+  color: var(--dim);
+  text-wrap: pretty;
+}
+.chart-cap .f {
+  color: var(--chrome);
+}
+.chart-cap .by {
+  display: block;
+}
+
+/* Text. t1: the number the reader must not miss, and row names. t2: everything else. tr: a reference line's name. */
+.ch text {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+.ch .ch-t1 {
+  font-size: 16px;
+  fill: var(--ink);
+}
+.ch .ch-t2 {
+  font-size: 14px;
+  fill: var(--dim);
+}
+.ch .ch-tr {
+  font-size: 14px;
+  fill: var(--chrome);
+}
+/* A ground-coloured halo under a label, so a label that meets a line stays readable. */
+.ch .ch-halo {
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+/* Lines. A reference line is 1 px chrome. An axis or a track is 1 px, a faint mix of the ground and the ink. */
+.ch .ch-ref,
+.ch .ch-refd {
+  stroke: var(--chrome);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.ch .ch-refd {
+  stroke-dasharray: 4 3;
+}
+.ch .ch-axis {
+  stroke: color-mix(in srgb, var(--bg), var(--ink) 14%);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+/* An estimate's interval in ink, or in dim for an exploratory row. */
+.ch .ch-iv,
+.ch .ch-iv2 {
+  stroke-width: 1.5;
+  fill: none;
+}
+.ch .ch-iv {
+  stroke: var(--ink);
+}
+.ch .ch-iv2 {
+  stroke: var(--dim);
+}
+/* An estimate: an ink dot with a ring of the ground around it. */
+.ch .ch-dot {
+  fill: var(--ink);
+  stroke: var(--bg);
+  stroke-width: 2;
+}
+.ch .ch-arrow {
+  fill: var(--ink);
+}
+
+/* Bars, bands and unit squares. */
+.ch .ch-seg {
+  fill: var(--dim);
+}
+.ch .ch-band {
+  fill: var(--ink);
+  fill-opacity: 0.1;
+}
+.ch .ch-unit {
+  fill: var(--dim);
+  shape-rendering: crispEdges;
+}
+.ch .ch-faint {
+  fill-opacity: 0.55;
+}
+.ch .ch-on {
+  fill: var(--ink);
+  shape-rendering: crispEdges;
+}
+.ch .ch-hollow,
+.ch .ch-hollowd {
+  fill: none;
+  stroke: var(--dim);
+  stroke-width: 1;
+}
+.ch .ch-hollowd {
+  stroke-dasharray: 3 3;
+}

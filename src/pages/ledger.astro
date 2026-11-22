@@ -7,6 +7,7 @@ import { landing } from '../lib/landing';
 import { pages } from '../lib/pages';
 import { text, GATE_WORDS } from '../lib/schema';
 import { gateWord, causeLabel, nwWords, nwDates, getCases } from '../lib/site';
+import { ideas } from '../lib/charts';
 // The ledger of the 53 ideas: one row per closed idea, numbered as in fig. 1 above it (landing.json's
 // ledger gives the number, verdict, cause and public slug; ledger.json adds the kind of market and, where it differs,
 // the audit's own label), a line for the ideas not closed, then the frozen plan's fingerprints. One column like Rules.
@@ -24,29 +25,34 @@ if (L.rows.length !== landing.ledger.length || L.rows.length !== landing.counts.
 if (!L.not_closed.includes(` ${landing.counts.tested - landing.counts.closed} ideas `)) throw new Error('ledger: the not-closed count disagrees');
 const two = (n: number) => String(n).padStart(2, '0');
 // The trading question, its result, the audit and luck lines and fig. 1 (each closed idea's cause in plain groups,
-// never its verdict; rows with a public case link to it) open the page; what is next and what would help close it.
+// never its verdict; one square per idea, lit for an idea with a case page, and no square is a link) open the page;
+// what is next and what would help close it.
 const C = pages.cases;
-const cases = await getCases();
+// getCases fails the build when a public case in the log has no case file.
+await getCases();
 const closedBy = (id: string) => landing.ledger.filter((r) => r.cause === id);
 for (const c of landing.causes) if (closedBy(c.id).length !== c.n) throw new Error(`fig. 1: ${c.id} counts ${closedBy(c.id).length} rows, causes says ${c.n}`);
-const titles = Object.fromEntries(cases.map((e) => [e.id, e.data.title]));
 const groups = landing.groups.map((g) => {
   const rs = landing.causes.filter((c) => c.group === g.id)
     .map((c) => ({ n: closedBy(c.id).length, short: c.short, meaning: c.meaning, open: false,
-      cases: landing.log.filter((l) => l.cause === c.id).map((l) => ({ slug: l.slug, title: titles[l.slug] })) }))
+      lit: landing.log.filter((l) => l.cause === c.id).length }))
     .sort((p, q) => q.n - p.n);
   return { label: g.label, n: rs.reduce((t, r) => t + r.n, 0), rows: rs };
 });
 const open = landing.counts.tested - landing.counts.closed;
 const rows_closed_with_cause = landing.ledger.filter((r) => landing.causes.some((c) => c.id === r.cause)).length;
 const og = landing.open_group;
-groups.push({ label: og.label, n: open, rows: [{ n: open, short: og.short, meaning: og.meaning, open: true, cases: [] }] });
+groups.push({ label: og.label, n: open, rows: [{ n: open, short: og.short, meaning: og.meaning, open: true, lit: 0 }] });
 if (groups.reduce((t, g) => t + g.n, 0) !== landing.counts.tested) throw new Error('fig. 1: the groups do not sum to the ideas tested');
 for (const it of C.help.items) if (it.case && !landing.log.some((l) => l.slug === it.case)) throw new Error(`ledger: no public case ${it.case}`);
 // The result line's counts are the audit's own (landing.json), and no closed row can carry a passing verdict: the
 // verdict words are NO EDGE, NOT ESTABLISHED and UNDECIDABLE only.
 if (C.result !== `${landing.counts.tested} ideas tested so far. ${landing.counts.closed} are closed, each with its cause written down. ${open} are still open. None has passed yet.`) throw new Error('cases: the result line disagrees with the audit counts');
 if (rows_closed_with_cause !== landing.counts.closed) throw new Error('cases: a closed idea has no cause');
+// Fig. 1, drawn at two widths with its screen-reader table (src/lib/charts.ts), and under it the plain-words line of
+// each cause, in the figure's order, with the line for the ideas not closed last.
+const fig = ideas(groups);
+const meanings = groups.flatMap((g) => g.rows.map((r) => ({ short: r.short, meaning: r.meaning })));
 const [luckHead, luckTail] = [C.luck.slice(0, C.luck.lastIndexOf(': ') + 2), C.luck.slice(C.luck.lastIndexOf(': ') + 2)];
 const rows = L.rows.map((r, k) => {
   const s = landing.ledger[k];
@@ -55,7 +61,7 @@ const rows = L.rows.map((r, k) => {
 });
 ---
 <Base title={L.meta.title} description={L.meta.description} path="/ledger/" fonts={['geist-serif-400', 'geist-mono-400']}
-  styles={['site', 'motion', 'nav', 'brand', 'brand-about', 'brand-ledger']} rain>
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about', 'brand-ledger', 'charts']} rain footer>
 <a class="skip" href="#main">skip to the ledger</a>
 <TopNav here="ledger" />
 <main id="main" class="ledgerpage">
@@ -64,7 +70,8 @@ const rows = L.rows.map((r, k) => {
 <p class="intro ask">{C.question}</p>
 {[...C.results, C.result].map((r) => <p class="intro">{r}</p>)}
 <p class="ln luck">{luckHead}<span class="nw">{luckTail}</span></p>
-<figure class="ideas" aria-labelledby="fig1"><div class="grid">{groups.map((g) => <div class="grp"><p class="gh"><span class="gl">{g.label}</span><span class="gn">{g.n}</span></p><ul>{g.rows.map((r) => <li class="row"><span class="n">{r.n}</span><span class="k">{r.short}</span><span class="cells" aria-hidden="true">{Array.from({ length: r.n }, () => <span class={r.open ? 'o' : 'c'}></span>)}</span><span class="m">{r.meaning}</span>{r.cases.length > 0 && <span class="cs">{r.cases.length > 1 ? 'cases ' : 'case '}{r.cases.map((c, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={`/case/${c.slug}/`}>{c.title}</a></>)}</span>}</li>)}</ul></div>)}</div><figcaption id="fig1">{C.figure_caption}</figcaption></figure>
+<figure class="chart ideasfig" aria-labelledby="fig1"><Fragment set:html={fig.wide} /><Fragment set:html={fig.narrow} /><figcaption class="chart-cap" id="fig1"><span class="f">fig. 1</span> {fig.caption}</figcaption><Fragment set:html={fig.table} /></figure>
+<ul class="meanings">{meanings.map((m) => <li><span class="k">{m.short}</span> {m.meaning}</li>)}</ul>
 {L.intro.map((p) => <p class="intro">{p}</p>)}
 <p class="cols lbl" aria-hidden="true">{L.head.map((h) => <span>{h}</span>)}</p>
 <ol class="closed" aria-label="Closed ideas: number, kind of market, verdict, cause">
@@ -85,6 +92,5 @@ const rows = L.rows.map((r, k) => {
 <section class="more" aria-labelledby="next-h"><h2 class="lbl" id="next-h">{C.next.h}</h2><p class="date">{C.next.date}</p><ul>{C.next.items.map((t) => <li>{t}</li>)}</ul></section>
 <section class="more" aria-labelledby="help-h"><h2 class="lbl" id="help-h">{C.help.h}</h2><p>{C.help.intro}</p><ul>{C.help.items.map((it) => <li>{it.text}{it.case && <> <a href={`/case/${it.case}/`}>&gt; cat {it.case}.md</a></>}</li>)}</ul></section>
 <p class="ln endprompt"><a href={L.end.href}>{L.end.label}</a></p>
-<p class="ln endlinks"><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 </Base>
