@@ -24,7 +24,7 @@ const nameHead = nameWords.join(' ');
 <TopNav here="about" />
 <main id="main" class="aboutpage">
 <p class="ln">&gt; whoami</p>
-<h1>{nameHead} <span class="tail">{nameTail}<span class="namemark" data-chrome-mark aria-hidden="true"><img class="flatm" src="/img/tower-m.svg" alt="" width="40" height="37" /></span></span></h1>
+<h1>{nameHead} <span class="tail">{nameTail}<span class="namemark" data-chrome-mark aria-hidden="true"><img class="flatm" src="/img/tower-m-chrome.webp" alt="" width="568" height="538" /></span></span></h1>
 <img class="me" src="/img/antonio-mora.jpg" alt={a.photo_alt} width="240" height="240" />
 {a.lines.map((t) => <p class="who">{t}</p>)}
 <dl class="built ways">{a.ways.map((w) => <><dt><a href={w.href} aria-label={`${w.label.replace(/^> /, '')}: ${w.text}`}>{w.label}</a></dt><dd>{w.text}</dd></>)}</dl>

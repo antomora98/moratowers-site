@@ -450,7 +450,7 @@
 }
 
 /* The site's chrome mark after the name: his own mark, no tile and no edge, decorative,
-   never alone on a line. glass-mark.js draws it into a canvas; the flat mark holds the place until then. */
+   never alone on a line. glass-mark.js draws it into a canvas; a still of its first frame holds the place until then. */
 .aboutpage h1 .tail { white-space: nowrap; }
 .aboutpage h1 .namemark {
   display: inline-block;
@@ -459,11 +459,16 @@
   margin-left: 0.22em;
   vertical-align: baseline;
   translate: 0 0.04em;
+  container-type: size;
 }
-.aboutpage h1 .namemark .flatm,
 .aboutpage h1 .namemark canvas.glass {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
 }
-.aboutpage h1 .namemark .flatm { object-fit: contain; }
+/* The still sits where the script draws: the mark fills 94% of the box, the still is 1.033 times the mark's height. */
+.aboutpage h1 .namemark .flatm {
+  position: absolute; left: 50%; top: 50%;
+  height: min(97.1cqh, 91.83cqw); width: auto;
+  translate: -50% -50%;
+}
 .aboutpage h1 .namemark.glassed .flatm { opacity: 0; }

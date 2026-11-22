@@ -5,8 +5,8 @@ import { landing } from '../lib/landing';
 import { pages } from '../lib/pages';
 import { IMPORTMAP } from '../lib/inline';
 import { homeLd } from '../lib/jsonld';
-// The landing: the chrome tower m over the rain (glass-mark.js builds it from the icon's outline; a flat one holds its
-// place until the first frame), under it what the site is ('research and writing'), then the two questions, each with
+// The landing: the chrome tower m over the rain (glass-mark.js builds it from the icon's outline; a still of its first
+// frame holds its place until the canvas has drawn), under it what the site is ('research and writing'), then the two questions, each with
 // one line on how it is tested. The menu shows from the start.
 const m = pages.meta.landing;
 const l = pages.landing;
@@ -15,6 +15,7 @@ const l = pages.landing;
   htmlAttrs={{ 'data-look': 'geistall', 'data-mark': 'glass', 'data-small': 'sans', 'data-glass': 'warm', 'data-splash': '' }}
   fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'brand', 'landing', 'landing-page']}
   importmap={IMPORTMAP} preloads={[
+    { href: '/img/tower-m-chrome.webp', as: 'image' },
     { href: '/js/glass-mark.js', as: 'module' },
     { href: '/vendor/three-0.170.0/build/three.module.js', as: 'module' },
   ]}>
@@ -24,7 +25,7 @@ const l = pages.landing;
 <main id="main">
 <header class="hero" id="hero">
 <h1 class="name">{landing.domain}</h1>
-<img class="flatm" src="/img/tower-m.svg" width="921" height="871" alt="" aria-hidden="true" />
+<img class="flatm" src="/img/tower-m-chrome.webp" width="568" height="538" alt="" aria-hidden="true" fetchpriority="high" />
 <div class="lede">
 <p class="lq"><span class="metal">{l.lede}</span></p>
 </div>

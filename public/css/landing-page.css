@@ -237,20 +237,18 @@ html[data-splash] .hero {
   margin-top: max(16px, var(--hero-gap) - var(--lift));
   margin-bottom: calc(var(--hero-gap) + var(--lift));
   padding: 0;
-  container-type: inline-size;
+  container-type: size;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-/* The flat mark turns into the chrome one: the canvas fades in over it (no fade under reduced motion). */
+/* The canvas stays clear until it has drawn its first frame; then it replaces the still in one step, with no fade:
+   the two are the same picture, and a cross-fade between them would dim the mark halfway. */
 .hero canvas.glass {
   opacity: 0;
 }
 .hero.glassed canvas.glass {
   opacity: 1;
-}
-html[data-motion=on] .hero canvas.glass {
-  transition: opacity 0.6s cubic-bezier(.4, 0, .2, 1);
 }
 html[data-splash] .hero .lede {
   position: absolute;
@@ -350,20 +348,21 @@ html[data-splash] .hero {
   margin-top: 0;
   margin-bottom: 0;
 }
-/* A flat tower m holds the mark's place until the chrome one has drawn its first frame. */
+/* A still of the chrome mark's first frame holds its place until the canvas has drawn that frame. It sits where
+   glass-mark.js draws: the mark fills 62% of the hero's height or half its width, whichever is less, and the still is
+   1.033 times the mark's height (it includes the bevel and the turned side). */
 html[data-splash] .hero .flatm {
-  height: 62%;
+  height: min(64.05cqh, 48.85cqw);
   width: auto;
 }
 html[data-splash] .hero.glassed .flatm {
   opacity: 0;
 }
-html[data-motion=on][data-splash] .hero .flatm {
-  transition: opacity 0.6s cubic-bezier(.4, 0, .2, 1);
-}
-/* The line sits 24 px under the mark's foot, which glass-mark.js reports as --glass-bottom. */
+/* The line sits 24 px under the mark's foot, which glass-mark.js reports as --glass-bottom. Until the script has run,
+   the same figure comes from the script's own rule: half of 62% of the hero's height, or half of half its width times
+   the mark's height over its width (871 / 921), whichever is less. So the line does not move when the script reports. */
 html[data-splash] .hero .lede {
-  top: calc(50% + var(--glass-bottom, 31%) + 24px);
+  top: calc(50% + var(--glass-bottom, min(31cqh, 23.64cqw)) + 24px);
 }
 html[data-splash] .hero .lede .lq {
   font-size: 20px;

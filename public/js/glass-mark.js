@@ -1,5 +1,7 @@
-// The landing's hero: the tower m, extruded and finished in chrome. The outline is the same path as the flat stand-in
-// (public/img/tower-m.svg), in font units with y up.
+// The landing's hero: the tower m, extruded and finished in chrome. The outline is in font units with y up. A still of
+// this scene's first frame (public/img/tower-m-chrome.webp) holds the mark's place until the canvas has drawn; when the
+// shape, material, studio, camera or pose changes, render that still again: serve the build, hide everything but this
+// canvas, screenshot the hero at 2x on a transparent ground with motion off, and crop evenly about the hero's centre.
 import * as THREE from "three";
 const TOWER_M = "M23 4L85 41Q96 48 100 54Q104 60 104 73L104 429Q104 443 100.5 449.5Q97 456 86 460L26 483L26 487L179 545L184 545L184 448Q253 542 348 542Q420 542 466 494.5Q512 447 512 366L512 73Q512 60 516 54Q520 48 531 41L593 4L593 0L347 0L347 4L409 41Q420 48 424 54Q428 60 428 73L428 332Q428 403 398 436Q368 469 316 469Q281 469 247 456.5Q213 444 188 427L188 73Q188 60 192 54Q196 48 207 41L269 4L269 0L23 0Z M347 4L409 41Q420 48 424 54Q428 60 428 73L428 579Q428 593 424.5 599.5Q421 606 410 610L350 633L350 637L503 695L508 695L508 598Q577 692 672 692Q744 692 790 644.5Q836 597 836 516L836 73Q836 60 840 54Q844 48 855 41L917 4L917 0L671 0L671 4L733 41Q744 48 748 54Q752 60 752 73L752 482Q752 553 722 586Q692 619 640 619Q605 619 571 606.5Q537 594 512 577L512 73Q512 60 516 54Q520 48 531 41L593 4L593 0L347 0Z M672 4L734 41Q745 48 749 54Q753 60 753 73L753 729Q753 743 749.5 749.5Q746 756 734 760L671 783L671 787L832 845L837 845L837 73Q837 60 841 54Q845 48 856 41L918 4L918 0L672 0Z";
 function shapesOf(d) {
@@ -57,15 +59,18 @@ scene.environment = new THREE.PMREMGenerator(renderer).fromEquirectangular(studi
 const camera = new THREE.PerspectiveCamera(16, 1, 0.1, 2e4);
 const group = new THREE.Group();
 scene.add(group);
-const geo = new THREE.ExtrudeGeometry(shapesOf(TOWER_M), { depth: 150, bevelEnabled: true, bevelThickness: 16, bevelSize: 13, bevelSegments: 5, curveSegments: 20 });
+const geo = new THREE.ExtrudeGeometry(shapesOf(TOWER_M), { depth: 150, bevelEnabled: true, bevelThickness: 16, bevelSize: 13, bevelSegments: 5, curveSegments: 10 });
 geo.computeBoundingBox();
 const size = geo.boundingBox.getSize(new THREE.Vector3());
 geo.translate(...geo.boundingBox.getCenter(new THREE.Vector3()).negate().toArray());
 const chrome = new THREE.MeshStandardMaterial({ color: "#ecebe6", metalness: 1, roughness: 0.1 });
 group.add(new THREE.Mesh(geo, chrome));
-let px = 0, py = 0, still = false;
+// px, py: where the pointer is. sx, sy: where the mark has turned to so far; it eases toward the pointer.
+let px = 0, py = 0, sx = 0, sy = 0, still = false;
 function fit() {
-  const w = hero.clientWidth, h = hero.clientHeight;
+  // Never larger than the window: if the stylesheet that sizes the box is missing or stale, the box takes its size
+  // from the canvas, and without this cap each fit would grow it.
+  const w = Math.min(hero.clientWidth, innerWidth), h = Math.min(hero.clientHeight, innerHeight);
   if (!w || !h) return;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
@@ -81,25 +86,31 @@ function fit() {
   if (still) renderer.render(scene, camera);
 }
 function pose(k) {
-  group.rotation.y = 0.1 + 0.16 * Math.sin(k * 0.3) + px * 0.35;
-  group.rotation.x = -0.03 + py * 0.2;
+  group.rotation.y = 0.1 + 0.16 * Math.sin(k * 0.3) + sx * 0.35;
+  group.rotation.x = -0.03 + sy * 0.2;
 }
 fit();
-Promise.resolve().then(() => {
-  const t0 = performance.now();
-  renderer.setAnimationLoop((t) => {
-    if (!moving()) {
-      pose(0);
-      renderer.render(scene, camera);
-      queueMicrotask(() => renderer.setAnimationLoop(null));
-      still = true;
-      return;
-    }
+// The first frame is always the still's frame: time zero, pointer at rest. The still is swapped for the canvas one
+// frame after that frame is drawn, so the swap shows nothing.
+let t0 = null, shown = false;
+function frame(t) {
+  if (!moving()) {
+    sx = sy = 0;
+    pose(0);
+    renderer.render(scene, camera);
+    queueMicrotask(() => renderer.setAnimationLoop(null));
+    still = true;
+  } else {
+    if (t0 === null) t0 = t;
+    else { sx += (px - sx) * 0.06; sy += (py - sy) * 0.06; }
     pose((t - t0) / 1e3);
     renderer.render(scene, camera);
-  });
-  hero.classList.add("glassed");
-});
+  }
+  if (!shown) { shown = true; requestAnimationFrame(() => hero.classList.add("glassed")); }
+}
+// Compile the shaders before the first frame, off the frame path, so that frame is not a long one.
+const start = () => renderer.setAnimationLoop(frame);
+renderer.compileAsync(scene, camera).then(start, start);
 addEventListener("pointermove", (e) => {
   px = e.clientX / innerWidth - 0.5;
   py = e.clientY / innerHeight - 0.5;
