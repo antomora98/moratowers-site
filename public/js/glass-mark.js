@@ -1,100 +1,104 @@
+// The landing's hero: the tower m, extruded and finished in chrome. The outline is the same path as the flat stand-in
+// (public/img/tower-m.svg), in font units with y up.
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-const html = document.documentElement, hero = document.getElementById("hero");
-const moving = () => html.dataset.motion !== "off" && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TOWER_M = "M23 4L85 41Q96 48 100 54Q104 60 104 73L104 429Q104 443 100.5 449.5Q97 456 86 460L26 483L26 487L179 545L184 545L184 448Q253 542 348 542Q420 542 466 494.5Q512 447 512 366L512 73Q512 60 516 54Q520 48 531 41L593 4L593 0L347 0L347 4L409 41Q420 48 424 54Q428 60 428 73L428 332Q428 403 398 436Q368 469 316 469Q281 469 247 456.5Q213 444 188 427L188 73Q188 60 192 54Q196 48 207 41L269 4L269 0L23 0Z M347 4L409 41Q420 48 424 54Q428 60 428 73L428 579Q428 593 424.5 599.5Q421 606 410 610L350 633L350 637L503 695L508 695L508 598Q577 692 672 692Q744 692 790 644.5Q836 597 836 516L836 73Q836 60 840 54Q844 48 855 41L917 4L917 0L671 0L671 4L733 41Q744 48 748 54Q752 60 752 73L752 482Q752 553 722 586Q692 619 640 619Q605 619 571 606.5Q537 594 512 577L512 73Q512 60 516 54Q520 48 531 41L593 4L593 0L347 0Z M672 4L734 41Q745 48 749 54Q753 60 753 73L753 729Q753 743 749.5 749.5Q746 756 734 760L671 783L671 787L832 845L837 845L837 73Q837 60 841 54Q845 48 856 41L918 4L918 0L672 0Z";
+function shapesOf(d) {
+  const out = [];
+  let s = null;
+  for (const [, cmd, args] of d.matchAll(/([MLQZ])([^MLQZ]*)/g)) {
+    const n = args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+    if (cmd === "M") { s = new THREE.Shape(); s.moveTo(n[0], n[1]); out.push(s); }
+    else if (cmd === "L") s.lineTo(n[0], n[1]);
+    else if (cmd === "Q") s.quadraticCurveTo(n[0], n[1], n[2], n[3]);
+    else s.closePath();
+  }
+  return out;
+}
+// The mark's home: the landing's hero, or the small mark after the name on About ([data-chrome-mark]).
+const html = document.documentElement, hero = document.getElementById("hero") || document.querySelector("[data-chrome-mark]");
+// How much of its box the mark fills: half the hero's width on the landing, nearly all of the small box.
+const badge = !hero.id, fillW = badge ? 0.94 : 0.5, fillH = badge ? 0.94 : 0.62;
+// Asked once, then kept current: the reader's reduced-motion setting.
+const calm = matchMedia("(prefers-reduced-motion: reduce)");
+let reduced = calm.matches;
+calm.addEventListener("change", (e) => { reduced = e.matches; });
+const moving = () => html.dataset.motion !== "off" && !reduced;
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(2, devicePixelRatio));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.8;
+renderer.toneMappingExposure = 1.15;
 renderer.domElement.className = "glass";
 renderer.domElement.setAttribute("aria-hidden", "true");
 hero.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(getComputedStyle(html).getPropertyValue("--bg").trim() || "#0f0e0b");
-scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-const camera = new THREE.PerspectiveCamera(16, 1, 0.1, 2e3);
+// No scene background: the canvas is clear around the mark, so the rain behind it shows through.
+renderer.setClearColor(0x000000, 0);
+// A studio for the chrome to mirror: light sky, one bright band above a hard horizon, dark floor, and soft upright
+// bands so the light slides across the faces as the mark sways.
+function studio() {
+  const c = document.createElement("canvas");
+  c.width = 1024; c.height = 512;
+  const g = c.getContext("2d");
+  const v = g.createLinearGradient(0, 0, 0, 512);
+  [[0, "#4b4944"], [0.3, "#a9a69d"], [0.47, "#e2dfd6"], [0.53, "#ffffff"], [0.6, "#f4f1e8"], [0.64, "#16140f"], [1, "#070605"]].forEach(([o, col]) => v.addColorStop(o, col));
+  g.fillStyle = v;
+  g.fillRect(0, 0, 1024, 512);
+  g.globalCompositeOperation = "multiply";
+  const h = g.createLinearGradient(0, 0, 1024, 0);
+  for (let i = 0; i <= 16; i++) h.addColorStop(i / 16, i % 2 ? "#ffffff" : "#a8a59c");
+  g.fillStyle = h;
+  g.fillRect(0, 0, 1024, 512);
+  const t = new THREE.CanvasTexture(c);
+  t.mapping = THREE.EquirectangularReflectionMapping;
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+scene.environment = new THREE.PMREMGenerator(renderer).fromEquirectangular(studio()).texture;
+const camera = new THREE.PerspectiveCamera(16, 1, 0.1, 2e4);
 const group = new THREE.Group();
 scene.add(group);
-let size = null, px = 0, py = 0;
-const EM_MARK = 1623 / 320, EM_LINE = 2985 / 320;
-let line = null, lineH = 0;
+const geo = new THREE.ExtrudeGeometry(shapesOf(TOWER_M), { depth: 150, bevelEnabled: true, bevelThickness: 16, bevelSize: 13, bevelSegments: 5, curveSegments: 20 });
+geo.computeBoundingBox();
+const size = geo.boundingBox.getSize(new THREE.Vector3());
+geo.translate(...geo.boundingBox.getCenter(new THREE.Vector3()).negate().toArray());
+const chrome = new THREE.MeshStandardMaterial({ color: "#ecebe6", metalness: 1, roughness: 0.1 });
+group.add(new THREE.Mesh(geo, chrome));
+let px = 0, py = 0, still = false;
 function fit() {
   const w = hero.clientWidth, h = hero.clientHeight;
+  if (!w || !h) return;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-  if (!size) return;
-  const fill = w < 640 ? 0.88 : 0.62;
   const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-  const dist = Math.max(size.x / fill / (2 * tan * camera.aspect), size.y / 0.6 / (2 * tan));
+  const dist = Math.max(size.x / fillW / (2 * tan * camera.aspect), size.y / fillH / (2 * tan));
   camera.position.set(0, 0, dist);
   camera.near = dist / 100;
   camera.far = dist * 100;
   camera.updateProjectionMatrix();
   camera.lookAt(0, 0, 0);
-  if (!line) return;
-  const em = size.x / EM_MARK * (w < 640 ? 0.46 : 0.21);
-  const k = em / (line.userData.w / EM_LINE);
-  line.scale.set(k, k, k * line.userData.zfix);
-  lineH = line.userData.h * k;
-  const gap = size.x / EM_MARK * 0.22;
-  line.position.y = -(size.y / 2 + gap + lineH / 2);
-  const pxPerUnit = h / (2 * tan * dist);
-  html.style.setProperty("--glass-bottom", `${((size.y / 2 + gap + lineH) * pxPerUnit).toFixed(1)}px`);
+  if (!badge) html.style.setProperty("--glass-bottom", `${(size.y / 2 * h / (2 * tan * dist)).toFixed(1)}px`);
+  // Resizing clears the canvas. When the loop has stopped (motion off), draw the still mark again.
+  if (still) renderer.render(scene, camera);
 }
 function pose(k) {
-  group.rotation.y = 0.06 + 0.1 * Math.sin(k * 0.3) + px * 0.3;
-  group.rotation.x = -0.02 + py * 0.2;
-  html.style.setProperty("--drift-x", `${((group.rotation.y - 0.06) * 60).toFixed(2)}px`);
-  html.style.setProperty("--sheen", `${(50 + (group.rotation.y - 0.06) * 260).toFixed(1)}%`);
-  html.style.setProperty("--drift-y", `${((group.rotation.x + 0.02) * 30).toFixed(2)}px`);
+  group.rotation.y = 0.1 + 0.16 * Math.sin(k * 0.3) + px * 0.35;
+  group.rotation.x = -0.03 + py * 0.2;
 }
-const loader = new GLTFLoader();
-Promise.allSettled([loader.loadAsync(hero.dataset.markSrc), loader.loadAsync(hero.dataset.lineSrc)]).then(([m, l]) => {
-  if (m.status !== "fulfilled") return;
-  const mark = m.value.scene, box = new THREE.Box3().setFromObject(mark);
-  if (html.dataset.glass === "warm") mark.traverse((o) => {
-    if (!o.isMesh) return;
-    Object.assign(o.material, { iridescence: 0, dispersion: 0, attenuationDistance: 6e-3, roughness: 0.06 });
-    o.material.attenuationColor = new THREE.Color("#d8c7a0");
-    o.material.needsUpdate = true;
-  });
-  size = box.getSize(new THREE.Vector3());
-  mark.position.sub(box.getCenter(new THREE.Vector3()));
-  group.add(mark);
-  if (l.status === "fulfilled") {
-    let glassMat = null;
-    mark.traverse((o) => {
-      if (o.isMesh && !glassMat) glassMat = o.material;
-    });
-    const raw = l.value.scene, lb = new THREE.Box3().setFromObject(raw), ls = lb.getSize(new THREE.Vector3());
-    raw.position.sub(lb.getCenter(new THREE.Vector3()));
-    raw.traverse((o) => {
-      if (o.isMesh) o.material = glassMat;
-    });
-    line = new THREE.Group();
-    line.add(raw);
-    line.userData = { w: ls.x, h: ls.y, zfix: 0.55 * (size.z / (size.x / EM_MARK)) / (ls.z / (ls.x / EM_LINE)) };
-    group.add(line);
-    hero.classList.add("lined");
-  }
-  fit();
-  // Prepare the glass's shaders before the first frame, so the swap from the flat word does not stall.
-  (renderer.compileAsync ? renderer.compileAsync(scene, camera) : Promise.resolve()).catch(() => {}).then(() => {
+fit();
+Promise.resolve().then(() => {
   const t0 = performance.now();
   renderer.setAnimationLoop((t) => {
     if (!moving()) {
       pose(0);
       renderer.render(scene, camera);
-      renderer.setAnimationLoop(null);
+      queueMicrotask(() => renderer.setAnimationLoop(null));
+      still = true;
       return;
     }
     pose((t - t0) / 1e3);
     renderer.render(scene, camera);
   });
   hero.classList.add("glassed");
-  });
 });
 addEventListener("pointermove", (e) => {
   px = e.clientX / innerWidth - 0.5;

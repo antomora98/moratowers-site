@@ -3,19 +3,28 @@ import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import { landing } from '../lib/landing';
 import { pages } from '../lib/pages';
+import { IMPORTMAP } from '../lib/inline';
 import { aboutLd } from '../lib/jsonld';
 // About, the front door: who I am, in a few lines; the two ways on, each a command and its question (the evals page and
 // the cases page); contact, where to read next, and not advice.
 const m = pages.meta.about;
 const a = pages.about;
+// The name, split so the chrome mark stays on the line with its last word.
+const nameWords = landing.about.name.split(' ');
+const nameTail = nameWords.pop();
+const nameHead = nameWords.join(' ');
 ---
 <Base title={m.title} description={m.description} path="/about/" jsonld={aboutLd()} fonts={['geist-serif-400', 'geist-mono-400']}
-  styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain>
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain
+  importmap={IMPORTMAP} preloads={[
+    { href: '/js/glass-mark.js', as: 'module' },
+    { href: '/vendor/three-0.170.0/build/three.module.js', as: 'module' },
+  ]}>
 <a class="skip" href="#main">skip to the text</a>
 <TopNav here="about" />
 <main id="main" class="aboutpage">
 <p class="ln">&gt; whoami</p>
-<h1>{landing.about.name}</h1>
+<h1>{nameHead} <span class="tail">{nameTail}<span class="namemark" data-chrome-mark aria-hidden="true"><img class="flatm" src="/img/tower-m.svg" alt="" width="40" height="37" /></span></span></h1>
 <img class="me" src="/img/antonio-mora.jpg" alt={a.photo_alt} width="240" height="240" />
 {a.lines.map((t) => <p class="who">{t}</p>)}
 <dl class="built ways">{a.ways.map((w) => <><dt><a href={w.href} aria-label={`${w.label.replace(/^> /, '')}: ${w.text}`}>{w.label}</a></dt><dd>{w.text}</dd></>)}</dl>
@@ -23,4 +32,5 @@ const a = pages.about;
 <p class="links go"><a href="/story/">&gt; cat story.md</a></p>
 <p class="notadvice">{a.not_advice}</p>
 </main>
+<script is:inline type="module" src="/js/glass-mark.js"></script>
 </Base>

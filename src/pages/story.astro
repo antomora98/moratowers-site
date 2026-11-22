@@ -15,14 +15,24 @@ s.sections.forEach((x, k) => {
   if (x.from !== start || x.to < x.from) throw new Error(`story: section ${k + 1} must start at paragraph ${start}`);
 });
 if (s.sections[s.sections.length - 1].to !== story.length - 1) throw new Error('story: the sections do not cover every paragraph');
+// Reading time for the whole page, the story and the timeline under it, at 230 words a minute. Counted here, from the
+// same text the page prints, so the number has one home.
+const words = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
+const count = [
+  ...s.sections.flatMap((x) => [x.h, x.sub ?? '']), ...story.slice(1),
+  ...timeline.flatMap((t) => [...t.lines, ...(s.ledgers[t.month] ? [s.ledgers[t.month].label, ...s.ledgers[t.month].rows.flat()] : [])]),
+].reduce((n, t) => n + words(t), 0);
+const minutes = Math.max(1, Math.round(count / 230));
 ---
 <Base title={m.title} description={m.description} path="/story/" fonts={['geist-serif-400', 'geist-mono-400']}
-  styles={['site', 'motion', 'nav', 'brand', 'brand-about']} rain>
+  styles={['site', 'motion', 'nav', 'brand', 'brand-about', 'read']} rain>
 <a class="skip" href="#main">skip to the text</a>
+<div class="readbar" aria-hidden="true"></div>
 <TopNav here="story" />
 <main id="main" class="storypage">
 <p class="ln">&gt; cat story.md</p>
 <h1>Story</h1>
+<p class="readtime">{minutes} min read</p>
 <div class="prose">
 {s.sections.map((x, k) => <section aria-labelledby={`s-${k + 1}`}><h2 class="sh" id={`s-${k + 1}`}>{x.h}</h2>{x.sub && <p class="date">{x.sub}</p>}{story.slice(x.from, x.to + 1).map((p) => <p>{p}</p>)}</section>)}
 </div>
@@ -38,4 +48,5 @@ if (s.sections[s.sections.length - 1].to !== story.length - 1) throw new Error('
 <p class="links">{pages.outside.map((o, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={o.href} rel="me noopener">{o.label}</a></>)}<span class="sep" aria-hidden="true"> · </span><a href={pages.contact_link.href}>{pages.contact_link.label}</a></p>
 </main>
 <script is:inline type="module" src="/js/story.js"></script>
+<script is:inline type="module" src="/js/read-progress.js"></script>
 </Base>

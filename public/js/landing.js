@@ -235,6 +235,17 @@ function layout() {
     const v = Math.min(1, (r + 0.5) / 5) * Math.min(1, (rows - r - 0.5) / 5), e = v * v * (3 - 2 * v);
     for (let c = 0; c < cols; c++) mult[r * cols + c] = e * quiet[r * cols + c];
   }
+  // From the text column down, the rain runs at the inner pages' strength (rain.js draws its trails at 0.12; here a
+  // trail peaks at TRAIL_A), easing in from the hero's foot to the column's first line.
+  const col = document.querySelector(".plain");
+  if (col) {
+    const a = (heroTop + heroH) / ch, b = (col.getBoundingClientRect().top + window.scrollY) / ch, inner = 0.12 / TRAIL_A;
+    for (let r = 0; r < rows; r++) {
+      const k = Math.max(0, Math.min(1, (b - r) / Math.max(1, b - a)));
+      const f = inner + (1 - inner) * k * k * (3 - 2 * k);
+      if (f < 1) for (let c = 0; c < cols; c++) mult[r * cols + c] *= f;
+    }
+  }
   for (const t of title) mult[t.r * cols + t.c] = 0;
   heroRows = Math.ceil((heroTop + heroH) / ch);
   if (MODE !== "full") {

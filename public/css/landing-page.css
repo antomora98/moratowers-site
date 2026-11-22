@@ -100,7 +100,6 @@ html:not([data-look=mono]) .ways li a {
 }
 html[data-look=geistall] body,
 html[data-look=geistall] .under,
-html[data-look=geistall] .topnav,
 html[data-look=geistall] .bar,
 html[data-look=geistall] .ways .v {
   font-family:
@@ -170,30 +169,6 @@ html[data-mark=glass] .hero {
   display: block;
   width: 100%;
   height: 100%;
-  -webkit-mask-image:
-    radial-gradient(
-      ellipse 46% 44% at 50% 50%,
-      #000 62%,
-      transparent 100%);
-  mask-image:
-    radial-gradient(
-      ellipse 46% 44% at 50% 50%,
-      #000 62%,
-      transparent 100%);
-}
-@media (max-width: 640px) {
-  .hero canvas.glass {
-    -webkit-mask-image:
-      radial-gradient(
-        ellipse 64% 50% at 50% 50%,
-        #000 70%,
-        transparent 100%);
-    mask-image:
-      radial-gradient(
-        ellipse 64% 50% at 50% 50%,
-        #000 70%,
-        transparent 100%);
-  }
 }
 html[data-mark=glass] .dek,
 html[data-mark=glass] .result,
@@ -217,7 +192,6 @@ html[data-small=sans] .ways .v {
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
-html[data-splash] .topnav,
 html[data-splash] .bar > *:not(.motion) {
   display: none;
 }
@@ -225,15 +199,6 @@ html[data-splash] .bar {
   background: none;
   border: 0;
   justify-content: flex-end;
-}
-html[data-splash] body {
-  cursor: pointer;
-}
-html[data-splash] main {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 html[data-splash] .under {
   position: absolute;
@@ -243,20 +208,6 @@ html[data-splash] .under {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-html[data-splash].flying .topnav {
-  display: flex;
-  position: fixed;
-  inset: 0 0 auto 0;
-  background: none;
-  border-color: transparent;
-}
-html[data-splash].flying .topnav .links {
-  visibility: hidden;
-}
-html[data-splash],
-html[data-splash] body {
-  overflow: hidden;
 }
 html[data-splash] body {
   padding-bottom: 0;
@@ -270,40 +221,28 @@ html[data-splash] .hero .name {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-@font-face {
-  font-family: "Geist Serif Mark";
-  src: url(../fonts/geist-serif-400.woff2) format("woff2");
-  font-weight: 400;
-  font-display: block;
+/* The menu as on the inner pages, where it takes the body's Geist Mono; this page's body is set in the serif. */
+html[data-splash] .topnav {
+  font-family: var(--mono);
+}
+/* The hero box. Its height and margins are set again further down, where the whole first screen is laid out. */
+html[data-splash] {
+  --hero-h: clamp(170px, 26vw, max(380px, 21vw));
+  --peek: 132px;
+  --hero-gap: max(24px, (100svh - var(--nav-h) - var(--peek) - var(--hero-h)) / 2);
+  --lift: 3vw;
 }
 html[data-splash] .hero {
-  height: clamp(170px, 26vw, max(380px, 21vw));
+  height: var(--hero-h);
+  margin-top: max(16px, var(--hero-gap) - var(--lift));
+  margin-bottom: calc(var(--hero-gap) + var(--lift));
   padding: 0;
   container-type: inline-size;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-html[data-splash] .hero .flat {
-  margin: 0;
-  font:
-    400 calc(62cqw / 5.319) / 1 "Geist Serif Mark",
-    Georgia,
-    serif;
-  letter-spacing: 0;
-  color: var(--ink);
-  white-space: nowrap;
-  transform: translateY(-0.039em);
-}
-@media (max-width: 639px) {
-  html[data-splash] .hero .flat {
-    font-size: calc(88cqw / 5.319);
-  }
-}
-html[data-splash] .hero.glassed .flat {
-  visibility: hidden;
-}
-/* The flat word turns into the glass: the canvas fades in over it as the word fades out (none under reduced motion). */
+/* The flat mark turns into the chrome one: the canvas fades in over it (no fade under reduced motion). */
 .hero canvas.glass {
   opacity: 0;
 }
@@ -313,69 +252,10 @@ html[data-splash] .hero.glassed .flat {
 html[data-motion=on] .hero canvas.glass {
   transition: opacity 0.6s cubic-bezier(.4, 0, .2, 1);
 }
-html[data-motion=on][data-splash] .hero .flat {
-  transition: opacity 0.6s cubic-bezier(.4, 0, .2, 1), visibility 0s linear 0.6s;
-}
-html[data-splash] .hero.glassed .flat {
-  opacity: 0;
-}
-html[data-splash] .hero .enter {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(50% + 31cqw / 5.319 * 0.6 + 20px);
-  z-index: 2;
-  margin: 0;
-  text-align: center;
-  font: 400 13px / 24px var(--mono);
-}
-@media (max-width: 639px) {
-  html[data-splash] .hero .enter {
-    top: calc(50% + 44cqw / 5.319 * 0.6 + 16px);
-  }
-}
-html[data-splash] .hero .enter a {
-  display: inline-block;
-  padding: 4px 8px;
-  color: var(--chrome);
-  text-decoration: none;
-}
-html[data-splash] .hero .enter a:hover,
-html[data-splash] .hero .enter a:focus-visible {
-  color: var(--ink);
-}
-html[data-splash] .enter .tap {
-  display: none;
-}
-@media (hover: none) and (pointer: coarse) {
-  html[data-splash] .enter .key {
-    display: none;
-  }
-  html[data-splash] .enter .tap {
-    display: inline;
-  }
-}
-html[data-splash] .enter .caret {
-  display: inline-block;
-  width: .6em;
-  height: 1.1em;
-  margin-left: 2px;
-  vertical-align: -0.2em;
-  background: currentColor;
-}
-@keyframes caret {
-  50% {
-    opacity: 0;
-  }
-}
-html[data-motion=on][data-splash] .enter .caret {
-  animation: caret .8s steps(1) 5;
-}
 html[data-splash] .hero .lede {
   position: absolute;
   left: 16px;
   right: 16px;
-  top: calc(50% + 31cqw / 5.319 * 0.6 + 20px);
   z-index: 2;
   margin: 0;
   text-align: center;
@@ -383,21 +263,6 @@ html[data-splash] .hero .lede {
 html[data-splash] .hero .lede p {
   margin: 0;
   text-wrap: balance;
-}
-html[data-splash] .hero .lede .enter {
-  position: static;
-  margin-top: 16px;
-}
-html[data-splash] .hero .lede {
-  top: calc(50% + 8.979cqw + 14px);
-}
-@media (max-width: 639px) {
-  html[data-splash] .hero .lede {
-    top: calc(50% + 16.907cqw + 14px);
-  }
-}
-html[data-splash] .hero.lined .lede {
-  top: calc(50% + var(--glass-bottom) + 14px);
 }
 html[data-splash] .hero .lede .lq {
   font:
@@ -412,63 +277,8 @@ html[data-splash] .hero .lede .lq {
     font-size: calc(88cqw / 5.07 * 0.46);
   }
 }
-html[data-splash] .hero.lined .lede .lq {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-html[data-splash] .hero .lede .enter {
-  margin-top: 20px;
-  font:
-    400 14px / 24px "Geist Mono",
-    ui-monospace,
-    monospace;
-}
-@media (max-width: 639px) {
-  html[data-splash] .hero .lede .enter {
-    font-size: 13px;
-    margin-top: 16px;
-  }
-}
-html[data-splash] .hero .lede .enter {
-  transform: translate(var(--drift-x, 0px), var(--drift-y, 0px));
-  filter: drop-shadow(0 0 3px var(--bg)) drop-shadow(0 0 8px var(--bg));
-}
-html[data-splash] .hero .enter a {
-  color: #c8c8c5;
-}
-.hero canvas.glass {
-  -webkit-mask-image:
-    radial-gradient(
-      ellipse 50% 58% at 50% 50%,
-      #000 66%,
-      transparent 100%);
-  mask-image:
-    radial-gradient(
-      ellipse 50% 58% at 50% 50%,
-      #000 66%,
-      transparent 100%);
-}
-@media (max-width: 640px) {
-  .hero canvas.glass {
-    -webkit-mask-image:
-      radial-gradient(
-        ellipse 66% 60% at 50% 50%,
-        #000 74%,
-        transparent 100%);
-    mask-image:
-      radial-gradient(
-        ellipse 66% 60% at 50% 50%,
-        #000 74%,
-        transparent 100%);
-  }
-}
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .lq .metal,
-  html[data-splash] .hero .enter a > span {
+  .lq .metal {
     background-image:
       linear-gradient(
         100deg,
@@ -482,81 +292,143 @@ html[data-splash] .hero .enter a {
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
-  html[data-splash] .hero .enter a > span {
-    background-image:
-      linear-gradient(
-        100deg,
-        #9e9e9b 0%,
-        #b4b4b1 calc(var(--sheen, 50%) - 20%),
-        #cdcdca var(--sheen, 50%),
-        #b4b4b1 calc(var(--sheen, 50%) + 20%),
-        #9e9e9b 100%);
-  }
-  html[data-splash] .hero .enter .caret {
-    background:
-      linear-gradient(
-        180deg,
-        #cdcdca,
-        #9e9e9b);
-  }
 }
 @media (forced-colors: active) {
-  .metal,
-  .enter a > span {
+  .metal {
     background: none !important;
     -webkit-text-fill-color: CanvasText !important;
     color: CanvasText !important;
   }
-  .enter .caret {
-    background: CanvasText !important;
-  }
 }
 
-/* The poster frame (2026-11-05): a still of the glass word and line at their resting pose, captured from this page's
-   own scene, shown from the first paint in the canvas's exact place and look (same ground, same mask); the live glass
-   fades in over it after its first frame, and the poster then hides. The lines sit where the glass puts them. */
-html:not(.js) .hero .poster {
-  display: none;
+/* The text column under the hero: one reading size in Geist Serif, small Geist Mono prompts as
+   its only labels, and links that change colour on hover and focus. It sits over the rain the way the inner pages'
+   text does: landing.js runs the rain at the inner pages' strength from the column down. */
+.plain {
+  width: min(30em, 100% - 32px);
+  margin: 0 auto;
+  padding-bottom: 120px;
+  font: 400 18px / 28px var(--serif);
+  color: var(--ink);
 }
-html[data-splash] .hero .poster {
-  position: absolute;
-  inset: 0;
-  background: var(--bg);
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse 50% 58% at 50% 50%, #000 66%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 58% at 50% 50%, #000 66%, transparent 100%);
+/* :where() keeps this reset below the spacing rules that follow. */
+.plain :where(p, h2, ul) {
+  margin: 0;
 }
-html[data-splash] .hero .poster img {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - 5.573cqw);
-  width: 72.083cqw;
-  height: auto;
-  transform: translateX(-50%);
+.plain ul {
+  list-style: none;
+  padding: 0;
 }
-@media (max-width: 640px) {
-  html[data-splash] .hero .poster {
-    -webkit-mask-image: radial-gradient(ellipse 66% 60% at 50% 50%, #000 74%, transparent 100%);
-    mask-image: radial-gradient(ellipse 66% 60% at 50% 50%, #000 74%, transparent 100%);
+.plain p {
+  text-wrap: pretty;
+}
+.plain a {
+  color: inherit;
+  text-decoration: none;
+}
+.plain .ln {
+  display: block;
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+/* The first screen. One group, centred in the window: the chrome tower m, its line, and the two questions.
+   The mark is a quarter of the window's height (the hero is 40svh and the mark fills 62% of it, set in glass-mark.js).
+   Every gap is a step of one scale: 8, 24, 40, 64 px. Type is four sizes: 13 mono, 16 and 20 serif, 22 serif. */
+html[data-splash] {
+  --hero-h: clamp(230px, 40svh, 420px);
+}
+html[data-splash] main {
+  min-height: calc(100svh - var(--nav-h, 36px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 4svh;
+  box-sizing: border-box;
+}
+html[data-splash] .hero {
+  flex: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* A flat tower m holds the mark's place until the chrome one has drawn its first frame. */
+html[data-splash] .hero .flatm {
+  height: 62%;
+  width: auto;
+}
+html[data-splash] .hero.glassed .flatm {
+  opacity: 0;
+}
+html[data-motion=on][data-splash] .hero .flatm {
+  transition: opacity 0.6s cubic-bezier(.4, 0, .2, 1);
+}
+/* The line sits 24 px under the mark's foot, which glass-mark.js reports as --glass-bottom. */
+html[data-splash] .hero .lede {
+  top: calc(50% + var(--glass-bottom, 31%) + 24px);
+}
+html[data-splash] .hero .lede .lq {
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+}
+.plain.latest {
+  width: min(888px, 100% - 48px);
+  margin-top: 40px;
+  padding-bottom: 0;
+}
+.latest ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 64px;
+}
+.latest a {
+  display: block;
+}
+.latest a .ln {
+  margin-bottom: 8px;
+  color: var(--chrome);
+}
+.latest .q {
+  display: block;
+  font: 400 22px / 30px var(--serif);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.latest li p {
+  margin-top: 8px;
+  max-width: 26em;
+  font: 400 16px / 24px var(--serif);
+  color: var(--chrome);
+  text-wrap: pretty;
+}
+/* A link answers the pointer or the keyboard with a short colour fade (the site's 120 ms token). Hover is offered
+   only where there is a real pointer, so a tap on a phone does not leave the colour stuck. */
+.latest a .q,
+.latest a .ln {
+  transition: color var(--t-fade-out) ease;
+}
+.latest a:focus-visible .q {
+  color: var(--paper);
+}
+.latest a:focus-visible .ln {
+  color: var(--ink);
+}
+@media (hover: hover) and (pointer: fine) {
+  .latest a:hover .q {
+    color: var(--paper);
+  }
+  .latest a:hover .ln {
+    color: var(--ink);
   }
 }
 @media (max-width: 639px) {
-  html[data-splash] .hero .poster img {
-    top: calc(50% - 7.209cqw);
-    width: 97.829cqw;
+  html[data-splash] main {
+    justify-content: flex-start;
+    padding-bottom: 64px;
   }
-}
-html[data-splash] .hero:has(.poster) .lede .lq {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-html[data-splash] .hero.glassed .poster {
-  visibility: hidden;
-}
-html[data-motion=on][data-splash] .hero.glassed .poster {
-  transition: visibility 0s linear 0.6s;
+  .plain.latest {
+    width: min(888px, 100% - 40px);
+  }
+  .latest ul {
+    grid-template-columns: 1fr;
+  }
 }

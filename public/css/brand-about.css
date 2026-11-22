@@ -448,3 +448,22 @@
   height: auto;
   background: var(--bg);
 }
+
+/* The site's chrome mark after the name: his own mark, no tile and no edge, decorative,
+   never alone on a line. glass-mark.js draws it into a canvas; the flat mark holds the place until then. */
+.aboutpage h1 .tail { white-space: nowrap; }
+.aboutpage h1 .namemark {
+  display: inline-block;
+  position: relative;
+  width: 0.86em; height: 0.8em;
+  margin-left: 0.22em;
+  vertical-align: baseline;
+  translate: 0 0.04em;
+}
+.aboutpage h1 .namemark .flatm,
+.aboutpage h1 .namemark canvas.glass {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.aboutpage h1 .namemark .flatm { object-fit: contain; }
+.aboutpage h1 .namemark.glassed .flatm { opacity: 0; }

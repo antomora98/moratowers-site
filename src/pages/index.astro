@@ -5,39 +5,36 @@ import { landing } from '../lib/landing';
 import { pages } from '../lib/pages';
 import { IMPORTMAP } from '../lib/inline';
 import { homeLd } from '../lib/jsonld';
-// The landing: the glass word over the rain; under it what the site is ('research and
-// writing', in the word's glass, glass-mark.js), and the line that says
-// how to go in, in chrome. A click anywhere, the
-// line or the Enter key flies the word into the top bar's wordmark, then About opens (glass-flight.js).
+// The landing: the chrome tower m over the rain (glass-mark.js builds it from the icon's outline; a flat one holds its
+// place until the first frame), under it what the site is ('research and writing'), then the two questions, each with
+// one line on how it is tested. The menu shows from the start.
 const m = pages.meta.landing;
 const l = pages.landing;
 ---
 <Base title={m.title} description={m.description} path="/" bodyClass="land" motion="landing" jsonld={homeLd()}
   htmlAttrs={{ 'data-look': 'geistall', 'data-mark': 'glass', 'data-small': 'sans', 'data-glass': 'warm', 'data-splash': '' }}
-  fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'landing', 'landing-page']}
+  fonts={['geist-mono-400', 'geist-serif-400']} styles={['site', 'motion', 'nav', 'brand', 'landing', 'landing-page']}
   importmap={IMPORTMAP} preloads={[
     { href: '/js/glass-mark.js', as: 'module' },
     { href: '/vendor/three-0.170.0/build/three.module.js', as: 'module' },
-    { href: '/vendor/three-0.170.0/examples/jsm/loaders/GLTFLoader.js', as: 'module' },
-    { href: '/vendor/three-0.170.0/examples/jsm/utils/BufferGeometryUtils.js', as: 'module' },
-    { href: '/vendor/three-0.170.0/examples/jsm/environments/RoomEnvironment.js', as: 'module' },
-    { href: '/img/poster-desktop.webp', as: 'image', media: '(min-width: 640px)' },
-    { href: '/img/poster-phone.webp', as: 'image', media: '(max-width: 639px)' },
   ]}>
 <canvas class="rain" aria-hidden="true"></canvas>
+<a class="skip" href="#main">skip to the text</a>
 <TopNav here="landing" />
 <main id="main">
-<header class="hero" id="hero" data-mark-src="/models/mark.glb" data-line-src="/models/line1.glb">
+<header class="hero" id="hero">
 <h1 class="name">{landing.domain}</h1>
-<p class="flat" aria-hidden="true">{landing.name}</p>
-<div class="poster" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="/img/poster-phone.webp" width="1262" height="330" /><img src="/img/poster-desktop.webp" width="2768" height="594" alt="" fetchpriority="high" decoding="async" /></picture></div>
+<img class="flatm" src="/img/tower-m.svg" width="921" height="871" alt="" aria-hidden="true" />
 <div class="lede">
 <p class="lq"><span class="metal">{l.lede}</span></p>
-<p class="enter"><a href="/about/" aria-label={l.enter_label}><span aria-hidden="true">&gt; <span class="key">{l.enter_key}</span><span class="tap">{l.enter_tap}</span><span class="caret"></span></span></a></p>
 </div>
 </header>
+<div class="plain latest">
+<ul>
+{l.ways.map((w) => <li><a href={w.href} aria-label={`${w.label.replace(/^> /, '')}: ${w.text}`}><span class="ln">{w.label}</span><span class="q">{w.text}</span></a><p>{w.how}</p></li>)}
+</ul>
+</div>
 </main>
 <script is:inline type="module" src="/js/landing.js"></script>
 <script is:inline type="module" src="/js/glass-mark.js"></script>
-<script is:inline type="module" src="/js/glass-flight.js"></script>
 </Base>

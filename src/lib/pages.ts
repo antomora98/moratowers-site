@@ -15,11 +15,13 @@ const meta = z.object({ title: text, description: text.optional() });
 export const pagesSchema = z.object({
   // The cases page's description is its question and result (case/index.astro).
   meta: z.object({ landing: meta, about: meta, cases: meta, story: meta, rules: meta, evals: meta, notfound: meta }),
-  // lede is the landing's line under the glass word.
-  landing: z.object({ lede: text, enter_label: text, enter_key: text, enter_tap: text }),
+  // lede is the landing's line under the mark. ways: the two questions, each a command, its question and one line on
+  // how it is tested (how), every sentence copied from an inner page.
+  landing: z.object({ lede: text, ways: z.array(z.object({ label: text, href: z.string().startsWith('/'), text, how: text })).min(1) }),
   about: z.object({
     // lines: who I am, one paragraph each. ways: the two ways on, a command and its question each.
     lines: z.array(text).min(1),
+    photo_alt: text,
     ways: z.array(z.object({ label: text, href: z.string().startsWith('/'), text })).min(1),
     not_advice: text,
     contact: z.object({ h: text, intro: text, channels: z.array(z.object({ label: text, href, me: z.boolean() })).min(1) }),

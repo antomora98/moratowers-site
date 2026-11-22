@@ -28,10 +28,21 @@
     }
   },
   "landing": {
-    "enter_label": "Enter the site",
-    "enter_key": "click or press enter",
-    "enter_tap": "tap to enter",
-    "lede": "research and writing"
+    "lede": "research and writing",
+    "ways": [
+      {
+        "label": "> ls evals",
+        "href": "/evals/",
+        "text": "Can AI agents catch a false claim without rejecting a true one?",
+        "how": "Each trap has a twin that looks almost the same and is true, and an agent scores only by rejecting the trap and accepting the twin."
+      },
+      {
+        "label": "> ls cases",
+        "href": "/case/",
+        "text": "Can AI agents find a trading edge?",
+        "how": "The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass."
+      }
+    ]
   },
   "about": {
     "lines": [
@@ -82,7 +93,7 @@
         }
       ]
     },
-    "photo_alt": "Antonio Mora outdoors, smiling, holding a coffee cup. Black and white."
+    "photo_alt": "Antonio Mora outdoors, smiling. Black and white."
   },
   "cases": {
     "prompt": "> ls cases",

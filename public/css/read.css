@@ -1,0 +1,23 @@
+/* Story page: reading time under the title, and the progress bar at the top of the window. */
+.readbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.storypage .readtime {
+  margin: 6px 0 0;
+  font: 400 13px / 16px var(--mono);
+  color: var(--dim);
+}
+@media (forced-colors: active) {
+  .readbar {
+    background: CanvasText;
+  }
+}

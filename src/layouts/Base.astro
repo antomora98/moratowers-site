@@ -33,12 +33,12 @@ const { title, ogTitle, description, path, canonical = true, htmlAttrs = {}, bod
 const shareTitle = ogTitle ?? title;
 const url = new URL(path, Astro.site).href;
 const MOTION = { plain: MOTION_PLAIN, landing: MOTION_LANDING, rules: MOTION_RULES };
-// The share card: the landing's still frame (reduced motion), without the nav and the enter line (2026-11-05).
+// The share card: the chrome tower m over faint characters, with the landing's line under it (2026-11-22).
 // Its text is fixed in the image, so the alt text is fixed too; when that text changes, render a
-// new card and ship it under a new name, og-v4.png (X caches a card for about 7 days).
+// new card and ship it under a new name, og-v5.png (X caches a card for about 7 days).
 const card = {
-  src: new URL('/og-v4.png', Astro.site).href,
-  alt: 'The word moratowers in glass, over faint falling characters on a dark background. Under it, also in glass: research and writing.',
+  src: new URL('/og-v5.png', Astro.site).href,
+  alt: 'The moratowers mark, a chrome letter m built of three towers, over faint falling characters on a dark background. Under it: research and writing.',
 };
 ---
 <!doctype html>
@@ -51,7 +51,7 @@ const card = {
     {description && <meta name="description" content={description} />}
     {canonical ? <link rel="canonical" href={url} /> : <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0f0e0b" />
