@@ -52,3 +52,9 @@ canvas {
   outline: 2px solid #e6e1cf;
   outline-offset: 4px;
 }
+
+/* The chrome mark on the 404: the same m as the landing, in place of the glass word. */
+.mark404 { position: fixed; left: 0; right: 0; top: 14vh; height: 44vh; }
+.mark404 .flatm, .mark404 canvas.glass { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mark404 .flatm { object-fit: contain; padding: 19% 0; box-sizing: border-box; }
+.mark404.glassed .flatm { opacity: 0; }
