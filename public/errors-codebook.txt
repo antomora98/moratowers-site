@@ -1,0 +1,50 @@
+errors.csv: what each column means
+
+One row per error on the error log page, in the page's order. 54 rows.
+
+id
+  The error's number. E002 is not in the file. It restates E023: the source listed one defect twice, and it is
+  counted once.
+
+stage
+  caught_before_shipping  caught before it shipped (the page's first list)
+  shipped                 it shipped before it was found (the page's second list)
+
+period
+  The period the source record files the error under. A: to 2026-03-28. B: to 2026-08-20. C: to 2026-10-07.
+  D: after 2026-10-07. Each end date belongs to the period it closes. For a shipped error the period is the
+  source's, not computed from the dates: five shipped errors came in outside their period's dates and keep the
+  source's period (E023, E035, E037, E049, E052).
+
+came_in
+  The date the error entered the work. Blank for E048, which came in on several dates.
+
+found
+  The date it was found.
+
+days
+  found minus came_in, in whole days. 0 means the same day. Blank where came_in is blank.
+
+found_by
+  check              a check that runs on its own, or a planned sweep (see sweep)
+  reviewer_agent     a separate reviewer agent
+  agents_later_work  the agents themselves, in later work
+  owner              the site's owner (the page says "me")
+  not_recorded       the record does not say
+
+sweep
+  yes for the five checks that were sweeps the agents ran on purpose; those do not run unasked. no otherwise.
+
+reach
+  work_files               stayed in work files
+  owner_notes_or_briefing  reached the owner's notes or a briefing to the owner
+  live_orders              reached a live run's orders
+  No error reached anything public, so there is no code for it. No error was found by someone outside the
+  project, so there is no code for that either.
+
+text
+  One or two sentences on the error. Three rows are withheld: their text says so, and they stay in every count.
+
+How the page's numbers are computed
+  A percentage is rounded to the nearest whole percent. "Found by a check or reviewer" counts found_by = check
+  and found_by = reviewer_agent. The median and the longest days in a period leave out E048.

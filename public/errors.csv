@@ -1,0 +1,55 @@
+id,stage,period,came_in,found,days,found_by,sweep,reach,text
+E001,caught_before_shipping,A,2026-03-24,2026-03-24,0,reviewer_agent,no,work_files,"A price feed's signal had no age check, so a stale signal could be used. An adversarial review agent found it, beyond its brief."
+E003,caught_before_shipping,C,2026-08-25,2026-08-25,0,check,no,work_files,"One cell of a price replay looked strong. Pre-registered robustness checks (a shifted clock, a calendar split) refused it in the same build."
+E004,caught_before_shipping,C,2026-08-25,2026-08-25,0,check,no,work_files,An agent challenged a closed verdict by mixing up the smallest effect a test can detect with its interval. Recomputing from the committed table rejected the challenge.
+E005,caught_before_shipping,C,2026-08-29,2026-08-29,0,agents_later_work,no,work_files,An idea was labelled established on the premise that new listings had no quotes. The next research loop found that almost all already had them.
+E006,caught_before_shipping,C,2026-09-26,2026-09-26,0,check,no,work_files,A replay's large gain came from look-ahead. A decomposition rule flagged it in the same commit.
+E007,caught_before_shipping,C,2026-09-25,2026-09-26,1,check,no,work_files,A positive secondary cell did not replicate when it was tested as the pre-registered primary on a set of related markets.
+E008,caught_before_shipping,C,2026-08-23,2026-08-29,6,check,no,owner_notes_or_briefing,A result chosen on the same data failed its frozen holdout. The claim then stayed in the project's main notes for a month after the failure was recorded.
+E009,caught_before_shipping,C,2026-08-25,2026-10-10,46,check,no,work_files,"A candidate from a first look was closed by its registered second look. A weak row: a test doing its job, not an agent mistake."
+E010,caught_before_shipping,D,2026-10-12,2026-10-14,2,reviewer_agent,no,work_files,A comparison script had a logic bug. An independent review marked it a blocker.
+E011,caught_before_shipping,D,2026-10-12,2026-10-16,4,check,no,work_files,"A draft public thread made two false claims, one about how long the work had run. A reader agent flagged that one the day it appeared; a trace of each claim to its file and line corrected both."
+E012,caught_before_shipping,D,2026-10-17,2026-10-22,5,check,no,work_files,An audit program gave the wrong reason flag on a look-ahead case. The independent checker's first run caught it.
+E013,caught_before_shipping,D,2026-10-23,2026-10-23,0,reviewer_agent,no,work_files,A draft said the audit's rulebook was time-stamped on a blockchain. On that date it was only frozen in git and pushed. A copy-draft agent caught the orchestrator's error.
+E014,caught_before_shipping,D,2026-10-29,2026-11-05,7,check,no,work_files,An eval rubric asked for a cause the task gave no way to find. Blind grading of the rerun showed it.
+E015,shipped,A,2026-02-26,2026-02-28,2,check,no,work_files,A commit deleted 226 lines of safety code. A halt during a paper-mode soak test led to the investigation that found it; the stripped code never ran.
+E016,shipped,A,2026-01-08,2026-03-04,55,owner,no,live_orders,"The paper trader filled every order at once at its limit price and charged no fees. I noticed a balance gap in a live run and stopped the bot. A collaborator, not an agent, wrote the instant fills; the agents kept the model for two months."
+E017,shipped,A,2026-03-24,2026-03-27,3,agents_later_work,no,live_orders,"A new bot's scanner used the settlement time as the order deadline, so none of its live orders filled."
+E018,shipped,A,2026-03-26,2026-03-27,1,agents_later_work,no,live_orders,A price filter fell back to a stale setting and silently rejected markets in a live bot.
+E019,shipped,A,2026-03-24,2026-03-28,4,agents_later_work,no,live_orders,"A bot went live on a signal that did not match its backtest. An ad hoc check found it, and that check became a launch rule."
+E020,shipped,A,2026-03-28,2026-03-28,0,owner,no,live_orders,Six code pushes caused six restarts during a live run. I asked for every fix in one batch.
+E021,shipped,A,2026-03-27,2026-08-16,142,agents_later_work,no,owner_notes_or_briefing,"The notes held a wrong rule about when trading closes before settlement. A later sprint found it while reproducing the settlement rule, which matched every case."
+E022,shipped,A,2026-03-15,2026-08-23,161,check,yes,owner_notes_or_briefing,A figure in the notes was cited to a document that does not contain it. A sweep that re-derived cited numbers found it.
+E023,shipped,B,2026-03-24,2026-04-07,14,agents_later_work,no,owner_notes_or_briefing,"A backtest had look-ahead, and a bot had gone live on it. A re-analysis found it. The source lists it twice; it is counted once."
+E024,shipped,B,2026-04-01,2026-04-01,0,owner,no,owner_notes_or_briefing,"An agent diagnosed a stuck bot without tracing the code. I made it trace the code mechanically; that found the real cause, about an hour in."
+E025,shipped,B,2026-04-21,2026-04-21,0,owner,no,owner_notes_or_briefing,"An incident report overstated how much of the logs it covered. I challenged the report as vague, and the agent disclosed the overstatement."
+E026,shipped,B,2026-05-05,2026-05-19,14,check,no,work_files,"A new background loop was not stubbed in the tests, so CI hung on every pull request until a fix 14 days later."
+E027,shipped,B,2026-05-19,2026-08-20,93,check,yes,owner_notes_or_briefing,A stale headline figure stayed in the notes. Rerunning the canonical report found it.
+E028,shipped,B,2026-05-27,2026-08-23,88,check,yes,owner_notes_or_briefing,The notes said no events reached a price band. Re-deriving from the raw file showed that some did.
+E029,shipped,B,2026-08-11,2026-08-11,0,owner,no,owner_notes_or_briefing,"An agent re-ran a test that an earlier verdict had already closed, without checking the notes first. I caught it. It cost about 39 minutes and 144k tokens."
+E030,shipped,B,2026-08-17,2026-08-17,0,not_recorded,no,owner_notes_or_briefing,A web research agent's stale report of a product launch was relayed to me as news. The sources do not say who noticed.
+E031,shipped,B,2026-08-17,2026-08-20,3,reviewer_agent,no,owner_notes_or_briefing,A per-trade figure was quoted from a scan that had not finished. A quant review's question led to a reread of the full scan.
+E032,shipped,B,2026-08-17,2026-08-17,0,reviewer_agent,no,owner_notes_or_briefing,"A reported match rate was a floating-point artifact, and a results table could not be reproduced. An adversarial review caught both."
+E033,shipped,B,2026-08-18,2026-08-20,2,check,yes,owner_notes_or_briefing,"Two agents gave two numbers for one measure, 99.09% and 93.91%, one of them from a filter nobody declared. Result tables with declared filters caught it."
+E034,shipped,B,2026-08-20,2026-08-20,0,reviewer_agent,no,owner_notes_or_briefing,"A replay measured the bot's own resting order instead of the market, so its result was an artifact. An adversarial review led to its withdrawal the same day."
+E035,shipped,B,2026-03-08,2026-09-29,205,reviewer_agent,no,work_files,A safety-check skill looked for code names that never existed in the code. A prompt audit found it.
+E036,shipped,B,2026-04-07,2026-08-23,138,check,yes,owner_notes_or_briefing,"A script kept the label 'canonical, look-ahead fixed' after a second look-ahead was found in it. A sweep found the stale label."
+E037,shipped,C,2026-08-18,2026-08-25,7,agents_later_work,no,owner_notes_or_briefing,"The notes miscounted how many liquid series existed. A census found more, and several of them listed nothing."
+E038,shipped,C,2026-08-25,2026-08-26,1,agents_later_work,no,work_files,A file pattern picked a metadata file as the data file. A sweep of every such pattern found it.
+E039,shipped,C,2026-08-25,2026-08-26,1,agents_later_work,no,owner_notes_or_briefing,A cost was ported from another market instead of measured. Measuring each market's own depth showed the port was wrong.
+E040,shipped,C,2026-09-02,2026-10-17,45,reviewer_agent,no,work_files,A results file that must never change was edited by hand after it was built. An audit re-run found it.
+E041,shipped,C,2026-09-02,2026-10-17,45,reviewer_agent,no,work_files,A data pull rewrote a raw file in place when it resumed. The same audit re-run found it.
+E042,shipped,C,2026-08-25,2026-10-17,53,reviewer_agent,no,work_files,"Five result tables were built from inputs kept in a temporary session folder, so they cannot be rebuilt."
+E043,shipped,C,2026-08-25,2026-10-17,53,reviewer_agent,no,owner_notes_or_briefing,"Some verify steps wrote the file before comparing, and others compared nothing, while the notes said every check matched byte for byte."
+E044,shipped,C,2026-09-25,2026-09-25,0,agents_later_work,no,owner_notes_or_briefing,A fill test used a five-minute window and called markets too small. The lead withdrew the rule and reran with a 24-hour window.
+E045,shipped,C,2026-09-26,2026-09-27,1,reviewer_agent,no,owner_notes_or_briefing,withheld
+E046,shipped,C,2026-09-26,2026-09-29,3,reviewer_agent,no,owner_notes_or_briefing,The notes cited a table row that did not exist. A data review found it; a citation checker came after.
+E047,shipped,C,2026-09-27,2026-09-27,0,reviewer_agent,no,owner_notes_or_briefing,withheld
+E048,shipped,C,,2026-09-29,,reviewer_agent,no,owner_notes_or_briefing,"The notes contradicted the code, and a skill cited sources that did not exist. A prompt audit with 155 findings; several defects in one row, with no single start date."
+E049,shipped,C,2026-08-20,2026-09-29,40,reviewer_agent,no,owner_notes_or_briefing,Figures copied by hand into the notes did not match their table. A data review found them.
+E050,shipped,C,2026-09-29,2026-10-07,8,reviewer_agent,no,owner_notes_or_briefing,The notes kept saying a script had a hard-coded value after a fix the same day had removed it.
+E051,shipped,D,2026-10-14,2026-10-14,0,agents_later_work,no,work_files,A push carried four commits from another session along with its own. The pushing session listed them and told me. Private repo only.
+E052,shipped,D,2026-10-07,2026-10-10,3,reviewer_agent,no,work_files,A missed recording lost rows from a paper ledger.
+E053,shipped,D,2026-10-27,2026-10-28,1,agents_later_work,no,work_files,A scheduled dry run did not start.
+E054,shipped,D,2026-11-04,2026-11-05,1,owner,no,owner_notes_or_briefing,withheld
+E055,shipped,D,2026-10-26,2026-10-26,0,reviewer_agent,no,owner_notes_or_briefing,"A move list overstated how a holdout failed: the point estimate came out ahead, and only the lower bound fell short. A claims review caught it."

@@ -57,16 +57,20 @@ const n = rows.length, pre = count((r) => r.stage === 'pre_ship'), shipped = n -
 const ctlRev = count((r) => r.by === 'control' || r.by === 'reviewer_agent'), mine = count((r) => r.by === 'antonio');
 const live = count((r) => r.reach === 'live_orders_or_money'), pub = count((r) => r.reach === 'public');
 const withheld = count((r) => r.text === 'withheld');
+// Days to find, over the rows that have a start date. 'Half' in the intro rests on the median.
+const allDays = rows.flatMap((r) => (r.days === null ? [] : [r.days]));
+const medDays = median(allDays), sameDay = allDays.filter((d) => d === 0).length, slowest = Math.max(...allDays);
+if (allDays.filter((d) => d <= medDays).length * 2 < allDays.length) throw new Error('errors: fewer than half were found within the median days');
 
 // The reviewed summary (error_log/SUMMARY.md); every number on the page must agree with it.
 const EXPECT = {
-  n: 54, pre: 13, shipped: 41, ctlRev: 35, mine: 6, live: 5, pub: 0,
+  n: 54, pre: 13, shipped: 41, ctlRev: 35, mine: 6, live: 5, pub: 0, medDays: 2, sameDay: 17, slowest: 205,
   by: { control: 16, reviewer_agent: 19, antonio: 6, builder_self: 12, outside: 0, unknown: 1 },
   reach: { none: 22, owner_briefing: 27, public: 0, live_orders_or_money: 5 },
   eras: [['A', 9, 1, '33%', 3, 161], ['B', 14, 0, '64%', 2.5, 205], ['C', 21, 7, '76%', 2, 53], ['D', 10, 5, '70%', 1.5, 7]],
 };
 const got = {
-  n, pre, shipped, ctlRev, mine, live, pub,
+  n, pre, shipped, ctlRev, mine, live, pub, medDays, sameDay, slowest,
   by: Object.fromEntries(Object.keys(EXPECT.by).map((k) => [k, count((r) => r.by === k)])) as Record<string, number>,
   reach: Object.fromEntries(Object.keys(EXPECT.reach).map((k) => [k, count((r) => r.reach === k)])) as Record<string, number>,
   eras: eras.map((x) => [x.e, x.n, x.pre, x.share, x.med, x.max]),
@@ -91,10 +95,11 @@ const title = 'Error log';
 <a class="skip" href="#main">skip to the log</a>
 <TopNav here="post" />
 <main id="main" class="errpage">
-<p class="ln">&gt; cat errors.csv</p>
+<p class="ln"><a href="/errors.csv">&gt; cat errors.csv</a><span class="sep" aria-hidden="true"> · </span><a href="/errors-codebook.txt">&gt; cat errors-codebook.txt</a></p>
 <h1>{title}</h1>
 <p class="intro">Every error my AI agents made in this research that was written down, found between February and November 2026: when it came in, when it was found, and who or what found it.</p>
-<p class="intro">{n} errors. {pre} were caught before they shipped and {shipped} shipped. Checks and reviewer agents found {ctlRev} of the {n} ({pct(ctlRev, n)}); I found {mine}. {live} reached a live run's orders. None reached anything public.</p>
+<p class="intro">Checks and reviewer agents found {ctlRev} of the {n} errors ({pct(ctlRev, n)}). Half were found within {medDays} days of coming in, {sameDay} of them the same day. None reached anything public.</p>
+<p class="intro">{pre} were caught before they shipped and {shipped} shipped. I found {mine}. {live} reached a live run's orders. The slowest took {slowest} days to find.</p>
 <p class="intro">{withheld} rows are withheld: they come from work that is not public yet. They stay in every count.</p>
 <p class="intro">It is a count, not a rate: it lists the errors that were written down, not how many were made.</p>
 <p class="intro">An AI agent built the log from the project's records, re-reading each date from its source. A separate agent reviewed it and recomputed every count. I asked for it.</p>
