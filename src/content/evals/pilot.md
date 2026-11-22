@@ -23,7 +23,7 @@ Each of twelve pairs holds a trap (a folder with a plausible but wrong claim) an
 
 ## Result
 
-The pilot passed one of its two registered tests, so it did not pass. Separation passed, weakly: on the pair score, which pays only when both folders of a pair are right, Opus beat Haiku. Headroom, room above the best model's score, was not established.
+The benchmark ranked a stronger model above a weaker one, narrowly: on the pair score, which pays only when both folders of a pair are right, Opus beat Haiku. It could not show room above the best model's score. The plan, frozen before any main run, required both, so by its own rule the pilot did not pass.
 
 ## What this does not show
 

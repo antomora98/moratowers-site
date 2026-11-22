@@ -99,9 +99,9 @@
     "prompt": "> ls cases",
     "h1": "Cases",
     "question": "Can AI agents find a trading edge?",
-    "result": "53 ideas so far. None has beaten luck yet.",
+    "result": "53 ideas tested so far. 44 are closed, each with its cause written down. 9 are still open. None has passed yet.",
     "results": [
-      "One program scored them and a second, written separately, checked the numbers, under a plan frozen first.",
+      "One program scored each idea and a second, written separately, checked the numbers, under a plan frozen first.",
       "The audit adjusts for how many ideas I tested, so one lucky winner is unlikely to pass."
     ],
     "luck": "Corrected for luck across all 53: BH, q = 0.10",

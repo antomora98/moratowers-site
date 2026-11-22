@@ -38,10 +38,15 @@ const groups = landing.groups.map((g) => {
   return { label: g.label, n: rs.reduce((t, r) => t + r.n, 0), rows: rs };
 });
 const open = landing.counts.tested - landing.counts.closed;
+const rows_closed_with_cause = landing.ledger.filter((r) => landing.causes.some((c) => c.id === r.cause)).length;
 const og = landing.open_group;
 groups.push({ label: og.label, n: open, rows: [{ n: open, short: og.short, meaning: og.meaning, open: true, cases: [] }] });
 if (groups.reduce((t, g) => t + g.n, 0) !== landing.counts.tested) throw new Error('fig. 1: the groups do not sum to the ideas tested');
 for (const it of C.help.items) if (it.case && !landing.log.some((l) => l.slug === it.case)) throw new Error(`ledger: no public case ${it.case}`);
+// The result line's counts are the audit's own (landing.json), and no closed row can carry a passing verdict: the
+// verdict words are NO EDGE, NOT ESTABLISHED and UNDECIDABLE only.
+if (C.result !== `${landing.counts.tested} ideas tested so far. ${landing.counts.closed} are closed, each with its cause written down. ${open} are still open. None has passed yet.`) throw new Error('cases: the result line disagrees with the audit counts');
+if (rows_closed_with_cause !== landing.counts.closed) throw new Error('cases: a closed idea has no cause');
 const [luckHead, luckTail] = [C.luck.slice(0, C.luck.lastIndexOf(': ') + 2), C.luck.slice(C.luck.lastIndexOf(': ') + 2)];
 const rows = L.rows.map((r, k) => {
   const s = landing.ledger[k];
@@ -57,7 +62,7 @@ const rows = L.rows.map((r, k) => {
 <p class="ln">{L.prompt}</p>
 <h1>{L.h1}</h1>
 <p class="intro ask">{C.question}</p>
-{[C.result, ...C.results].map((r) => <p class="intro">{r}</p>)}
+{[...C.results, C.result].map((r) => <p class="intro">{r}</p>)}
 <p class="ln luck">{luckHead}<span class="nw">{luckTail}</span></p>
 <figure class="ideas" aria-labelledby="fig1"><div class="grid">{groups.map((g) => <div class="grp"><p class="gh"><span class="gl">{g.label}</span><span class="gn">{g.n}</span></p><ul>{g.rows.map((r) => <li class="row"><span class="n">{r.n}</span><span class="k">{r.short}</span><span class="cells" aria-hidden="true">{Array.from({ length: r.n }, () => <span class={r.open ? 'o' : 'c'}></span>)}</span><span class="m">{r.meaning}</span>{r.cases.length > 0 && <span class="cs">{r.cases.length > 1 ? 'cases ' : 'case '}{r.cases.map((c, k) => <>{k > 0 && <span class="sep" aria-hidden="true"> · </span>}<a href={`/case/${c.slug}/`}>{c.title}</a></>)}</span>}</li>)}</ul></div>)}</div><figcaption id="fig1">{C.figure_caption}</figcaption></figure>
 {L.intro.map((p) => <p class="intro">{p}</p>)}
