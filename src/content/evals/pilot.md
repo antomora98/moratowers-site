@@ -12,10 +12,6 @@ links:
   - { label: "the write-up", href: "/vet-bench/" }
   - { label: "the appendix", href: "/vet-bench/appendix/" }
   - { label: "the repository", href: "https://github.com/moratowers/vet-bench" }
-next:
-  date: "planned as of 2026-11-22"
-  items:
-    - "Run a first model in the Linux container mode."
 ---
 ## Question
 
