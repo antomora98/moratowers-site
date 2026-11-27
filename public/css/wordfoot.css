@@ -98,10 +98,10 @@ main.fc ~ .wordfoot .axis {
     padding-inline: 0;
   }
 }
-/* From 900 to 1099 px these pages are one centered column, 484 px of text. */
+/* From 900 to 1099 px these pages are one centered column, 500 px wide. */
 @media (min-width: 900px) and (max-width: 1099px) {
   main.fc ~ .wordfoot .axis {
-    width: 484px;
+    width: 500px;
     margin-inline: auto;
     padding-inline: 0;
   }

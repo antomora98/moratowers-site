@@ -295,7 +295,10 @@ html {
    shared by both sides. */
 @media (min-width: 900px) and (max-width: 1099px) {
   .case.buffer {
-    max-width: calc(var(--col) + 56px);
+    /* The chart's full 500 px plus the side padding, the same on every case: the text starts at one place whatever
+       that case's chart is, and the chart has room for its wide drawing. */
+    width: calc(var(--col) + 56px);
+    max-width: 100%;
     margin-inline: auto;
   }
 }

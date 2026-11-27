@@ -75,6 +75,7 @@
 .ch .ch-refd {
   stroke: var(--chrome);
   stroke-width: 1;
+  fill: none;
   shape-rendering: crispEdges;
 }
 .ch .ch-refd {
@@ -83,6 +84,7 @@
 .ch .ch-axis {
   stroke: color-mix(in srgb, var(--bg), var(--ink) 14%);
   stroke-width: 1;
+  fill: none;
   shape-rendering: crispEdges;
 }
 /* An estimate's interval in ink, or in dim for an exploratory row. */
